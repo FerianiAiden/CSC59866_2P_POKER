@@ -5,7 +5,19 @@ var BigInteger = require('node-rsa/src/libs/jsbn.js');
 var k1;
 var k2;
 
-exports.BigInteger = BigInteger;
+var suit = ["spades", "diamonds", "clubs", "hearts"];
+var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+var deck = new Array();
+
+// deck of encrypted cards, THIS IS WHAT GETS SHUFFLED
+var encryptedDeck = new Array();
+
+// getters for other files 
+function getK1(){return k1;}
+function getK2(){return k2;}
+function getEncDeck(){return encryptedDeck;}
+function getDeck(){return deck;}
+
 //each player has their own (e,d)
 function sra_keygen(){
     let e1;
@@ -48,7 +60,7 @@ function sra_keygen(){
     k2.keyPair.dmq1 = dmq1;
     k2.keyPair.coeff = coeff;
 }
-sra_keygen();
+
 function p1Encrypt(m){
     // write function to manually determine cipher(c = m^e mod n ),ms is message as string
     let mBig = new BigInteger(m);
@@ -82,17 +94,93 @@ function p2Decrypt(c){
     return m      
 }
 
-/****************EXAMPLE**************** */
-const message = "test message";
-// message representation in biginteger
-messageBig = new BigInteger(message);
-console.log("Original message: ",messageBig);
-c1 = p1Encrypt(message);
-c2 = p2Encrypt(c1);
-d1 = p1Decrypt(c2);
-d2 = p2Decrypt(d1);
-d2Big = new BigInteger(d2);
-console.log("message after two decryptions is: ",d2Big);
+function Deck()
+{
+	for (var i = 0; i < suit.length; i++)
+	{
+		for (var j = 0; j < value.length; j++)
+		{
+            let message = value[j].concat(suit[i]);
+            let messageBig = new BigInteger(message);
+			var card = {Value: value[j], Suit: suit[i],Message: messageBig.toString()};
+			deck.push(card);
+		}
+	}
+}
+
+//fisher-yates shuffle algorithm
+async function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // get random number using node-forge
+      random = parseInt(forge.util.bytesToHex(forge.random.getBytesSync(32)),16);
+      randomIndex = random % currentIndex;
+      currentIndex -= 1;
+      //swap
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  }
+
+function encDeck(){
+    // encrypts whole deck with p1 key, will be stored in encryptedDeck
+    for(var i = 0;i < deck.length;i++){
+        encryptedDeck.push(p1Encrypt(deck[i].Message));
+    }
+
+}
+ 
+/****************EXAMPLE SRA**************** */
+// sra_keygen();
+// const message = "test message";
+// // message representation in biginteger
+// messageBig = new BigInteger(message);
+// console.log("Original message: ",messageBig);
+// c1 = p1Encrypt(message);
+// c2 = p2Encrypt(c1);
+// d1 = p1Decrypt(c2);
+// d2 = p2Decrypt(d1);
+// d2Big = new BigInteger(d2);
+// console.log("message after two decryptions is: ",d2Big);
+
+//Deck();
+//console.log("deck is: ",deck);
+//encDeck();
+//console.log("ENCRYPTED DECK IS: ", encryptedDeck);
+//shuffle(encryptedDeck);
+//console.log("ENCRYPTED DECK SHUFFLED IS: ", encryptedDeck);
+
+/**************************************************************** */
+
+
+function count(){
+    var ans = new Array();
+    for(var i = 0; i < value.length;i++){
+        var card = {Value: value[i], Occurences: 0};
+        ans.push(card);
+
+    }
+    
+    for(var j = 0 ; j < ans.length;j++){
+        for(var k = 0; k <deck.length;k++){
+            if(ans[j].Value == deck[k].Value){
+
+            ans[j].Occurences++;
+            } 
+        }
+    }
+    
+    return ans;
+}
+
+module.exports = {sra_keygen,p1Encrypt,p1Decrypt,p2Encrypt,p2Decrypt,Deck,shuffle,encDeck,getK1,getK2,getDeck,getEncDeck};
+
+
+
+
 
 
 
