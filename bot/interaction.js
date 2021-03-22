@@ -1,10 +1,16 @@
 console.warn = () => {}; // to suppress web3 warnings
 const Web3 = require('web3');
-const web3 = new Web3('https://kovan.infura.io/v3/b1be893adce946fe83841884d990ebf3'); 
 const sra = require("./sra");
+const fs = require('fs');
 var forge = require('node-forge');
 const NodeRSA = require('node-rsa');
 var BigInteger = require('node-rsa/src/libs/jsbn.js');
+var HDWalletProvider = require("truffle-hdwallet-provider");
+var address = "0x6DE29c6a03E2694C3217820ed2e595E24f1145B9";
+var seed = "doctor grow remind robust fresh shaft stay crush clerk urge tiger dignity";
+var contractAddress; // will have the deployed contract address
+const provider = new HDWalletProvider(seed,"https://kovan.infura.io/v3/b1be893adce946fe83841884d990ebf3",0,2);
+const web3 = new Web3(provider);
 
 // will hold the index of the cards currently in play(max cards in here is 9)
 var cardIndexUsed = new Array();
@@ -23,7 +29,26 @@ function getRandomIndex(howMany){
 
 }
 
-function deal(){
+async function deployContract(){
+    const accounts = await web3.eth.getAccounts();
+    let abi = fs.readFileSync("abi.json").toString();
+    let bytecode = fs.readFileSync("bytecode.txt").toString();
+    console.log("Starting deployment of contract...");
+    let contract = await new web3.eth.Contract(JSON.parse(abi)).deploy({data: '0x'+ bytecode}).send(
+        {
+            from: accounts[1],
+            gas: 1000000,
+            gasPrice: await web3.eth.getGasPrice()
+        }
+    );
+    console.log("Deployment transaction finished broadcasting");
+    contractAddress = await contract.options.address;
+    console.log("Contract Address is: ",contractAddress);
+}
+
+async function deal(){
+    // deployContract();
+    console.log("STARTING DEAL FUNCTION");
     let encrDeck;
 
     //array to send to contract, will hold player and casinos hand
@@ -52,33 +77,16 @@ function deal(){
     sendResult.push(encrDeck[cardIndexUsed[cChoice1]]);
     sendResult.push(encrDeck[cardIndexUsed[cChoice2]]);
     
+
+    
     //step 4: write code to send sendResult to the smart contract:
 }
-deal();
-//console.log(sra.getDeck());
+deployContract();
+//deal();
+// close provider process 
+provider.engine.stop();
 
-/***********code for sending to contract below, doesnt work yet*************** */
 
-//thing to note, private functions not included in abi, so cant be used outside of contract
-
-// var myAddress = "0x6DE29c6a03E2694C3217820ed2e595E24f1145B9"; // used to sign transactions
-// var address = "0x14b1c23A47993AaD338770c4BE219a3E8D544003" // address of contract i deployed, later write code to automate this
-// const contract = new web3.eth.Contract(abi,address);
-// console.log("can interact with contract!!");
-// var a = sra.deck;
-// //console.log("A IS: ", a);
-// sra.Deck();
-// a = sra.getDeck();
-// //console.log("A IS: ", a);
-// // if transaction runs out of gas here, specify how much gas 
-// async function sendDeck(){
-// await contract.methods.setEncDec(a).send({
-//     from: myAddress
-
-// })
-// console.log("Transaction was broadcasted to blockchain");
-// }
-// sendDeck();
 
 
 
