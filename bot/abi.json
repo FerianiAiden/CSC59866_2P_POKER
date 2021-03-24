@@ -189,6 +189,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "getData",
+		"outputs": [
+			{
+				"internalType": "string[2]",
+				"name": "",
+				"type": "string[2]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "joinGame",
 		"outputs": [],
 		"stateMutability": "payable",
