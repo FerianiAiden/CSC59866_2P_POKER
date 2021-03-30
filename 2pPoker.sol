@@ -15,13 +15,14 @@ pragma solidity 0.6.6;
     /*/ Variables (more to add soon) /*/
     
     address payable public player1; //The first player to deploy the contract will be assigned player1
-    address payable public player2; //To join as P2, account must call join() 
+    address payable public player2; 
     
-    uint256 public blindFeeBig;
-    uint256 public blindFeeSmall;
-    uint256 public betAmount1;
-    uint256 public betAmount2;
-    uint256 public Pot;
+    
+    uint256 public blindFeeBig = 0.002 ether;
+    uint256 public blindFeeSmall = 0.001 ether;
+    uint256 public betPlayer1;
+    uint256 public betPlayer2;
+
     
     bool public Folded = false; 
     bool public gameOver;
@@ -40,7 +41,16 @@ pragma solidity 0.6.6;
 
      //CommunityPile (?maybe)
     
+    //Initialize method:
     
+    constructor(uint256 _gameTimeInterval) public payable {
+        player1 = msg.sender;
+        blindFeeSmall = msg.value; //first player to join is dealer aka P1
+        gameTimeInterval = _gameTimeInterval; 
+        
+    }
+    
+        
     Stages public stage = Stages.Dealing;
     
     modifier atStage(Stages _stage) {
@@ -53,14 +63,11 @@ pragma solidity 0.6.6;
         stage = Stages(uint(stage)+1);
     }
     
-    modifier onlyDealer() {
-        // require(msg.sender == , "Only the dealer can perform this action");
-    _;
-    }
-
+    
     
     function joinGame() public payable {
         require(!gameOver, "Game was canceled.");
+        require(msg.value == blindFeeBig, "invalid bet amount");
         //more require statements to be implemented 
         
         player2 = msg.sender;
@@ -76,27 +83,47 @@ pragma solidity 0.6.6;
         msg.sender.transfer(address(this).balance);
     }
     
-    /*/ Functions for Dealing start HERE /*/
+
     
-    /*/ General postDealing functions /*/
+    function  Call() public {
+       require(msg.sender == state.whoseTurn, "Denied - not your turn");
+       
+       if ( msg.sender == player1){
+          betPlayer1 == betPlayer2;
+       }
+        else { betPlayer2 == betPlayer1;}
+    }
     
-    function  Call() public {}
+    function Check() public {
+        require(msg.sender == state.whoseTurn, "Denied - not your turn");
+        //needs more require(s)
+         if ( msg.sender == player1){
+             state.whoseTurn = player1;
+              }
+        else {state.whoseTurn =player2;}
+    }
     
-    function Check() public {}
+    function Raise() payable public { //needs to be tweaked to control raise factor
+        require(msg.sender == state.whoseTurn, "Denied - not your turn");
+         if ( msg.sender == player1){
+             msg.value > betPlayer1;
+             
+         }
+        else {msg.value > betPlayer2;}
+    }
     
-    function Raise() public {}
+    function Fold() public {
+        require(msg.sender == state.whoseTurn, "Denied - not your turn");
+         if ( msg.sender == player1){
+             player2.transfer(betPlayer2+betPlayer1);
+         }
+        else {player1.transfer(betPlayer1+betPlayer2);
+            
+        }
     
-    function Fold() public {}
+    }
     
-    /*/ Functions for PreFlop start HERE /*/
     
-    /*/ Functions for Flop start HERE /*/
-    
-    /*/ Funtions for Turn start HERE /*/ 
-    
-    /*/ Functions for River start HERE /*/
-    
-    /*/ Functions for Payout start HERE /*/
     
     
     
@@ -104,6 +131,3 @@ pragma solidity 0.6.6;
     
     
     }
-    
-    
-    
