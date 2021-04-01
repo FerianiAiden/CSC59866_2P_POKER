@@ -100,8 +100,8 @@ async function deal(){
     console.log("Reading players hand from the smart contract I get: ", data);
 
 }
-//deployContract();
-deal();
+deployContract();
+//deal();
 // close provider process 
 provider.engine.stop();
 

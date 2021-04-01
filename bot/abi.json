@@ -1,7 +1,7 @@
 [
 	{
 		"inputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "constructor"
 	},
 	{
@@ -14,7 +14,7 @@
 		"inputs": [],
 		"name": "Call",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -46,27 +46,14 @@
 	},
 	{
 		"inputs": [],
-		"name": "Pot",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "Raise",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "betAmount1",
+		"name": "betPlayer1",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -79,7 +66,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "betAmount2",
+		"name": "betPlayer2",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -189,7 +176,20 @@
 	},
 	{
 		"inputs": [],
-		"name": "getData",
+		"name": "getP1Hand",
+		"outputs": [
+			{
+				"internalType": "string[2]",
+				"name": "",
+				"type": "string[2]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getP2Hand",
 		"outputs": [
 			{
 				"internalType": "string[2]",
