@@ -1,6 +1,8 @@
 var forge = require('node-forge');
 const NodeRSA = require('node-rsa');
 var BigInteger = require('node-rsa/src/libs/jsbn.js');
+var pkcs1 = require('node-rsa/src/schemes/pkcs1.js');
+var crypt = require('crypto');
 // keys will be in k1,k2 after sra_keygen
 var k1;
 var k2;
@@ -19,7 +21,7 @@ function getEncDeck(){return encryptedDeck;}
 function getDeck(){return deck;}
 
 //each player has their own (e,d)
-function sra_keygen(){
+async function sra_keygen(){
     let e1;
     let e2;
     
@@ -62,36 +64,56 @@ function sra_keygen(){
 }
 
 function p1Encrypt(m){
-    // write function to manually determine cipher(c = m^e mod n ),ms is message as string
+    // just computes c = m^e mod n. does not pad m. m has to be buffer
+
+    // write function to manually determine cipher(c = m^e mod n )
     let mBig = new BigInteger(m);
     let eBig = new BigInteger(k1.keyPair.e.toString());
     let cBig = mBig.modPow(eBig,k1.keyPair.n);
-    let c = cBig.toString();
+    let c = cBig.toBuffer("utf8");
     return c;     
 }
 function p2Encrypt(m){
-    // write function to manually determine cipher(c = m^e mod n )
+    //pads message and ecncrypts it. m has to be buffer
+    // write function to determine cipher(c = m^e mod n )
     let mBig = new BigInteger(m);
     let eBig = new BigInteger(k2.keyPair.e.toString());
     let cBig = mBig.modPow(eBig,k2.keyPair.n);
-    let c = cBig.toString();
+    let c = cBig.toBuffer("utf8");
     return c;  
 }
-function p1Decrypt(c){ 
-    // computes m = c^d mod n, c is ciphertext, as string
+function p1Decrypt(c){
+    // computes m = c^d mod n, c is ciphertext, c is buffer of bytes 
+    // returns message as a buffer, to turn to string just do toString()
     let cBig = new BigInteger(c);
     let d = k1.keyPair.d;
     let mBig = cBig.modPow(d,k1.keyPair.n);
-   let m = mBig.toString();
-    return m      
+   let m = mBig.toBuffer("utf8");
+    return m;      
 }
 function p2Decrypt(c){
-    // computes m = c^d mod n
+    // computes m = c^d mod n, c is ciphertext, c is buffer of bytes 
+    // returns message as a buffer, to turn to string just do toString()
     let cBig = new BigInteger(c);
     let d = k2.keyPair.d;
     let mBig = cBig.modPow(d,k2.keyPair.n);
-    let m = mBig.toString();
-    return m      
+   let m = mBig.toBuffer("utf8");
+    return m;      
+}
+function padMessage(m){
+    // pads m with pkcs1, m has to be buffer
+    let k1Scheme = pkcs1.makeScheme(k1.keyPair,'pkcs1');
+    return k1Scheme.encPad(m,2);
+
+}
+function unPadMessage(m){
+    // unpads message m assuming m was padding with pkcs1, m has to be buffer, returns buffer
+    let k1Scheme = pkcs1.makeScheme(k1.keyPair,'pkcs1');
+    byte_buf = Buffer.alloc(1); //one byte of zero
+    buf_array = [byte_buf,m];
+    padded_message = Buffer.concat(buf_array);
+    final_m = k1Scheme.encUnPad(padded_message);
+    return final_m;      
 }
 
 function Deck()
@@ -101,8 +123,7 @@ function Deck()
 		for (var j = 0; j < value.length; j++)
 		{
             let message = value[j].concat(suit[i]);
-            let messageBig = new BigInteger(message);
-			var card = {Value: value[j], Suit: suit[i],Message: messageBig.toString()};
+			var card = {Value: value[j], Suit: suit[i],Message: Buffer.from(message)};
 			deck.push(card);
 		}
 	}
@@ -126,35 +147,47 @@ async function shuffle(array) {
   }
 
 function encDeck(){
-    // encrypts whole deck with p1 key, will be stored in encryptedDeck
+    // pads each card and encrypts it with k1. stored in encryptedDeck
     for(var i = 0;i < deck.length;i++){
-        encryptedDeck.push(p1Encrypt(deck[i].Message));
+        padded_m = padMessage(deck[i].Message);
+        encryptedDeck.push(p1Encrypt(padded_m));
     }
 
 }
- 
-/****************EXAMPLE SRA**************** */
+//********************EXAMPLE SRA WITH PADDING************* */
 // sra_keygen();
-// const message = "test message";
-// // message representation in biginteger
-// messageBig = new BigInteger(message);
-// console.log("Original message: ",messageBig);
-// c1 = p1Encrypt(message);
-// c2 = p2Encrypt(c1);
-// d1 = p1Decrypt(c2);
-// d2 = p2Decrypt(d1);
-// d2Big = new BigInteger(d2);
-// console.log("message after two decryptions is: ",d2Big);
+// const message = "testmessage";
+// messageBuf = Buffer.from(message,'utf8');
+// console.log("message is: ",message);
+// console.log("message buffer is: ", messageBuf,"\n");
 
-//Deck();
-//console.log("deck is: ",deck);
-//encDeck();
-//console.log("ENCRYPTED DECK IS: ", encryptedDeck);
-//shuffle(encryptedDeck);
-//console.log("ENCRYPTED DECK SHUFFLED IS: ", encryptedDeck);
+// padded_m = padMessage(messageBuf);
+// console.log("Padded message is: ", padded_m);
 
-/**************************************************************** */
+// enc = p1Encrypt(padded_m);
+// enc2 = p2Encrypt(enc);
+// dec1 = p1Decrypt(enc2);
+// dec2 = p2Decrypt(dec1);
+// console.log("AFTER TWO DECRYPTIONS: ", dec2);
+// console.log("MESSAGE UNPADDED IS: ",unPadMessage(dec2).toString());
 
+//******************************************************************** */
+
+/*********************SRA WITH PADDING EXAMPLE ON CARDS****************************************** */
+// sra_keygen();
+// Deck();
+// encDeck();
+// shuffle(encryptedDeck);
+// //console.log(encryptedDeck);
+// //my_string = encryptedDeck[0].toString("hex"); // buffer to hex string
+// //console.log(my_string);
+// enc2 = p2Encrypt(encryptedDeck[0]);
+// dec1 = p1Decrypt(enc2);
+// dec2 = p2Decrypt(dec1);
+// console.log("RESULT AFTER TWO DECRYPTIONS: ",unPadMessage(dec2).toString());
+
+
+/************************************************************************************* */
 
 function count(){
     var ans = new Array();
@@ -176,7 +209,7 @@ function count(){
     return ans;
 }
 
-module.exports = {sra_keygen,p1Encrypt,p1Decrypt,p2Encrypt,p2Decrypt,Deck,shuffle,encDeck,getK1,getK2,getDeck,getEncDeck};
+module.exports = {sra_keygen,p1Encrypt,p1Decrypt,p2Encrypt,p2Decrypt,Deck,shuffle,encDeck,getK1,getK2,getDeck,getEncDeck,padMessage,unPadMessage};
 
 
 
