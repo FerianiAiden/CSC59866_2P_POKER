@@ -1,4 +1,5 @@
-pragma solidity 0.6.6;
+pragma solidity 0.7.4;
+pragma experimental ABIEncoderV2;
 
 
     contract Poker {
@@ -22,8 +23,8 @@ pragma solidity 0.6.6;
     uint256 public blindFeeSmall = 0.001 ether;
     uint256 public betPlayer1;
     uint256 public betPlayer2;
-
-    
+    string[2] public playerHand;
+    string[2] public casinoHand;
     bool public Folded = false; 
     bool public gameOver;
     uint256 public gameTimeInterval; 
@@ -43,7 +44,7 @@ pragma solidity 0.6.6;
     
     //Initialize method:
     
-    constructor(uint256 _gameTimeInterval) public payable {
+    constructor(uint256 _gameTimeInterval) payable {
         player1 = msg.sender;
         blindFeeSmall = msg.value; //first player to join is dealer aka P1
         gameTimeInterval = _gameTimeInterval; 
@@ -83,9 +84,25 @@ pragma solidity 0.6.6;
         msg.sender.transfer(address(this).balance);
     }
     
+    //deal function, assigns card to its according player
+    function cardDeal(string[4] memory x) public{
+        playerHand[0] = x[0];
+        playerHand[1] = x[1];
+        casinoHand[0] = x[2];
+        casinoHand[1] = x[3];
+    }
+    
+    function getP1Hand()public view returns ( string  [2] memory){
+        return playerHand;
+    }
+    
+    function getP2Hand()public view returns ( string  [2] memory){
+        return casinoHand;
+    }
+    
 
     
-    function  Call() public {
+    function  Call() public view {
        require(msg.sender == state.whoseTurn, "Denied - not your turn");
        
        if ( msg.sender == player1){
