@@ -44,10 +44,9 @@ pragma experimental ABIEncoderV2;
     
     //Initialize method:
     
-    constructor(uint256 _gameTimeInterval) payable {
+    constructor() payable {
         player1 = msg.sender;
         blindFeeSmall = msg.value; //first player to join is dealer aka P1
-        gameTimeInterval = _gameTimeInterval; 
         
     }
     
@@ -92,11 +91,11 @@ pragma experimental ABIEncoderV2;
         casinoHand[1] = x[3];
     }
     
-    function getP1Hand()public view returns ( string  [2] memory){
+    function getP1Hand()public view returns ( string[2] memory){
         return playerHand;
     }
     
-    function getP2Hand()public view returns ( string  [2] memory){
+    function getP2Hand()public view returns ( string[2] memory){
         return casinoHand;
     }
     
