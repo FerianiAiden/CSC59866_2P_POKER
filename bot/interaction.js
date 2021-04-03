@@ -13,11 +13,14 @@ const provider = new HDWalletProvider(seed,"https://kovan.infura.io/v3/b1be893ad
 const web3 = new Web3(provider);
 var abi = fs.readFileSync("abi.json").toString();
 
+// will hold deck of encrypted cards
+var encrDeck;
+
 // will hold the index of the cards currently in play(max cards in here is 9)
 var cardIndexUsed = new Array();
 
 //howMany is how many random indexes you want to generate, must be integer. puts them in cardIndexUsed
-function getRandomIndex(howMany){
+async function getRandomIndex(howMany){
     
     for(var i = 0 ; i < howMany ;i++){
         do{
@@ -50,7 +53,7 @@ async function deployContract(){
 async function deal(){
     await deployContract();
     console.log("STARTING DEAL FUNCTION");
-    let encrDeck;
+    //let encrDeck;
 
     //array to send to contract, will hold player and casinos hand
     let sendResult = new Array();
@@ -109,6 +112,43 @@ async function deal(){
 
     });
     console.log("Reading player hashes of his cards I get: ", playerHash);
+    //console.log("NOW STARTING FLOP..");
+    //await flop();
+
+}
+async function flop(){
+    await getRandomIndex(3);
+
+    //console.log("INDEXES OF CARDS USED IS: ", cardIndexUsed);
+
+    //this is part where Ming would give which cards the players chose 
+    let pChoice1 = 6;
+    let pChoice2 = 5;
+    let pChoice3 = 4;
+    let sendFlop = new Array();
+    sendFlop.push(encrDeck[cardIndexUsed[pChoice1]].toString("hex"));
+    sendFlop.push(encrDeck[cardIndexUsed[pChoice2]].toString("hex"));
+    sendFlop.push(encrDeck[cardIndexUsed[pChoice3]].toString("hex"));
+
+    // send to contract
+
+    console.log("Sending flop....");
+
+    const accounts = await web3.eth.getAccounts();
+    let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
+    await contractInstance.methods.flop(sendFlop).send({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Cards for the flop were sent");
+    const communityPile = await contractInstance.methods.getCommunityPile().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading community pile of his cards I get: ", communityPile);
+    
 
 }
 //deployContract();
