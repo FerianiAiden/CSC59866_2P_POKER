@@ -1,16 +1,40 @@
 h2 {
     margin: 0rem;
   }
-body {
-    background:green;
-}
-  div.container {
+  html {
+    display: table;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background:green;
-  }
+}
+body {
+  margin:0 auto; 
+  text-align: center;
+  color: white;
+  background-color: darkslategray;
+  display: table-cell;
+  vertical-align: middle;
+
+}
+
+.game  {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:green;
+  color: black;
+  float: right;
+}
+
+.intro  {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:darkcyan;
+  color: black;
+  float:left;
+}
+
 
   button {
     padding: 0.5rem;

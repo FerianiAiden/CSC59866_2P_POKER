@@ -3,45 +3,82 @@
 <head>
   <script type="text/javascript"> 
     var totalCount = 5;
-    </script>
+  </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2p poker</title>
 </head>
 <body>
-    <div class='container'>
+
 
         <h1>2P Player Poker </h1>
-        <p>Milliethers: <span id="milliethersCount">0</span></p>
-        <p>Enter the number of the milliether to bet:</p>
-        <input type="text" id="TEXTBOX_ID" > 
-        <p><button id="flip">Bet</button></p>
-        <p><span id="textboxmsg"></span></p>
+        <div class='container'>
+        <div class= 'intro'>
+          <p><h2>Your milliethers: <span id="milliethersCount">0</span></h2></p>
+          <p>Enter your initial bet in milliethers:</p>
+          <input type="text" id="Bet_amount" > 
+          <p><button id="bet">Bet</button></p>
+          <p><span id="betmsg"></span></p>
+          <p><h2><span id="bet_total">Your bet:</span></h2></p>
 
-        <h2>Pick 2 cards</h2>
+          <p><button id="check">check</button>
+            <button id="raise">raise</button>
+            <button id="fold">fold</button>
+            <p><span id="status"></span></p>
+            <button onclick="onTimer()">Clickme</button>
+  <!-- <div id="mycounter"></div>
+<script>
+i = 60;
+function onTimer() {
+  document.getElementById('mycounter').innerHTML = i;
+  i--;
+  if (i < 0) {
+    alert('You lose!');
+  }
+  else {
+    setTimeout(onTimer, 1000);
+  }
+}
+</script> -->
+            <p>Enter the amount of Milliether to top up : <input type="text" id="TEXTBOX_TOPUP" >  <button id="top_up">Topup</button></p>
+            <p>Enter the amount of Milliether to transfer to your wallet  : <input type="text" id="TEXTBOX_TRANS" >  <button id="transfer">Transfer</button></p>
+          </p>
+        </div>
+        <div class= "game">
+        <h2><span id="status1">Pick 2 cards</span></h2>
 
           <p>
-           <img alt="" src="/poker-img/back.jpg" 
-           width= 150 height=225 id="imgClickAndChange" onclick="changeImage()"  />
+        <img alt="" src="/poker-img/back.jpg" 
+           width= 150 height=225 id="card1" onclick="pickCard1()"  />
 
         <img alt="" src="/poker-img/back.jpg" 
-        width= 150 height=225 id="imgClickAndChange2" onclick="changeImage2()"  />
+        width= 150 height=225 id="card2" onclick="pickCard2()"  />
         <img alt="" src="/poker-img/back.jpg" 
-        width= 150 height=225 id="imgClickAndChange3" onclick="changeImage3()"  />
+        width= 150 height=225 id="card3" onclick="pickCard3()"  />
         <img alt="" src="/poker-img/back.jpg" 
-        width= 150 height=225 id="imgClickAndChange4" onclick="changeImage4()"  />
+        width= 150 height=225 id="card4" onclick="pickCard4()"  />
         </p>
 
-   
+        <h2><span id="communitycards"></span></h2>
+
+        <p>
+          <img alt="" id="communitycards1"   />
+          <img alt=""  id="communitycards2"   />
+          <img alt=""  id="communitycards3"   />
+          <img alt=""  id="communitycards4"   />
+          <img alt=""  id="communitycards5"   />
+          </p>
         
-        <p><span id="status"></span></p>
         <h2>Your cards:</h2>
         <p><span id="playercards"></span> 
         <img alt="" src=""  id="yourcard1"   />
          <img alt="" src=""  id="yourcard2"   /></p>
+
+
       </div>
-      <p>Enter the amount of Milliether to top up : <input type="text" id="TEXTBOX_TOPUP" >  <button id="top_up">Topup</button></p>
-      <p>Enter the amount of Milliether to transfer to your wallet  : <input type="text" id="TEXTBOX_TRANS" >  <button id="transfer">Transfer</button></p>
+    </div>
+     
+    
     <script src="play.js">
     </script>
     <link href="play.css" rel="stylesheet" />
