@@ -11,17 +11,23 @@
 		"type": "event"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
 		"name": "Call",
 		"outputs": [],
-		"stateMutability": "view",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
 		"name": "Check",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -45,7 +51,13 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
 		"name": "Raise",
 		"outputs": [],
 		"stateMutability": "payable",
@@ -124,6 +136,25 @@
 				"type": "uint256"
 			}
 		],
+		"name": "casinoCommitment",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"name": "casinoHand",
 		"outputs": [
 			{
@@ -176,12 +207,38 @@
 	},
 	{
 		"inputs": [],
+		"name": "getP1Commitment",
+		"outputs": [
+			{
+				"internalType": "bytes32[2]",
+				"name": "",
+				"type": "bytes32[2]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "getP1Hand",
 		"outputs": [
 			{
 				"internalType": "string[2]",
 				"name": "",
 				"type": "string[2]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getP2Commitment",
+		"outputs": [
+			{
+				"internalType": "bytes32[2]",
+				"name": "",
+				"type": "bytes32[2]"
 			}
 		],
 		"stateMutability": "view",
@@ -248,6 +305,25 @@
 				"type": "uint256"
 			}
 		],
+		"name": "playerCommitment",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"name": "playerHand",
 		"outputs": [
 			{
@@ -261,15 +337,9 @@
 	},
 	{
 		"inputs": [],
-		"name": "stage",
-		"outputs": [
-			{
-				"internalType": "enum Poker.Stages",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
+		"name": "restartGame",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

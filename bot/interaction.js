@@ -71,18 +71,22 @@ async function deal(){
     let cChoice1 = 1;
     let cChoice2 = 3;
     
-    //for players hand
-    sendResult.push(sra.p1Decrypt(sra.p2Encrypt(encrDeck[cardIndexUsed[pChoice1]])));
-    sendResult.push(sra.p1Decrypt(sra.p2Encrypt(encrDeck[cardIndexUsed[pChoice2]])));
-    // for casinos hand
-    sendResult.push(encrDeck[cardIndexUsed[cChoice1]]);
-    sendResult.push(encrDeck[cardIndexUsed[cChoice2]]);
+    //for players hand, buffer as a string 
+    sendResult.push(sra.p1Decrypt(sra.p2Encrypt(encrDeck[cardIndexUsed[pChoice1]])).toString("hex"));
+    sendResult.push(sra.p1Decrypt(sra.p2Encrypt(encrDeck[cardIndexUsed[pChoice2]])).toString("hex"));
+    // for casinos hand, buffer as a string
+    sendResult.push(encrDeck[cardIndexUsed[cChoice1]].toString("hex"));
+    sendResult.push(encrDeck[cardIndexUsed[cChoice2]].toString("hex"));
     console.log("Player card 1 is: ", sendResult[0]);
     console.log("Player card 2 is: ", sendResult[1]);
     console.log("Casino card 1 is: ", sendResult[2]);
     console.log("Casino card 2 is: ", sendResult[3]);
+    // dec = sra.p2Decrypt(Buffer.from(sendResult[0],"hex"));
+    // mm = sra.unPadMessage(dec);
+    //console.log("DECRYPTING PLAYER CARD 1 I GET: ",mm.toString());
     //step 4: write code to send sendResult to the smart contract:
     console.log("Sending card deal....");
+
     const accounts = await web3.eth.getAccounts();
     let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
     await contractInstance.methods.cardDeal(sendResult).send({
@@ -92,16 +96,23 @@ async function deal(){
     });
     console.log("Dealt cards were sent");
     // reading data from contract to see if it was set correctly
-    const data = await contractInstance.methods.getData().call({
+    const data = await contractInstance.methods.getP1Hand().call({
         from: accounts[1],
         gas: 1000000
 
     });
     console.log("Reading players hand from the smart contract I get: ", data);
 
+    const playerHash = await contractInstance.methods.getP1Commitment().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading player hashes of his cards I get: ", playerHash);
+
 }
-deployContract();
-//deal();
+//deployContract();
+deal();
 // close provider process 
 provider.engine.stop();
 
