@@ -28,10 +28,13 @@ pragma experimental ABIEncoderV2;
     //their hand encrypted
     string[2] public playerHand;
     string[2] public casinoHand;
+    string[5] public communityPile;
+    
     
     // hashes of their hand. Hashes them one by one and puts them here
     bytes32[2] public playerCommitment;
     bytes32[2] public casinoCommitment;
+    bytes32[5] public communityPileCommitment;
     
     
     bool public Folded = false; 
@@ -128,6 +131,40 @@ pragma experimental ABIEncoderV2;
         return playerCommitment;
     }
     
+    function flop(string[3] memory x) public{
+        communityPile[0] = x[0];
+        communityPile[1] = x[1];
+        communityPile[2] = x[2];
+        
+        //commitment 
+        communityPileCommitment[0] = keccak256(abi.encodePacked(x[0]));
+        communityPileCommitment[1] = keccak256(abi.encodePacked(x[1]));
+        communityPileCommitment[2] = keccak256(abi.encodePacked(x[2]));
+    }
+    
+    // getters for flop
+    function getCommunityPile() public view returns (string[5] memory){
+        return communityPile;
+    }
+    
+    function getCommunityPileCommitment() public view returns (bytes32[5] memory){
+        return communityPileCommitment;
+    }
+    
+    //functions to go to certain state below
+    function goToFlop() public{
+        stages = STAGES.FLOP;
+    }
+    function goToTurn() public{
+        stages = STAGES.TURN;
+    }
+    function goToRiver() public{
+        stages = STAGES.RIVER;
+    }
+    function goToPayout() public{
+        stages = STAGES.PAYOUT;
+    }
+
 
     
     function  Call(uint256 amount) public payable {
@@ -162,6 +199,7 @@ pragma experimental ABIEncoderV2;
     }
     
     function restartGame() public{
+        // function that sets contract to initial state
         
     }
     
@@ -177,12 +215,6 @@ pragma experimental ABIEncoderV2;
         }
     
     }
-    
-    
-    
-    
-    
-    
     
     
     }
