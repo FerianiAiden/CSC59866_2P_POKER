@@ -151,17 +151,31 @@ pragma experimental ABIEncoderV2;
         return communityPileCommitment;
     }
     
+    function turn(string memory x) public{
+        communityPile[3] = x;
+        communityPileCommitment[3] = keccak256(abi.encodePacked(x));
+    }
+    
+    function river(string memory x) public{
+        communityPile[4] = x;
+        communityPileCommitment[4] = keccak256(abi.encodePacked(x));
+    }
+    
     //functions to go to certain state below
     function goToFlop() public{
+        require(msg.sender == player1);
         stages = STAGES.FLOP;
     }
     function goToTurn() public{
+        require(msg.sender == player1);
         stages = STAGES.TURN;
     }
     function goToRiver() public{
+        require(msg.sender == player1);
         stages = STAGES.RIVER;
     }
     function goToPayout() public{
+        require(msg.sender == player1);
         stages = STAGES.PAYOUT;
     }
 
