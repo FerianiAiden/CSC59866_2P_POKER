@@ -112,8 +112,10 @@ async function deal(){
 
     });
     console.log("Reading player hashes of his cards I get: ", playerHash);
-    //console.log("NOW STARTING FLOP..");
-    //await flop();
+    console.log("NOW STARTING FLOP..");
+    await flop();
+    await turn();
+    await river();
 
 }
 async function flop(){
@@ -129,9 +131,12 @@ async function flop(){
     sendFlop.push(encrDeck[cardIndexUsed[pChoice1]].toString("hex"));
     sendFlop.push(encrDeck[cardIndexUsed[pChoice2]].toString("hex"));
     sendFlop.push(encrDeck[cardIndexUsed[pChoice3]].toString("hex"));
-
+    //testing if decrypting at this point gives a card
+    // dec = sra.p1Decrypt(Buffer.from(sendFlop[0],"hex"));
+    // mm = sra.unPadMessage(dec);
+    // console.log("DECRYPTING FIRST CARD OF COMMUNITY PILE I GET: ",mm.toString());
+    
     // send to contract
-
     console.log("Sending flop....");
 
     const accounts = await web3.eth.getAccounts();
@@ -147,9 +152,78 @@ async function flop(){
         gas: 1000000
 
     });
-    console.log("Reading community pile of his cards I get: ", communityPile);
+    console.log("Reading community pile of cards I get: ", communityPile);
+    const communityPileCommitment = await contractInstance.methods.getCommunityPileCommitment().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading hash of community pile I get: ",communityPileCommitment);
     
 
+}
+
+async function turn(){
+    console.log("Starting turn.....");
+    await getRandomIndex(1);
+    let pChoice = 7;
+    let sendTurn = new Array();
+    sendTurn.push(encrDeck[cardIndexUsed[pChoice]].toString("hex"));
+    //send to contract
+    console.log("Sending turn.....");
+
+    const accounts = await web3.eth.getAccounts();
+    let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
+    await contractInstance.methods.turn(sendTurn[0]).send({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Cards for the turn were sent");
+    const communityPile = await contractInstance.methods.getCommunityPile().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading community pile of cards I get: ", communityPile);
+    const communityPileCommitment = await contractInstance.methods.getCommunityPileCommitment().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading hash of community pile I get: ",communityPileCommitment);
+
+    
+}
+
+async function river(){
+    console.log("Starting river.....");
+    await getRandomIndex(1);
+    let pChoice = 8;
+    let sendRiver = new Array();
+    sendRiver.push(encrDeck[cardIndexUsed[pChoice]].toString("hex"));
+    //send to contract
+    console.log("Sending river...");
+    const accounts = await web3.eth.getAccounts();
+    let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
+    await contractInstance.methods.river(sendRiver[0]).send({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Cards for the river were sent");
+    const communityPile = await contractInstance.methods.getCommunityPile().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading community pile of cards I get: ", communityPile);
+    const communityPileCommitment = await contractInstance.methods.getCommunityPileCommitment().call({
+        from: accounts[1],
+        gas: 1000000
+
+    });
+    console.log("Reading hash of community pile I get: ",communityPileCommitment);
 }
 //deployContract();
 deal();
