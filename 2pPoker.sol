@@ -227,7 +227,13 @@ pragma experimental ABIEncoderV2;
         //restartGame function call here that sets contract to its initial state
             
         }
-    
+    function SplitPot(uint256) {
+    require(stages = STAGES.PAYOUT, "Denied - Not in Payout stage");
+    if (winner == 2){
+        player1.transfer(betPlayer1);
+        player2.transfer(betPlayer2);
+    }
+    }
     }
     
     
