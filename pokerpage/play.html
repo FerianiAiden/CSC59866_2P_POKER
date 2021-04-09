@@ -17,16 +17,24 @@
           <p><h2>Your milliethers: <span id="milliethersCount">0</span></h2></p>
           <p>Enter your initial bet in milliethers:</p>
           <input type="text" id="Bet_amount" > 
-          <p><button id="bet">Bet</button></p>
+          <p><a a class="button3" id="bet">Bet</a></p>
           <p><span id="betmsg"></span></p>
-          <p><h2><span id="bet_total">Your bet:</span></h2></p>
-
-          <p><button id="check">check</button>
-            <button id="raise">raise</button>
-            <button id="fold">fold</button>
+          <p><h2><span id="bet_total">Your bet: 0</span></h2></p>
+          <input type="text" id="raise_amount" > 
+          <p><a class="button3"id="raise">raise</a></p>
+          <p><a class="button3"  id="call">call</a>
+            <a class="button3" id="check">check</a>
+            
+            <a class="button3" id="fold">fold</a>
             <p><span id="status"></span></p>
-            <button onclick="onTimer()">Clickme</button>
-  <!-- <div id="mycounter"></div>
+
+            
+            <script>
+
+            </script>
+
+  <!-- <button onclick="onTimer()">Clickme</button>
+    <div id="mycounter"></div>
 <script>
 i = 60;
 function onTimer() {
@@ -40,12 +48,15 @@ function onTimer() {
   }
 }
 </script> -->
-            <p>Enter the amount of Milliether to top up : <input type="text" id="TEXTBOX_TOPUP" >  <button id="top_up">Topup</button></p>
-            <p>Enter the amount of Milliether to transfer to your wallet  : <input type="text" id="TEXTBOX_TRANS" >  <button id="transfer">Transfer</button></p>
+            <p>Add Milliether (test) : <input type="text" id="TEXTBOX_TOPUP" >  
+              <a class="button3" id="top_up">Topup</a> </p>
+            <p>Remove Milliether (test)  : <input type="text" id="TEXTBOX_TRANS" >  
+              <a class="button3" id="transfer">Transfer</a></p>
           </p>
         </div>
         <div class= "game">
-        <h2><span id="status1">Pick 2 cards</span></h2>
+          <h2> <div id="mycounter">Timer: 30</div> </h2>
+        <h2><span id="status1">Pick two cards</span></h2>
 
           <p>
         <img alt="" src="/poker-img/back.jpg" 
@@ -69,7 +80,7 @@ function onTimer() {
           <img alt=""  id="communitycards5"   />
           </p>
         
-        <h2>Your cards:</h2>
+        <h2><span id="yourcards"></span></h2>
         <p><span id="playercards"></span> 
         <img alt="" src=""  id="yourcard1"   />
          <img alt="" src=""  id="yourcard2"   /></p>
