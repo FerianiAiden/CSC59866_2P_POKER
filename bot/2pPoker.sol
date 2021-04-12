@@ -2,7 +2,7 @@ pragma solidity 0.7.4;
 pragma experimental ABIEncoderV2;
 
 
-    contract Poker {
+contract Poker {
      
      enum STAGES {
          DEALING, //Will include blindfees
@@ -14,20 +14,17 @@ pragma experimental ABIEncoderV2;
           }
     
     STAGES stages;
-          
-    /*/ Variables (more to add soon) /*/
-    
     address payable public player1; //The first player to deploy the contract will be assigned player1
     address payable public player2; 
-    
-    
     uint256 public blindFeeBig = 0.002 ether;
     uint256 public blindFeeSmall = 0.001 ether;
     uint256 public betPlayer1;
     uint256 public betPlayer2;
-    //their hand encrypted
+    //their hands encrypted
     string[2] public playerHand;
     string[2] public casinoHand;
+    
+    //community pile cards (not encrypted)
     string[5] public communityPile;
     
     
@@ -37,65 +34,53 @@ pragma experimental ABIEncoderV2;
     bytes32[5] public communityPileCommitment;
     
     
-    bool public Folded = false; 
-    bool public gameOver;
-    uint256 public gameTimeInterval; 
-    uint256 public gameTime = 2**256 - 1;
+    //bool public Folded = false; 
+    //bool public gameOver;
+    //uint256 public gameTimeInterval; 
+    //uint256 public gameTime = 2**256 - 1;
     
-    event gameHosted();
+    //event gameHosted();
     
-    struct gameState {
-        uint8 num;
-        address whoseTurn;
-    }
+    // struct gameState {
+    //     uint8 num;
+    //     address whoseTurn;
+    // }
     
-    gameState public state;
+    //gameState public state;
     
-
-     //CommunityPile (?maybe)
-    
-    //Initialize method:
-    
-    constructor() payable {
+    constructor() {
         player1 = msg.sender;
         stages = STAGES.DEALING;
-        betPlayer1 = blindFeeSmall; //first player to join is dealer aka P1, this part should be handled in joinGame
+        betPlayer1 = blindFeeBig; //first player to join is dealer aka P1, this part should be handled in joinGame
         
     }
     
+    // function that can be called to receive ether, might not be needed
+    receive() external payable{
+        require(msg.value >= .001 ether,"Send at least .001 ether :) ");
         
+    }
     
-    
-    // modifier atStage(Stages _stage) {
-    //         require( stage == _stage, "Action cannot be performed during this phase."
-    //         );
-    //         _;
-    // }
-    
-    // function nextPhase() internal {
-    //     stage = Stages(uint(stage)+1);
-    // }
-    
-    
+    // returns current balance of contract
+    function getBalance() external view returns(uint){
+        return address(this).balance;
+    }
     // for player to join game
     function joinGame() public payable {
-        require(!gameOver, "Game was canceled."); // maybe take this out
-        require(msg.value == blindFeeBig, "invalid bet amount. Must be .002 ether");
+        //require(!gameOver, "Game was canceled."); // maybe take this out
+        require(msg.value == blindFeeSmall, "invalid bet amount. Must be .001 ether");
         require(stages == STAGES.DEALING,"Not in the dealing phase");
-        //more require statements to be implemented 
-        
         player2 = msg.sender;
         betPlayer2 = msg.value;
         // state.whoseTurn = player1; // this should adjust when determining who the Dealer is 
         
-        emit gameHosted();
+        //emit gameHosted();
         }
         
-     // When P1 wants to cancel before any player joins the game - refunds their entry fee :
+     // This is called when player wants to leave(press quit on front end), transfers the funds back to casino:
     function leaveGame() public {
-        require(msg.sender == player1, "Only P1 can cancel the game.");
-       // require(player2 == 0, "Action denied - game already started."); 
-        msg.sender.transfer(address(this).balance);
+        require(msg.sender == player1, "Only casino has access to this.");
+        player1.transfer(address(this).balance);
     }
     
     //deal function, assigns card to its according player
@@ -178,8 +163,8 @@ pragma experimental ABIEncoderV2;
         require(msg.sender == player1);
         stages = STAGES.PAYOUT;
     }
-
-
+    
+    
     
     function  Call(uint256 amount) public payable {
         // amount is how much to call in wei
@@ -194,9 +179,8 @@ pragma experimental ABIEncoderV2;
        }
     }
     
+    // this function might not need to be called in the front end as its not really doing anything
     function Check() public payable{
-        //require(msg.sender == state.whoseTurn, "Denied - not your turn");
-        //needs more require(s)
          require(msg.value == 0,"cant bet if you are checking");
     }
     
@@ -212,8 +196,29 @@ pragma experimental ABIEncoderV2;
        }
     }
     
+    // function to get contract ready for new game
     function restartGame() public{
-        // function that sets contract to initial state
+        stages = STAGES.DEALING;
+        betPlayer1 = blindFeeBig;
+        betPlayer2 = 0;
+        playerHand[0] = "";
+        playerHand[1] = "";
+        casinoHand[0] = "";
+        casinoHand[1] = "";
+        playerCommitment[0] = "";
+        playerCommitment[1] = "";
+        casinoCommitment[0] = "";
+        casinoCommitment[1] = "";
+        communityPile[0] = "";
+        communityPile[1] = "";
+        communityPile[2] = "";
+        communityPile[3] = "";
+        communityPile[4] = "";
+        communityPileCommitment[0] = "";
+        communityPileCommitment[1] = "";
+        communityPileCommitment[2] = "";
+        communityPileCommitment[3] = "";
+        communityPileCommitment[4] = "";
         
     }
     
@@ -225,10 +230,19 @@ pragma experimental ABIEncoderV2;
         else if (msg.sender == player2){player1.transfer(betPlayer1+betPlayer2);
         stages = STAGES.DEALING;
         //restartGame function call here that sets contract to its initial state
-            
         }
     
     }
-    
-    
+    //will complete this function once Orion finishes all of the implementation of the rules
+    function splitPot(uint256 result) public{
+        // bunch of requires here for reveal
+        require(stages == STAGES.PAYOUT, "Denied - Not in Payout stage");
+        if(result == 2){
+            player1.transfer(betPlayer1);
+            player2.transfer(betPlayer2);
+        }
+        
     }
+    
+    
+}
