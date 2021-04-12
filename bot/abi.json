@@ -1,14 +1,8 @@
 [
 	{
 		"inputs": [],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "gameHosted",
-		"type": "event"
 	},
 	{
 		"inputs": [
@@ -35,19 +29,6 @@
 		"name": "Fold",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "Folded",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -219,33 +200,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "gameOver",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "gameTime",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "gameTimeInterval",
+		"name": "getBalance",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -461,21 +416,16 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "state",
-		"outputs": [
+		"inputs": [
 			{
-				"internalType": "uint8",
-				"name": "num",
-				"type": "uint8"
-			},
-			{
-				"internalType": "address",
-				"name": "whoseTurn",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "result",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"name": "splitPot",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -490,5 +440,9 @@
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
 	}
 ]

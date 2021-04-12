@@ -21,6 +21,7 @@ function getContractAddress(){
     return contractAddress;
 }
 
+function clearL(){ L = new Array();}
 async function deployContract(){
     //const accounts = await web3.eth.getAccounts();
     //let abi = fs.readFileSync("abi.json").toString();
