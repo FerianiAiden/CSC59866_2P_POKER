@@ -227,10 +227,10 @@ contract Poker {
          if ( msg.sender == player1){
              player2.transfer(betPlayer2+betPlayer1);
          }
-        else if (msg.sender == player2){player1.transfer(betPlayer1+betPlayer2);
+        else if (msg.sender == player2){player1.transfer(betPlayer1+betPlayer2);}
         stages = STAGES.DEALING;
         //restartGame function call here that sets contract to its initial state
-        }
+        
     
     }
     //will complete this function once Orion finishes all of the implementation of the rules
