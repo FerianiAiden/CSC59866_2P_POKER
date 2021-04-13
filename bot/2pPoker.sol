@@ -229,7 +229,7 @@ contract Poker {
          }
         else if (msg.sender == player2){player1.transfer(betPlayer1+betPlayer2);}
         stages = STAGES.DEALING;
-        //restartGame function call here that sets contract to its initial state
+        restartGame();
         
     
     }

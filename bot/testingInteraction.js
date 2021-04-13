@@ -30,6 +30,13 @@ async function test(){
         let enc = protocol.encrypt(playerRandom,pubKey);
         interaction.getValidCard(enc,playerShare,pubKey);
     }
+
+    for(var i = 0; i < 9;i++){
+        let decr = protocol.decryptWithShares(interaction.L[i+1],playerShare,pubKey);
+        console.log("L",i+1," IS: ", decr);
+
+    }
+
     console.log("Now doing Deal..");
     await interaction.deal(playerShare,pubKey);
     console.log("Now reading data sent to the smart contract..");
