@@ -42,8 +42,9 @@ async function test(){
     console.log("Now reading data sent to the smart contract..");
     let contractInstance = await new web3.eth.Contract(JSON.parse(abi),interaction.getContractAddress());
     const data = await contractInstance.methods.getP1Hand().call({
-        from: interaction.address,
-        gas: 1000000
+        // from: interaction.address,
+        // gas: 1000000
+        from:interaction.address
 
     });
     console.log("Reading player's hand from the contract I get: ", data);
@@ -57,8 +58,9 @@ async function test(){
     await interaction.flop(playerShare,pubKey);
     console.log("Now reading the community pile from contract..");
     const communityPile = await contractInstance.methods.getCommunityPile().call({
-        from: interaction.address,
-        gas: 1000000
+        // from: interaction.address,
+        // gas: 1000000
+        from:interaction.address
 
     });
     console.log("Community pile is: ", communityPile);
@@ -70,15 +72,17 @@ async function test(){
     await interaction.river(playerShare,pubKey);
     console.log("getting commitments..");
     const finalPile = await contractInstance.methods.getCommunityPile().call({
-        from: interaction.address,
-        gas: 1000000
+        // from: interaction.address,
+        // gas: 1000000
+        from:interaction.address
 
     });
 
     console.log("The community pile now is: ",finalPile);
     const commitment = await contractInstance.methods.getCommunityPileCommitment().call({
-        from: interaction.address,
-        gas: 1000000
+        // from: interaction.address,
+        // gas: 1000000
+        from:interaction.address
 
     });
     console.log("The community pile commitment is: ", commitment);

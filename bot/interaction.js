@@ -22,6 +22,7 @@ function getContractAddress(){
 }
 
 function clearL(){ L = new Array();}
+
 async function deployContract(){
     //const accounts = await web3.eth.getAccounts();
     //let abi = fs.readFileSync("abi.json").toString();
@@ -104,8 +105,9 @@ async function deal(playerShare,publicKey){
     //const accounts = await web3.eth.getAccounts();
     let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
     await contractInstance.methods.cardDeal(sendResult).send({
-        from: address,
-        gas: 1000000
+        // from: address,
+        // gas: 1000000
+        from:address
 
     });
     console.log("Dealt cards were sent");
@@ -126,8 +128,9 @@ async function flop(playerShare,publicKey){
     // now send to contract
     let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
     await contractInstance.methods.flop(sendResult).send({
-        from: address,
-        gas: 1000000
+        // from: address,
+        // gas: 1000000
+        from:address
 
     });
     console.log("Cards for the flop were sent");
@@ -141,8 +144,9 @@ async function turn(playerShare,publicKey){
     let card = protocol.decryptWithShares(L[8],playerShare,publicKey);
     let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
     await contractInstance.methods.turn(card).send({
-        from: address,
-        gas: 1000000
+        // from: address,
+        // gas: 1000000
+        from:address
 
     });
     console.log("Cards for the turn were sent");
@@ -156,8 +160,9 @@ async function river(playerShare,publicKey){
     let card = protocol.decryptWithShares(L[9],playerShare,publicKey);
     let contractInstance = await new web3.eth.Contract(JSON.parse(abi),contractAddress);
     await contractInstance.methods.river(card).send({
-        from: address,
-        gas: 1000000
+        // from: address,
+        // gas: 1000000
+        from:address
 
     });
     console.log("Cards for the river were sent");
