@@ -20,6 +20,9 @@ var contractAddress;
 function getContractAddress(){
     return contractAddress;
 }
+function getCasinoAddress(){
+    return address;
+}
 
 function clearL(){ L = new Array();}
 
@@ -171,7 +174,7 @@ async function river(playerShare,publicKey){
 
 
 module.exports = {
-    deal,getValidCard,initL,deployContract,L,getContractAddress,flop,turn,river
+    deal,getValidCard,initL,deployContract,L,getContractAddress,flop,turn,river,getCasinoAddress
 }
 //close provider proccess
 provider.engine.stop();

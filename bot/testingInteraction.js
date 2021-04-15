@@ -22,6 +22,32 @@ async function test(){
     protocol.keygen();
     let playerShare = protocol.getShare();
     let pubKey = protocol.getPubKey();
+
+    console.log("Sending commit of players share to smart contract...");
+    let contractInstance = await new web3.eth.Contract(JSON.parse(abi),interaction.getContractAddress());
+    //console.log(interaction.getCasinoAddress());
+    await contractInstance.methods.commitPlayerShare(playerShare.toString()).send({
+        from: interaction.getCasinoAddress()
+
+    });
+
+    console.log("Sending commit of casinos share to smart contract...");
+    await contractInstance.methods.commitCasinoShare(protocol.getCasinoShare()).send({
+        // from: address,
+        // gas: 1000000
+        from:interaction.getCasinoAddress()
+
+    });
+    console.log("Now reading commits for both players...");
+    const shareCommit = await contractInstance.methods.getSharesCommit().call({
+        // from: interaction.address,
+        // gas: 1000000
+        from:interaction.getCasinoAddress()
+
+    });
+    console.log("Commitment of shares are:",shareCommit);
+
+    console.log("Starting generation of cards...");
     interaction.initL(pubKey);
     //Getting all cards needed for the game
     for(var i = 0; i < 9;i++){
@@ -40,11 +66,11 @@ async function test(){
     console.log("Now doing Deal..");
     await interaction.deal(playerShare,pubKey);
     console.log("Now reading data sent to the smart contract..");
-    let contractInstance = await new web3.eth.Contract(JSON.parse(abi),interaction.getContractAddress());
+    //let contractInstance = await new web3.eth.Contract(JSON.parse(abi),interaction.getContractAddress());
     const data = await contractInstance.methods.getP1Hand().call({
         // from: interaction.address,
         // gas: 1000000
-        from:interaction.address
+        from:interaction.getCasinoAddress()
 
     });
     console.log("Reading player's hand from the contract I get: ", data);
@@ -60,7 +86,7 @@ async function test(){
     const communityPile = await contractInstance.methods.getCommunityPile().call({
         // from: interaction.address,
         // gas: 1000000
-        from:interaction.address
+        from:interaction.getCasinoAddress()
 
     });
     console.log("Community pile is: ", communityPile);
@@ -74,7 +100,7 @@ async function test(){
     const finalPile = await contractInstance.methods.getCommunityPile().call({
         // from: interaction.address,
         // gas: 1000000
-        from:interaction.address
+        from:interaction.getCasinoAddress()
 
     });
 
@@ -82,7 +108,7 @@ async function test(){
     const commitment = await contractInstance.methods.getCommunityPileCommitment().call({
         // from: interaction.address,
         // gas: 1000000
-        from:interaction.address
+        from:interaction.getCasinoAddress()
 
     });
     console.log("The community pile commitment is: ", commitment);

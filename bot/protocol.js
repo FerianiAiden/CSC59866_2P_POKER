@@ -221,6 +221,11 @@ function getShare(){
   }
 
 }
+// only use this to compute hash of casino's share
+function getCasinoShare(){
+  if(shares.length == 2){ return;}
+  else{return shares[0].toString();}
+}
 
 module.exports = {
   keygen,
@@ -233,7 +238,8 @@ module.exports = {
   encrypt,
   Deck,
   getDeck,
-  clearKeys
+  clearKeys,
+  getCasinoShare
 }
 
 

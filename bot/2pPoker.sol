@@ -32,6 +32,7 @@ contract Poker {
     bytes32[2] public playerCommitment;
     bytes32[2] public casinoCommitment;
     bytes32[5] public communityPileCommitment;
+    bytes32[2] public sharesCommitment; // first index is player, second is casino
     
     
     //bool public Folded = false; 
@@ -83,6 +84,17 @@ contract Poker {
         player1.transfer(address(this).balance);
     }
     
+    // commits share of the player by hashing
+    function commitPlayerShare(string memory x) public{
+        sharesCommitment[0] = keccak256(abi.encodePacked(x));
+    }
+    
+    function commitCasinoShare(string memory x) public{
+        sharesCommitment[1] = keccak256(abi.encodePacked(x));
+    }
+    function getSharesCommit() public view returns(bytes32[2] memory){
+        return sharesCommitment;
+    }
     //deal function, assigns card to its according player
     function cardDeal(string[4] memory x) public{
         playerHand[0] = x[0];
@@ -159,7 +171,7 @@ contract Poker {
         require(msg.sender == player1);
         stages = STAGES.RIVER;
     }
-    function goToPayout() public{
+    function goToPayout() public {
         require(msg.sender == player1);
         stages = STAGES.PAYOUT;
     }
