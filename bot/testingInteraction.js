@@ -32,12 +32,7 @@ async function test(){
     });
 
     console.log("Sending commit of casinos share to smart contract...");
-    await contractInstance.methods.commitCasinoShare(protocol.getCasinoShare()).send({
-        // from: address,
-        // gas: 1000000
-        from:interaction.getCasinoAddress()
-
-    });
+    await protocol.commitCasino(contractInstance,interaction.getCasinoAddress());
     console.log("Now reading commits for both players...");
     const shareCommit = await contractInstance.methods.getSharesCommit().call({
         // from: interaction.address,

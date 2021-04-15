@@ -174,7 +174,7 @@ async function river(playerShare,publicKey){
 
 
 module.exports = {
-    deal,getValidCard,initL,deployContract,L,getContractAddress,flop,turn,river,getCasinoAddress
+    deal,getValidCard,initL,deployContract,L,getContractAddress,flop,turn,river,getCasinoAddress,clearL
 }
 //close provider proccess
 provider.engine.stop();

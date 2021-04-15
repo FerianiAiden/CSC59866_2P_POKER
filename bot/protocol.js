@@ -1,8 +1,15 @@
+console.warn = () => {}; // to suppress web3 warnings
+const Web3 = require('web3');
 var forge = require('node-forge');
 const NodeRSA = require('node-rsa');
 var suit = ["spades", "diamonds", "clubs", "hearts"];
 var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 var deck = new Array();
+
+var seed = "doctor grow remind robust fresh shaft stay crush clerk urge tiger dignity";
+var HDWalletProvider = require("truffle-hdwallet-provider");
+const provider = new HDWalletProvider(seed,"https://kovan.infura.io/v3/b1be893adce946fe83841884d990ebf3",0,2);
+const web3 = new Web3(provider);
 //var sjcl = require('sjcl/sjcl');
 var BigInteger = forge.jsbn.BigInteger;
 
@@ -221,10 +228,17 @@ function getShare(){
   }
 
 }
-// only use this to compute hash of casino's share
-function getCasinoShare(){
-  if(shares.length == 2){ return;}
-  else{return shares[0].toString();}
+
+// sends casino's share to contract so it can be hashed
+async function commitCasino(contractInstance,casinoAddress){
+  await contractInstance.methods.commitCasinoShare(shares[0].toString()).send({
+    // from: address,
+    // gas: 1000000
+    from:casinoAddress
+
+});
+
+
 }
 
 module.exports = {
@@ -239,8 +253,9 @@ module.exports = {
   Deck,
   getDeck,
   clearKeys,
-  getCasinoShare
+  commitCasino
 }
+provider.engine.stop();
 
 
 
