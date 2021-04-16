@@ -330,7 +330,11 @@ function showdown(){
 }
 
 function check(){
-  if (casino_checked == true && picked_2cards == true ){
+  if(casino_checked == true && phase ==  "Forth betting round"){ 
+    showdown();
+    document.getElementById("casinomsg").innerText = "player/casino wins";
+  }
+  else if (casino_checked == true && picked_2cards == true ){
     player_checked = true;
     casino_checked = false;
     change_phase();
@@ -341,9 +345,7 @@ function check(){
     CasinoAction();
     player_checked = true;
   }
-  else if(casino_checked == true && phase == "showdown" ){ 
-    document.getElementById("casinomsg").innerText = "player/casino wins";
-  }
+
   if (timer == true){
     timeleft=61;
   }
@@ -408,21 +410,17 @@ function change_phase(){
     phase = "Forth betting round";
     document.getElementById("phase").innerText = phase;
   }
-  else if(phase == "Forth betting round"){
-    showdown();
-    
-    phase = "showdown";
-    document.getElementById("phase").innerText = phase;
-  }
+
 }
 
 
 console.log(phase);
 function call(){
-  if(casino_checked == true && phase == "showdown" ){ 
+  if(casino_checked == true && phase ==  "Forth betting round" ){ 
+    showdown();
     document.getElementById("casinomsg").innerText = "player/casino wins";
   }
-  if (picked_2cards == true && casino_raised == true){
+  else if (picked_2cards == true && casino_raised == true){
     player_called = true;
     bet_total += call_bet;
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
