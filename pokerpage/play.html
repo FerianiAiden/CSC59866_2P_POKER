@@ -14,12 +14,15 @@
         <h1>2P Player Poker </h1>
         <div class='container'>
         <div class= 'intro'>
-          <p><h2>Your milliethers: <span id="milliethersCount">0</span></h2></p>
-          <p>Enter your initial bet in milliethers:</p>
-          <input type="text" id="Bet_amount" > 
-          <p><a a class="button3" id="bet">Bet</a></p>
+          <p><h2>Your milliethers: <span id="milliethersCount">100</span></h2></p>
+          <p>Start the game by placing a small blind (1 milliethers)</p>
+          <!-- <input type="text" id="Bet_amount" >  -->
+          <p><a a class="button3" id="bet">start</a></p>
+          <p>Game Phase: <span id="phase"></span></p>
           <p><span id="betmsg"></span></p>
-          <p><h2><span id="bet_total">Your bet: 0</span></h2></p>
+          <p><span id="casinomsg"></span></p>
+          
+          <p><h2><span id="bet_total">Total bet: 0</span></h2></p>
           <input type="text" id="raise_amount" > 
           <p><a class="button3"id="raise">raise</a></p>
           <p><a class="button3"  id="call">call</a>
@@ -61,13 +64,14 @@ function onTimer() {
           <p>
         <img alt="" src="/poker-img/back.jpg" 
            width= 150 height=225 id="card1" onclick="pickCard1()"  />
-
         <img alt="" src="/poker-img/back.jpg" 
         width= 150 height=225 id="card2" onclick="pickCard2()"  />
         <img alt="" src="/poker-img/back.jpg" 
         width= 150 height=225 id="card3" onclick="pickCard3()"  />
         <img alt="" src="/poker-img/back.jpg" 
         width= 150 height=225 id="card4" onclick="pickCard4()"  />
+        <img  id="casinocard1"   />
+           <img id="casinocard2"   />
         </p>
 
         <h2><span id="communitycards"></span></h2>

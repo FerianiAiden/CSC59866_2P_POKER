@@ -11,19 +11,22 @@ body {
   margin:0 auto; 
   text-align: center;
   color: white;
-  background-color: darkslategray;
+  background-color: rgba(0, 0, 0, 0.863);
   display: table-cell;
   vertical-align: middle;
 
 }
 
 .game  {
+
   margin: auto;
   display: flex;
+
   flex-direction: column;
   align-items: left;
-  background: darkcyan;
-  color: black;
+  background: darkseagreen;
+  
+  color:black;
   float: right;
 }
 
@@ -38,8 +41,9 @@ body {
 }
 
 #mycounter {
-  color: darkred;
+  color: red;
   text-align: left;
+
 }
   button {
     padding: 0.5rem;
