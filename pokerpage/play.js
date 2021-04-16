@@ -42,13 +42,9 @@ var deck = ["1C","1D","1H","1S","2C","2D","2H","2S","3C","3D","3H","3S","4C","4D
             "13C","13D","13H","13S"];
 
 function bet() {
-  //var betamount = Number(document.getElementById('Bet_amount').value);
   if (clicked_bet == true){
     document.getElementById("betmsg").innerText = "Game started already. You can either play the game or forfeit.";
   }
-  // else if (betamount == 0){
-  //   document.getElementById("betmsg").innerText = "need at least 1 milliether to play the game";
-  // }
   else if (1 <= milliethersCount ){
     bet_total += 1;
     milliethersCount -= 1 ;
@@ -153,7 +149,6 @@ function pickaRandomCards(id){
     document.getElementById("yourcard2").style.display='unset';
     document.getElementById("yourcard2").src = "/poker-img/"+card+".jpg" ;
     document.getElementById("status1").innerText = "Casino's cards: ";
-    //showCommunityCards_flop();
     document.getElementById("betmsg").innerText = "You can now fold/call/raise"
     document.getElementById("casinomsg").innerText = "";
     picked_2cards = true;
@@ -195,27 +190,27 @@ function CasinoAction(){
     document.getElementById("check").style.visibility='visible';
     document.getElementById("call").style.visibility='hidden';
   }
+   else if (action == 1){
+     document.getElementById("casinomsg").innerText = "Dealer Folded! You gained " + bet_total +" milliethers!";
+     milliethersCount += bet_total;
+     milliethers.innerText = milliethersCount;
+     casino_folded = true;
+     restart_game();
+   }
   // else if (action == 1){
-  //   document.getElementById("casinomsg").innerText = "Dealer Folded! You gained " + bet_total +" milliethers!";
-  //   milliethersCount += bet_total;
-  //   milliethers.innerText = milliethersCount;
-  //   casino_folded = true;
-  //   restart_game();
-  // }
-  else if (action == 1){
-    document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
-    casino_checked = true;
-    if(player_checked == true && phase == "showdown" ){ 
-      document.getElementById("casinomsg").innerText = "player/casino wins";
-    }
-    else if ( player_called_casino_not_raised== true ){
-      player_called_casino_not_raised= false;
-      change_phase();
+  //   document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
+  //   casino_checked = true;
+  //   if(player_checked == true && phase == "showdown" ){ 
+  //     document.getElementById("casinomsg").innerText = "player/casino wins";
+  //   }
+  //   else if ( player_called_casino_not_raised== true ){
+  //     player_called_casino_not_raised= false;
+  //     change_phase();
      
-    }
-    document.getElementById("check").style.visibility='visible';
-    document.getElementById("call").style.visibility='hidden';
-  }
+  //   }
+  //   document.getElementById("check").style.visibility='visible';
+  //   document.getElementById("call").style.visibility='hidden';
+  // }
   else if (action == 2){
     document.getElementById("casinomsg").innerText = "Dealer raised 5 milliethers!You can call/raise/fold";
     call_bet = 5;
@@ -240,27 +235,27 @@ function CasinoAction2(){
     document.getElementById("check").style.visibility='visible';
     document.getElementById("call").style.visibility='hidden';
   }
-  // else if (action == 1){
-  //   document.getElementById("casinomsg").innerText = "Dealer Folded! You gained " + bet_total +" milliethers!";
-  //   milliethersCount += bet_total;
-  //   milliethers.innerText = milliethersCount;
-  //   casino_folded = true;
-  //   restart_game();
-  // }
   else if (action == 1){
-    document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
-    casino_checked = true;
-    if(player_checked == true && phase == "showdown" ){ 
-      document.getElementById("casinomsg").innerText = "player/casino wins";
-    }
-    else if ( player_called_casino_not_raised== true ){
-      player_called_casino_not_raised= false;
-      change_phase();
+     document.getElementById("casinomsg").innerText = "Dealer Folded! You gained " + bet_total +" milliethers!";
+     milliethersCount += bet_total;
+     milliethers.innerText = milliethersCount;
+     casino_folded = true;
+     restart_game();
+   }
+  // else if (action == 1){
+  //   document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
+  //   casino_checked = true;
+  //   if(player_checked == true && phase == "showdown" ){ 
+  //     document.getElementById("casinomsg").innerText = "player/casino wins";
+  //   }
+  //   else if ( player_called_casino_not_raised== true ){
+  //     player_called_casino_not_raised= false;
+  //     change_phase();
      
-    }
-    document.getElementById("check").style.visibility='visible';
-    document.getElementById("call").style.visibility='hidden';
-  }
+  //   }
+  //   document.getElementById("check").style.visibility='visible';
+  //   document.getElementById("call").style.visibility='hidden';
+  // }
   else if (action == 2){
     document.getElementById("casinomsg").innerText = "Dealer raised 5 milliethers!You can call/raise/fold";
     call_bet = 5;
