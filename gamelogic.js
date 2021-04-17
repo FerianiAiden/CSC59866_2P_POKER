@@ -337,18 +337,12 @@ function updateValueCounters (handtocheck, vc)
 }
 
 
-function checkTie (pHand, cHand, pHandString, cHandString) // function to determine tiebreakers btwn player and casino
+function checkTie(pHand, cHand, pHandString, cHandString)
 {
 	var temppHand = pHand;
 	var tempcHand = cHand;
 	var tieResult = "";
-	
-	//Straight Flush tiebreaker
-	//if (pHandString == "Straight Flush" && cHandString == "Straight Flush")
-	//{
-		//if(pValueCounter[9] >= 1 && pValueCounter[10] >= 1 && rankCounter[11] >= 1 && rankCounter[12] >= 1 && rankCounter[0] >= 1 && ) 
-	//}
-	
+
 	//Four of a Kind tiebreaker
 	if (pHandString == "Four of A Kind" && cHandString == "Four of a Kind")
 	{
@@ -409,9 +403,9 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 			{
 				if (pFOK[v] == pFOK[w])
 				{
-					pTOKTemp = pTOK[v];
-					pTOK.splice(v, 1);
-					pTOK.splice(w-1, 1);
+					pFOKTemp = pTOK[v];
+					pFOK.splice(v, 1);
+					pFOK.splice(w-1, 1);
 					break;
 				}
 			}
@@ -420,7 +414,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 		{
 			if (pFOK[c] == pFOKTemp)
 			{
-				pTOK.splice(c, 1);
+				pFOK.splice(c, 1);
 			}
 		}
 
@@ -464,18 +458,16 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 			}
 			else
 			{
-				tieResult = "Tie."
+				tieResult = "Tie.";
 			}
 		}
 	}
 
-
-	//Full House tiebreaker
+	//Full House Tiebreaker
 	if (pHandString == "Full House" && cHandString == "Full House")
 	{
 		var pFH = [];
 		var cFH = [];
-
 		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
 		for (var i = 0; i < 7; i++)
 		{
@@ -544,14 +536,14 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 					pFHTemp1 = pFH[b];
 					pFH.splice(a, 1);
 					pFH.splice(b-1, 1);
-					pFHCount1++
+					pFHCount1++;
 				}
 				else if ((pFH[a] == pFH[b]) && pFHCount2 < 1)
 				{
 					pFHTemp2 = pFH[b];
 					pFH.splice(a, 1);
 					pFH.splice(b-1, 1);
-					pFHCount2++
+					pFHCount2++;
 				}	
 			}
 		}
@@ -560,20 +552,20 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 		{
 			for (var d = 1; d < cFH.length; d++)
 			{
-				if ((cFH[c] == cFH[d]) & cFHCount1 < 1)
+				if ((cFH[c] == cFH[d]) && cFHCount1 < 1)
 				{
 					cFHTemp1 = cFH[d];
 					cFH.splice(c, 1);
 					cFH.splice(d-1, 1);
-					cFHCount1++
+					cFHCount1++;
 				}
 				else if ((cFH[c] == cFH[d]) && cFHCount2 < 1)
 				{
 					cFHTemp2 = cFH[d];
 					cFH.splice(c, 1);
 					cFH.splice(d-1, 1);
-					cFHCount2++
-				}
+					cFHCount2++;
+				}	
 			}
 		}
 
@@ -604,7 +596,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 			else if ((cFH[f] == cFHTemp2) && cFHCount2 < 2)
 			{
 				cFH.splice(f);
-				cFHorder.push(cFHTemp2, cFHTemp1)
+				cFHorder.push(cFHTemp2, cFHTemp1);
 				break;
 			}
 		}
@@ -623,7 +615,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 			}
 			else
 			{
-				tieResult = "Tie."
+				tieResult = "Tie.";
 			}
 		}
 	}
@@ -787,7 +779,6 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 		}
 	}
 
-
 	//Straight tiebreaker
 	if (pHandString == "Straight" && cHandString == "Straight")
 	{
@@ -795,7 +786,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 		var cS = [];
 
 		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
-		for (var i = 0; i < 7; i++)
+		for(var i = 0; i < 7; i++)
 		{
 			if(temppHand[i].Value == "A")
 			{
@@ -812,6 +803,25 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 			else if(temppHand[i].Value == "J")
 			{
 				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -844,6 +854,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
  				pSTemp5 = pS[w-1];
  			}
  		}
+
  		for (var y = cS.length; y > 4; y--)
  		{
  			if ((cS[y-5] > 0) && (cS[y-4] > 0) && (cS[y-3] > 0) && (cS[y-2] > 0) && (cS[y-1] > 0))
@@ -1063,7 +1074,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 		{
 			for (var w = 1; w < pTP.length; w++)
 			{
-				if ((pTP[v] == pTP[w]) )
+				if ((pTP[v] == pTP[w]))
 				{
 					pTPTemp1 = pTP[v];
 					pTP.splice(v, 1);
@@ -1071,6 +1082,7 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 					break;
 				}
 			}
+		}
 		for (var c = 0; c < pTP.length; c++)
 		{
 			for (var d = 1; d < pTP.length; d++)
@@ -1339,6 +1351,5 @@ function checkTie (pHand, cHand, pHandString, cHandString) // function to determ
 			}
 		}
 	}
-
 	return tieResult;
-}}
+}
