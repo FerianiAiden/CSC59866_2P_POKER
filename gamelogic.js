@@ -80,8 +80,8 @@ function EvaluateHand(handtocheck)
 
 
 function checkOnePair(a)
- {
- 	var resOP = "";
+{
+	var resOP = "";
 
  	for (var i = a.length; i > 0; i--)
  	{
@@ -92,11 +92,11 @@ function checkOnePair(a)
  		}
  	}
  	return resOP;
- }
+}
 
 
 function checkHighCard(a)
- {
+{
  	var resHC = "";
 
  	for (var i = a.length; i > 0; i--)
@@ -109,10 +109,10 @@ function checkHighCard(a)
  	}
 
  	return resHC;
- }
+}
 
 function checkThreeOfAKind(a)
- {
+{
  	var resTOK = "";
 
  	for (var i = a.length; i > 0; i--)
@@ -124,10 +124,10 @@ function checkThreeOfAKind(a)
  		}
  	}
  	return resTOK;
- }
+}
 
 function checkFourOfAKind(a)
- {
+{
  	var resFOK = "";
 
  	for (var i = a.length; i > 0; i--)
@@ -139,10 +139,10 @@ function checkFourOfAKind(a)
  		}
  	}
  	return resFOK;
- }
+}
 
 function checkTwoPair(a)
- {
+{
  	var resTP = "";
  	var pairOne = 0;
  	var pairTwo = 0;
@@ -168,14 +168,14 @@ function checkTwoPair(a)
 
  	if ((pairOne > 0) && (pairTwo > 0))
  	{
- 		resTP = "Two Pairs"
+ 		resTP = "Two Pairs";
  	} 
 
  	return resTP;
- }
+}
 
 function checkStraight (a)
- {
+{
  	var resStr = "";
 
  	for (var i = valueCounter.length; i > 4; i--)
@@ -187,11 +187,11 @@ function checkStraight (a)
  		}
  	}
  	return resStr;
- }
+}
 
 
 function checkFlush(a)
- {
+{
  	var resFlush = "";
 
  	if (a[0] > 4 || a[1] > 4 || a[2] > 4 || a[3] > 4)
@@ -200,7 +200,7 @@ function checkFlush(a)
  	}
 
  	return resFlush;
- }
+}
 
 function checkFullHouse(a)
 {
