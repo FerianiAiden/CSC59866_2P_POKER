@@ -29,7 +29,7 @@ var casino_raised = false;
 var casino_checked = false;
 var player_folded = false;
 var player_called = false;
-var player_called_casino_not_raised= false;
+//var player_called_casino_not_raised= false;
 var player_raised = false;
 var player_checked = false;
 
@@ -41,6 +41,7 @@ var deck = ["1C","1D","1H","1S","2C","2D","2H","2S","3C","3D","3H","3S","4C","4D
             ,"7C","7D","7H","7S","8C","8D","8H","8S","9C","9D","9H","9S","10C","10D","10H","10S","11C","11D","11H","11S","12C","12D","12H","12S",
             "13C","13D","13H","13S"];
 
+// function for the start button
 function bet() {
   if (clicked_bet == true){
     document.getElementById("betmsg").innerText = "Game started already. You can either play the game or forfeit.";
@@ -63,6 +64,7 @@ function bet() {
 
 }
 
+// function to remove the card from the deck after used
 function remove_cards_from_deck(array, card){
   for(var i in array){
     if(array[i]==card){
@@ -74,8 +76,7 @@ function remove_cards_from_deck(array, card){
 
 
 
-console.log(milliethersCount);
-
+// add $ test
 
  function top_up() {
    var topupValue = Number(document.getElementById('TEXTBOX_TOPUP').value);
@@ -87,7 +88,7 @@ console.log(milliethersCount);
    document.getElementById("betmsg").innerText = "Added " + topupValue +" milliethers";
   }
  }
-
+// remove $ test
 function transfer() {
    var transValue = Number(document.getElementById('TEXTBOX_TRANS').value);
   if (milliethersCount >= transValue ){
@@ -100,7 +101,7 @@ function transfer() {
    }
 }
 
-
+// function to choose first 4 cards
 function pickCard1() {
   if (max_card > 0 && clicked_bet == true){
     pickaRandomCards("card1");
@@ -126,6 +127,7 @@ function pickCard4() {
   }
 }
 
+// randomize cards
 function pickaRandomCards(id){
   var card = deck[Math.floor(Math.random() * deck.length)];
   document.getElementById(id).style.display='none';
@@ -168,12 +170,14 @@ function pickaRandomCards(id){
 
 }
 
+//casion place blind (2milliethers)
 function CasinoPlaceBigBlind(){
   bet_total += 2;
   document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
   document.getElementById("casinomsg").innerText = "Casino placed a big blind (2 milliethers) , now pick the cards.";
 }
 
+//casino action choice check/fold/raise
 function CasinoAction(){
   var action = Math.floor(Math.random() * 3);
   if (action == 0){
@@ -182,8 +186,8 @@ function CasinoAction(){
     if(player_checked == true && phase == "showdown" ){ 
       document.getElementById("casinomsg").innerText = "player/casino wins";
     }
-    else if ( player_called_casino_not_raised== true ){
-      player_called_casino_not_raised= false;
+    else if ( phase =="preflop"){
+      //player_called_casino_not_raised= false;
       change_phase();
      
     }
@@ -197,20 +201,7 @@ function CasinoAction(){
      casino_folded = true;
      restart_game();
    }
-  // else if (action == 1){
-  //   document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
-  //   casino_checked = true;
-  //   if(player_checked == true && phase == "showdown" ){ 
-  //     document.getElementById("casinomsg").innerText = "player/casino wins";
-  //   }
-  //   else if ( player_called_casino_not_raised== true ){
-  //     player_called_casino_not_raised= false;
-  //     change_phase();
-     
-  //   }
-  //   document.getElementById("check").style.visibility='visible';
-  //   document.getElementById("call").style.visibility='hidden';
-  // }
+
   else if (action == 2){
     document.getElementById("casinomsg").innerText = "Dealer raised 5 milliethers!You can call/raise/fold";
     call_bet = 5;
@@ -223,6 +214,7 @@ function CasinoAction(){
   }
 }
 
+//casino action choice call/fold/raise
 function CasinoAction2(){
   var action = Math.floor(Math.random() * 3);
   if (action == 0){
@@ -242,20 +234,7 @@ function CasinoAction2(){
      casino_folded = true;
      restart_game();
    }
-  // else if (action == 1){
-  //   document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
-  //   casino_checked = true;
-  //   if(player_checked == true && phase == "showdown" ){ 
-  //     document.getElementById("casinomsg").innerText = "player/casino wins";
-  //   }
-  //   else if ( player_called_casino_not_raised== true ){
-  //     player_called_casino_not_raised= false;
-  //     change_phase();
-     
-  //   }
-  //   document.getElementById("check").style.visibility='visible';
-  //   document.getElementById("call").style.visibility='hidden';
-  // }
+
   else if (action == 2){
     document.getElementById("casinomsg").innerText = "Dealer raised 5 milliethers!You can call/raise/fold";
     call_bet = 5;
@@ -268,6 +247,7 @@ function CasinoAction2(){
   }
 }
 
+//function to show the community pile
 
 function showCommunityCards_flop(){
   var i;
@@ -290,7 +270,7 @@ function showCommunityCards_flop(){
   }
 }
 
-
+//turn function (show fourth card)
 
 function turn(){
     var card = deck[Math.floor(Math.random() * deck.length)];
@@ -298,6 +278,7 @@ function turn(){
     remove_cards_from_deck(deck, card);
 }
 
+//turn function (show fifth card)
 function river(){
   var card = deck[Math.floor(Math.random() * deck.length)];
   document.getElementById("communitycards5").src = "/poker-img/"+card+".jpg" ;
@@ -309,6 +290,7 @@ function forth_betting_round(){
   
 }
 
+//reveal casino cards
 function showdown(){
   var card = deck[Math.floor(Math.random() * deck.length)];
   for (i = 1; i <=4; i++){
@@ -329,6 +311,8 @@ function showdown(){
 
 }
 
+//check button function for player
+
 function check(){
   if(casino_checked == true && phase ==  "Forth betting round"){ 
     showdown();
@@ -338,11 +322,20 @@ function check(){
     player_checked = true;
     casino_checked = false;
     change_phase();
-    CasinoAction();
+
+    setTimeout(function(){
+      CasinoAction();
+
+    }, 1000);  
+    //CasinoAction();
 
   }
-  else if(casino_checked == false && picked_2cards == true ){ 
-    CasinoAction();
+  else if(casino_checked == false && picked_2cards == true ){
+    setTimeout(function(){
+      CasinoAction();
+
+    }, 1000);  
+    //CasinoAction();
     player_checked = true;
   }
 
@@ -355,7 +348,7 @@ function check(){
 
 
 
-
+// raise button function for player
 
 function raise(){
   var raise_amount = Number(document.getElementById('raise_amount').value);
@@ -367,14 +360,17 @@ function raise(){
   }
 
   else if (picked_2cards == true ){
-    // bet_total += betamount;
      milliethersCount -= raise_amount ;
      milliethers.innerText = milliethersCount;
      bet_total += raise_amount;
      call_bet = raise_amount;
      document.getElementById("bet_total").innerText =  "Total bet: " + bet_total;
      document.getElementById("betmsg").innerText =  "You raised " + raise_amount ;
-     CasinoAction2();
+     setTimeout(function(){
+      CasinoAction2();
+
+    }, 1000);
+     //CasinoAction2();
   
     if (timer == true){
       timeleft=61;
@@ -383,6 +379,79 @@ function raise(){
   }
 
 }
+// call button function for player
+
+function call(){
+  if( phase ==  "Forth betting round" ){ 
+    showdown();
+    document.getElementById("casinomsg").innerText = "player/casino wins";
+  }
+  else if (phase == "preflop"){
+    player_called = true;
+    bet_total += call_bet;
+    document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
+    milliethersCount -= call_bet ;
+    milliethers.innerText = milliethersCount;
+    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    document.getElementById("casinomsg").innerText = "";
+    change_phase();
+
+    // add 1s delay
+    setTimeout(function(){
+      CasinoAction();
+
+    }, 1000); 
+  }
+  else if (picked_2cards == true && casino_raised == true ){
+    player_called = true;
+    bet_total += call_bet;
+    document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
+    milliethersCount -= call_bet ;
+    milliethers.innerText = milliethersCount;
+    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    document.getElementById("casinomsg").innerText = "";
+    
+  
+    if(casino_checked == true || casino_raised == true)
+    {
+      change_phase();
+    }
+
+    setTimeout(function(){
+      CasinoAction();
+
+    }, 1000);  
+    //CasinoAction();
+
+    
+  }
+  else if (picked_2cards == true && casino_raised == false){
+    //player_called_casino_not_raised= true;
+    bet_total += call_bet;
+    document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
+    milliethersCount -= call_bet ;
+    milliethers.innerText = milliethersCount;
+    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    //CasinoAction();
+    setTimeout(function(){
+      CasinoAction();
+
+    }, 1000);
+  
+  }
+
+  if (timer == true){
+    timeleft=61;
+  }
+  
+}
+// fold button function for player
+function fold() {
+  folded = true;
+  restart_game();
+}
+
+// function to change phase
 
 function change_phase(){
   if (phase == "preflop"){
@@ -415,50 +484,9 @@ function change_phase(){
 
 
 console.log(phase);
-function call(){
-  if(casino_checked == true && phase ==  "Forth betting round" ){ 
-    showdown();
-    document.getElementById("casinomsg").innerText = "player/casino wins";
-  }
-  else if (picked_2cards == true && casino_raised == true){
-    player_called = true;
-    bet_total += call_bet;
-    document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
-    milliethersCount -= call_bet ;
-    milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-    document.getElementById("casinomsg").innerText = "";
-    //casino_raised == false;
-    change_phase();
-    CasinoAction();
-    
-    //finished_turn = true;
-    
-  }
-  else if (picked_2cards == true && casino_raised == false){
-    player_called_casino_not_raised= true;
-    bet_total += call_bet;
-    document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
-    milliethersCount -= call_bet ;
-    milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-    CasinoAction();
-    
-    //finished_turn = true;
-  }
-  // e/lse if(finished_turn == false && finished_river == false && picked_2cards == true){ 
-  //   bet_total += call_bet;
-  //   document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-  //   //river();
-  //   finished_river = true;
-  //   //CasinoAction();
-  // }
-  if (timer == true){
-    timeleft=61;
-  }
-  
-}
 
+
+// timer function
 var timeleft = 60;
 function onTimer(){
  var downloadTimer = setInterval(function(){
@@ -469,12 +497,7 @@ function onTimer(){
      if (folded == true){
       alert("You folded! Game restart!");
      }
-    //  else if (casino_folded == true){
-    //   alert("Casino Folded! You win!");
-    //  }
-    //  else{
-    //   alert("Time's up! Game restart! ");
-    //  }
+
      restart_game();
     }
  },1000);
@@ -483,16 +506,8 @@ function onTimer(){
  casino_folded = false;
  }
 
-function fold() {
-  folded = true;
-  restart_game();
-}
 
-function casino_fold() {
-  casino_folded = true;
-  restart_game();
-}
-
+//function to restart the game reset everything
 
 function restart_game(){
     deck1 = ["1C","1D","1H","1S","2C","2D","2H","2S","3C","3D","3H","3S","4C","4D","4H","4S","5C","5D","5H","5S","6C","6D","6H","6S"
@@ -519,13 +534,12 @@ function restart_game(){
   player_called = false;
   player_raised = false;
   player_checked = false;
-  player_called_casino_not_raised= false;
+  //player_called_casino_not_raised= false;
   phase = "preflop";
   
   console.log(deck);
 
 
-  //document.getElementById("status1").innerText = "Pick 2 cards";
   document.getElementById("status1").innerText= "Pick two cards";
   document.getElementById("casinocard1").style.display='none';
   document.getElementById("casinocard2").style.display='none';
@@ -546,7 +560,6 @@ function restart_game(){
   document.getElementById("card4").src="/poker-img/back.jpg";
   document.getElementById("bet_total").innerText = "Total bet: " + 0;
   document.getElementById("betmsg").innerText = "Game restarted !";
-  //document.getElementById("casinomsg").innerText = "";
   document.getElementById("communitycards").innerText = "";
   document.getElementById("yourcards").innerText = "" ;
   document.getElementById("check").style.visibility='visible';
@@ -554,6 +567,7 @@ function restart_game(){
   document.getElementById("phase").innerText = phase;
 }
 
+//make button clickable
 
 button.addEventListener('click', bet);
 button2.addEventListener('click', fold);
