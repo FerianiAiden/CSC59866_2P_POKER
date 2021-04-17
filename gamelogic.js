@@ -343,6 +343,163 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 	var tempcHand = cHand;
 	var tieResult = "";
 
+	//Straight Flush tiebreaker
+	if (pHandString == "Straight Flush" && cHandString == "Straight Flush")
+	{
+		var pSFlush1 = [];
+		var pSFlush2 = [];
+		var cSFlush1 = [];
+		var cSFlush2 = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pSFlush1[x] = temppHand[x].Value;
+			cSFlush1[x] = tempcHand[x].Value;
+		}
+
+		var pSFTemp1 = 0;
+		var pSFTemp2 = 0;
+		var pSFTemp3 = 0;
+		var pSFTemp4 = 0;
+		var pSFTemp5 = 0;
+		var cSFTemp1 = 0;
+		var cSFTemp2 = 0;
+		var cSFTemp3 = 0;
+		var cSFTemp4 = 0;
+		var cSFTemp5 = 0;
+
+		pSFlush1.sort((a,b) => (a.Suit > b.Suit ? 1 : -1)); //Sort by suit
+		cSFlush1.sort((a,b) => (a.Suit > b.Suit ? 1 : -1)); //Sort by suit
+
+		for (var k = 0; k < 3; k++)
+		{
+			if (pSFlush1.Suit[k] == "clubs" && pSFlush1.Suit[k+1] == "clubs" && pSFlush1.Suit[k+2] == "clubs" && pSFlush1.Suit[k+3] == "clubs" && pSFlush1.Suit[k+4] == "clubs")
+			{
+				pSFTemp5 = pSFlush1.Value[k];
+				pSFTemp4 = pSFlush1.Value[k+1];
+				pSFTemp3 = pSFlush1.Value[k+2];
+				pSFTemp2 = pSFlush1.Value[k+3];
+				pSFTemp1 = pSFlush1.Value[k+4]; 	
+			}
+			else if (pSFlush1.Suit[k] == "diamonds" && pSFlush1.Suit[k+1] == "diamonds" && pSFlush1.Suit[k+2] == "diamonds" && pSFlush1.Suit[k+3] == "diamonds" && pSFlush1.Suit[k+4] == "diamonds")
+			{
+				pSFTemp5 = pSFlush1.Value[k];
+				pSFTemp4 = pSFlush1.Value[k+1];
+				pSFTemp3 = pSFlush1.Value[k+2];
+				pSFTemp2 = pSFlush1.Value[k+3];
+				pSFTemp1 = pSFlush1.Value[k+4]; 	
+			}
+			else if (pSFlush1.Suit[k] == "hearts" && pSFlush1.Suit[k+1] == "hearts" && pSFlush1.Suit[k+2] == "hearts" && pSFlush1.Suit[k+3] == "hearts" && pSFlush1.Suit[k+4] == "hearts")
+			{
+				pSFTemp5 = pSFlush1.Value[k];
+				pSFTemp4 = pSFlush1.Value[k+1];
+				pSFTemp3 = pSFlush1.Value[k+2];
+				pSFTemp2 = pSFlush1.Value[k+3];
+				pSFTemp1 = pSFlush1.Value[k+4]; 	
+			}
+			else if (pSFlush1.Suit[k] == "spades" && pSFlush1.Suit[k+1] == "spades" && pSFlush1.Suit[k+2] == "spades" && pSFlush1.Suit[k+3] == "spades" && pSFlush1.Suit[k+4] == "spades")
+			{
+				pSFTemp5 = pSFlush1.Value[k];
+				pSFTemp4 = pSFlush1.Value[k+1];
+				pSFTemp3 = pSFlush1.Value[k+2];
+				pSFTemp2 = pSFlush1.Value[k+3];
+				pSFTemp1 = pSFlush1.Value[k+4]; 	
+			}
+		}
+		for (var g = 0; g < 3; g++)
+		{
+			if (cSFlush1.Suit[g] == "clubs" && cSFlush1.Suit[g+1] == "clubs" && cSFlush1.Suit[g+2] == "clubs" && cSFlush1.Suit[g+3] == "clubs" && cSFlush1.Suit[g+4] == "clubs")
+			{
+				cSFTemp5 = cSFlush1.Value[g];
+				cSFTemp4 = cSFlush1.Value[g+1];
+				cSFTemp3 = cSFlush1.Value[g+2];
+				cSFTemp2 = cSFlush1.Value[g+3];
+				cSFTemp1 = cSFlush1.Value[g+4]; 	
+			}
+			else if (cSFlush1.Suit[g] == "diamonds" && cSFlush1.Suit[g+1] == "diamonds" && cSFlush1.Suit[g+2] == "diamonds" && cSFlush1.Suit[g+3] == "diamonds" && cSFlush1.Suit[g+4] == "diamonds")
+			{
+				cSFTemp5 = cSFlush1.Value[g];
+				cSFTemp4 = cSFlush1.Value[g+1];
+				cSFTemp3 = cSFlush1.Value[g+2];
+				cSFTemp2 = cSFlush1.Value[g+3];
+				cSFTemp1 = cSFlush1.Value[g+4]; 	
+			}
+			else if (cSFlush1.Suit[g] == "hearts" && cSFlush1.Suit[g+1] == "hearts" && cSFlush1.Suit[g+2] == "hearts" && cSFlush1.Suit[g+3] == "hearts" && cSFlush1.Suit[g+4] == "hearts")
+			{
+				cSFTemp5 = cSFlush1.Value[g];
+				cSFTemp4 = cSFlush1.Value[g+1];
+				cSFTemp3 = cSFlush1.Value[g+2];
+				cSFTemp2 = cSFlush1.Value[g+3];
+				cSFTemp1 = cSFlush1.Value[g+4]; 	
+			}
+			else if (cSFlush1.Suit[g] == "spades" && cSFlush1.Suit[g+1] == "spades" && cSFlush1.Suit[g+2] == "spades" && cSFlush1.Suit[g+3] == "spades" && cSFlush1.Suit[g+4] == "spades")
+			{
+				cSFTemp5 = cSFlush1.Value[g];
+				cSFTemp4 = cSFlush1.Value[g+1];
+				cSFTemp3 = cSFlush1.Value[g+2];
+				cSFTemp2 = cSFlush1.Value[g+3];
+				cSFTemp1 = cSFlush1.Value[g+4]; 	
+			}
+		}
+		pSFlush2.push(pSFTemp1, pSFTemp2, pSFTemp3, pSFTemp4, pSFTemp5);
+		cSFlush2.push(cSFTemp1, cSFTemp2, cSFTemp3, cSFTemp4, cSFTemp5);
+
+		for (var y = 0; y < pSFlush2.length; y++)
+		{
+			if (pSFlush2[y] > cSFlush2[y])
+			{
+				tieResult = "Player wins!";
+			}
+			else if (pSFlush2[y] < cSFlush2[y])
+			{
+				tieResult = "Casino wins!";
+			}
+			else
+			{
+				tieResult = "Tie.";
+			}
+		}
+	}
+
 	//Four of a Kind tiebreaker
 	if (pHandString == "Four of A Kind" && cHandString == "Four of a Kind")
 	{
@@ -670,9 +827,7 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		for (var x = 0; x < 7; x++)
 		{
 			pFV[x] = temppHand[x];
-			pFS[x] = temppHand[x].Suit;
-			cFV[x] = tempcHand[x];
-			cFS[x] = tempcHand[x].Suit;			
+			cFV[x] = tempcHand[x];		
 		}
 
 		var pFTemp1 = 0;
@@ -1352,4 +1507,20 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		}
 	}
 	return tieResult;
+}
+
+module.exports = {
+  EvaluateHand,
+  checkOnePair,
+  checkHighCard,
+  checkThreeOfAKind,
+  checkFourOfAKind,
+  checkTwoPair,
+  checkStraight,
+  checkFlush,
+  checkFullHouse,
+  checkStraightFlush,
+  updateSuitCounter,
+  updateValueCounters,
+  checkTie
 }
