@@ -1,27 +1,32 @@
 var suit = ["spades", "diamonds", "clubs", "hearts"];
 var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-var deck - new Array();
+var deck = [];
 
 function Deck()
 {
 	for (var i = 0; i < suit.length; i++)
 	{
-		for (var j = 0; j < value.length; i++)
+		for (var j = 0; j < value.length; j++)
 		{
-			var card = {Value: value[j], Suit: suit{i}};
+			var card = {Value: value[j], Suit: suit[i]};
 			deck.push(card);
 		}
 	}
 }
 
+Deck();
+
+//console.log(deck[1]);
+
+
 function EvaluateHand(handtocheck)
 {
-	//functions needed to make: one to count # of suit, # of values, and sorting by suit, value, and possibly a combo
-	//also need a better way to connect player cards w community pile
-	//ideally would take in this concated hand, sort, then count the amount of suit and values.
 	var result = ""; //empty string that will be filled containing best hand e.g, "One Pair", holder in place for now, could change to an int representation
 	var suitCounter = [0,0,0,0]; //used to tally occurences of suit in each hand
 	var valueCounter = [0,0,0,0,0,0,0,0,0,0,0,0,0]; //used to tally occurences of card value in each hand
+
+	suitCounter = updateSuitCounter(handtocheck, suitCounter);
+	valueCounter = updateSuitCounter(handtocheck, valueCounter);
 
 	//check for Straight Flush
 	if (result == null)
@@ -72,7 +77,9 @@ function EvaluateHand(handtocheck)
 	return result;
 }
 
- function checkOnePair(a)
+
+
+function checkOnePair(a)
  {
  	var resOP = "";
 
@@ -87,7 +94,8 @@ function EvaluateHand(handtocheck)
  	return resOP;
  }
 
- function checkHighCard(a)
+
+function checkHighCard(a)
  {
  	var resHC = "";
 
@@ -103,7 +111,7 @@ function EvaluateHand(handtocheck)
  	return resHC;
  }
 
- function checkThreeOfAKind(a)
+function checkThreeOfAKind(a)
  {
  	var resTOK = "";
 
@@ -126,14 +134,14 @@ function checkFourOfAKind(a)
  	{
  		if (a[i] = 4)
  		{
- 			resFOK = "One Pair";
+ 			resFOK = "Four of A Kind";
  			break;
  		}
  	}
- 	return resOP;
+ 	return resFOK;
  }
 
- function checkTwoPair(a)
+function checkTwoPair(a)
  {
  	var resTP = "";
  	var pairOne = 0;
@@ -166,7 +174,7 @@ function checkFourOfAKind(a)
  	return resTP;
  }
 
- function checkStraight (a)
+function checkStraight (a)
  {
  	var resStr = "";
 
@@ -182,7 +190,7 @@ function checkFourOfAKind(a)
  }
 
 
- function checkFlush(a)
+function checkFlush(a)
  {
  	var resFlush = "";
 
@@ -242,3 +250,1095 @@ function checkStraightFlush(a, b)
  	}
  	return resSF;
 }
+
+function updateSuitCounter (handtocheck, sc)
+{
+	for (var i = 0; i < handtocheck.length; i++)
+	{
+		if (handtocheck[i].Suit == "spades")
+		{
+			sc[0] = sc[0] + 1;
+		}
+		else if (handtocheck[i].Suit == "diamonds")
+		{
+			sc[1] = sc[1] + 1;
+		}
+		else if (handtocheck[i].Suit == "clubs")
+		{
+			sc[2] = sc[2] + 1;
+		}
+		else if (handtocheck[i].Suit == "hearts")
+		{
+			sc[3] = sc[3] + 1;
+		}
+	}
+
+	return sc;
+}
+
+function updateValueCounters (handtocheck, vc)
+{
+	for (var i = 0; i < handtocheck.length; i++)
+	{
+		if (handtocheck[i].Value == "A")
+		{
+			vc[0] = vc[0] + 1;
+		}
+		else if (handtocheck[i].Value == "2")
+		{
+			vc[1] = vc[1] + 1;
+		}
+		else if (handtocheck[i].Value == "3")
+		{
+			vc[2] = vc[2] + 1;
+		}
+		else if (handtocheck[i].Value == "4")
+		{
+			vc[3] = vc[3] + 1;
+		}
+		else if (handtocheck[i].Value == "5")
+		{
+			vc[4] = vc[4] + 1;
+		}
+		else if (handtocheck[i].Value == "6")
+		{
+			vc[5] = vc[5] + 1;
+		}
+		else if (handtocheck[i].Value == "7")
+		{
+			vc[6] = vc[6] + 1;
+		}
+		else if (handtocheck[i].Value == "8")
+		{
+			vc[7] = vc[7] + 1;
+		}
+		else if (handtocheck[i].Value == "9")
+		{
+			vc[8] = vc[8] + 1;
+		}
+		else if (handtocheck[i].Value == "10")
+		{
+			vc[9] = vc[9] + 1;
+		}
+		else if (handtocheck[i].Value == "J")
+		{
+			vc[10] = vc[10] + 1;
+		}
+		else if (handtocheck[i].Value == "Q")
+		{
+			vc[11] = vc[11] + 1;
+		}
+		else if (handtocheck[i].Value == "K")
+		{
+			vc[12] = vc[12] + 1;
+		}
+	}
+	return vc;
+}
+
+
+function checkTie (pHand, cHand, pHandString, cHandString) // function to determine tiebreakers btwn player and casino
+{
+	var temppHand = pHand;
+	var tempcHand = cHand;
+	var tieResult = "";
+	
+	//Straight Flush tiebreaker
+	//if (pHandString == "Straight Flush" && cHandString == "Straight Flush")
+	//{
+		//if(pValueCounter[9] >= 1 && pValueCounter[10] >= 1 && rankCounter[11] >= 1 && rankCounter[12] >= 1 && rankCounter[0] >= 1 && ) 
+	//}
+	
+	//Four of a Kind tiebreaker
+	if (pHandString == "Four of A Kind" && cHandString == "Four of a Kind")
+	{
+		var pFOK = [];
+		var cFOK = [];
+
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pFOK[x] = temppHand[x].Value;
+			cFOK[x] = tempcHand[x].Value;
+		}
+		pFOK.sort(function(a, b){return a-b});
+		cFOK.sort(function(a, b){return a-b});
+		var pFOKTemp = 0;
+		var cFOKTemp = 0;
+
+		for (var v = 0; v < pFOK.length; v++)
+		{
+			for (var w = 1; w < pFOK.length; w++)
+			{
+				if (pFOK[v] == pFOK[w])
+				{
+					pTOKTemp = pTOK[v];
+					pTOK.splice(v, 1);
+					pTOK.splice(w-1, 1);
+					break;
+				}
+			}
+		}
+		for (var c = 0; c < pFOK.length; c++)
+		{
+			if (pFOK[c] == pFOKTemp)
+			{
+				pTOK.splice(c, 1);
+			}
+		}
+
+		for (var a = 0; a < cFOK.length; a++)
+		{
+			for (var b = 1; b < cFOK.length; b++)
+			{
+				if (cFOK[a] == cFOK[b])
+				{
+					cFOKTemp = cFOK[b];
+					cFOK.splice(a, 1);
+					cFOK.splice(b-1, 1);
+					break;
+				}
+			}
+		}
+		for (var d = 0; d < cTOK.length; d++)
+		{
+			if (cTOK[d] == cTOKTemp)
+			{
+				cTOK.splice(d, 1);
+			}
+		}
+
+		pFOK.splice(0, 2);
+		cFOK.splice(0, 2);
+		pFOK.push(pFOKTemp);
+		cFOK.push(cFOKTemp);
+
+		for (var y = pFOK.length - 1; y >= 0; y--)
+		{
+			if (pFOK[y] > cFOK[y])
+			{
+				tieResult = "Player wins!";
+				break;
+			}
+			else if (pTOK[y] < cTOK[y])
+			{
+				tieResult = "Casino wins!";
+				break;
+			}
+			else
+			{
+				tieResult = "Tie."
+			}
+		}
+	}
+
+
+	//Full House tiebreaker
+	if (pHandString == "Full House" && cHandString == "Full House")
+	{
+		var pFH = [];
+		var cFH = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pFH[x] = temppHand[x].Value;
+			cFH[x] = tempcHand[x].Value;
+		}
+		pFH.sort(function(a, b){return a-b});
+		cFH.sort(function(a, b){return a-b});
+
+		var pFHTemp1 = 0;
+		var pFHTemp2 = 0;
+		var cFHTemp1 = 0;
+		var cFHTemp2 = 0;
+
+		var pFHCount1 = 0;
+		var pFHCount2 = 0;
+		var cFHCount1 = 0;
+		var cFHCount2 = 0;
+		var pFHorder = [];
+		var cFHorder = [];
+
+		for (var a = 0; a < pFH.length; a++)
+		{
+			for (var b = 1; b < pFH.length; b++)
+			{
+				if ((pFH[a] == pFH[b]) && pFHCount1 < 1)
+				{
+					pFHTemp1 = pFH[b];
+					pFH.splice(a, 1);
+					pFH.splice(b-1, 1);
+					pFHCount1++
+				}
+				else if ((pFH[a] == pFH[b]) && pFHCount2 < 1)
+				{
+					pFHTemp2 = pFH[b];
+					pFH.splice(a, 1);
+					pFH.splice(b-1, 1);
+					pFHCount2++
+				}	
+			}
+		}
+
+		for (var c = 0; c < cFH.length; c++)
+		{
+			for (var d = 1; d < cFH.length; d++)
+			{
+				if ((cFH[c] == cFH[d]) & cFHCount1 < 1)
+				{
+					cFHTemp1 = cFH[d];
+					cFH.splice(c, 1);
+					cFH.splice(d-1, 1);
+					cFHCount1++
+				}
+				else if ((cFH[c] == cFH[d]) && cFHCount2 < 1)
+				{
+					cFHTemp2 = cFH[d];
+					cFH.splice(c, 1);
+					cFH.splice(d-1, 1);
+					cFHCount2++
+				}
+			}
+		}
+
+		for (var e = 0; e < pFH.length; e++)
+		{
+			if ((pFH[e] == pFHTemp1) && pFHCount1 < 2)
+			{
+				pFH.splice(e);
+				pFHorder.push(pFHTemp1, pFHTemp2);
+				break;
+			}
+			else if ((pFH[e] == pFHTemp2) && pFHCount2 < 2)
+			{
+				pFH.splice(e);
+				pFHorder.push(pFHTemp2, pFHTemp1);
+				break;
+			}
+		}
+
+		for (var f = 0; f < cFH.length; f++)
+		{
+			if ((cFH[f] == cFHTemp1) && cFHCount1 < 2)
+			{
+				cFH.splice(f);
+				cFHorder.push(cFHTemp1, cFHTemp2);
+				break;
+			}
+			else if ((cFH[f] == cFHTemp2) && cFHCount2 < 2)
+			{
+				cFH.splice(f);
+				cFHorder.push(cFHTemp2, cFHTemp1)
+				break;
+			}
+		}
+
+		for (var g = 0; g < pFHorder.length; g++)
+		{
+			if (pFHorder[g] > cFHorder[g])
+			{
+				tieResult = "Player wins!";
+				break;
+			}
+			else if (pTOK[g] < cTOK[g])
+			{
+				tieResult = "Casino wins!";
+				break;
+			}
+			else
+			{
+				tieResult = "Tie."
+			}
+		}
+	}
+
+	//Flush tiebreaker
+	if (pHandString == "Flush" && cHandString == "Flush")
+	{
+		var pFV = [];
+		var cFV = [];
+		var pFS = [];
+		var cFS = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pFV[x] = temppHand[x];
+			pFS[x] = temppHand[x].Suit;
+			cFV[x] = tempcHand[x];
+			cFS[x] = tempcHand[x].Suit;			
+		}
+
+		var pFTemp1 = 0;
+		var pFTemp2 = 0;
+		var pFTemp3 = 0;
+		var pFTemp4 = 0;
+		var pFTemp5 = 0;
+		var cFTemp1 = 0;
+		var cFTemp2 = 0;
+		var cFTemp3 = 0;
+		var cFTemp4 = 0;
+		var cFTemp5 = 0;
+
+		pFV.sort((a,b) => (a.Suit > b.Suit ? 1 : -1)); //Sort by suit
+		cFV.sort((a,b) => (a.Suit > b.Suit ? 1 : -1)); //Sort by suit
+
+		for (var k = 0; k < 3; k++)
+		{
+			if (pFV.Suit[k] == "clubs" && pFV.Suit[k+1] == "clubs" && pFV.Suit[k+2] == "clubs" && pFV.Suit[k+3] == "clubs" && pFV.Suit[k+4] == "clubs")
+			{
+				pFTemp5 = pFV.Value[k];
+				pFTemp4 = pFV.Value[k+1];
+				pFTemp3 = pFV.Value[k+2];
+				pFTemp2 = pFV.Value[k+3];
+				pFTemp1 = pFV.Value[k+4]; 	
+			}
+			else if (pFV.Suit[k] == "diamonds" && pFV.Suit[k+1] == "diamonds" && pFV.Suit[k+2] == "diamonds" && pFV.Suit[k+3] == "diamonds" && pFV.Suit[k+4] == "diamonds")
+			{
+				pFTemp5 = pFV.Value[k];
+				pFTemp4 = pFV.Value[k+1];
+				pFTemp3 = pFV.Value[k+2];
+				pFTemp2 = pFV.Value[k+3];
+				pFTemp1 = pFV.Value[k+4]; 	
+			}
+			else if (pFV.Suit[k] == "hearts" && pFV.Suit[k+1] == "hearts" && pFV.Suit[k+2] == "hearts" && pFV.Suit[k+3] == "hearts" && pFV.Suit[k+4] == "hearts")
+			{
+				pFTemp5 = pFV.Value[k];
+				pFTemp4 = pFV.Value[k+1];
+				pFTemp3 = pFV.Value[k+2];
+				pFTemp2 = pFV.Value[k+3];
+				pFTemp1 = pFV.Value[k+4]; 	
+			}
+			else if (pFV.Suit[k] == "spades" && pFV.Suit[k+1] == "spades" && pFV.Suit[k+2] == "spades" && pFV.Suit[k+3] == "spades" && pFV.Suit[k+4] == "spades")
+			{
+				pFTemp5 = pFV.Value[k];
+				pFTemp4 = pFV.Value[k+1];
+				pFTemp3 = pFV.Value[k+2];
+				pFTemp2 = pFV.Value[k+3];
+				pFTemp1 = pFV.Value[k+4]; 	
+			}
+		}
+		for (var g = 0; g < 3; g++)
+		{
+			if (cFV.Suit[g] == "clubs" && cFV.Suit[g+1] == "clubs" && cFV.Suit[g+2] == "clubs" && cFV.Suit[g+3] == "clubs" && cFV.Suit[g+4] == "clubs")
+			{
+				cFTemp5 = cFV.Value[g];
+				cFTemp4 = cFV.Value[g+1];
+				cFTemp3 = cFV.Value[g+2];
+				cFTemp2 = cFV.Value[g+3];
+				cFTemp1 = cFV.Value[g+4]; 	
+			}
+			else if (cFV.Suit[g] == "diamonds" && cFV.Suit[g+1] == "diamonds" && cFV.Suit[g+2] == "diamonds" && cFV.Suit[g+3] == "diamonds" && cFV.Suit[g+4] == "diamonds")
+			{
+				cFTemp5 = cFV.Value[g];
+				cFTemp4 = cFV.Value[g+1];
+				cFTemp3 = cFV.Value[g+2];
+				cFTemp2 = cFV.Value[g+3];
+				cFTemp1 = cFV.Value[g+4]; 	
+			}
+			else if (cFV.Suit[g] == "hearts" && cFV.Suit[g+1] == "hearts" && cFV.Suit[g+2] == "hearts" && cFV.Suit[g+3] == "hearts" && cFV.Suit[g+4] == "hearts")
+			{
+				cFTemp5 = cFV.Value[g];
+				cFTemp4 = cFV.Value[g+1];
+				cFTemp3 = cFV.Value[g+2];
+				cFTemp2 = cFV.Value[g+3];
+				cFTemp1 = cFV.Value[g+4]; 	
+			}
+			else if (cFV.Suit[g] == "spades" && cFV.Suit[g+1] == "spades" && cFV.Suit[g+2] == "spades" && cFV.Suit[g+3] == "spades" && cFV.Suit[g+4] == "spades")
+			{
+				cFTemp5 = cFV.Value[g];
+				cFTemp4 = cFV.Value[g+1];
+				cFTemp3 = cFV.Value[g+2];
+				cFTemp2 = cFV.Value[g+3];
+				cFTemp1 = cFV.Value[g+4]; 	
+			}
+		}
+		pFS.push(pFTemp1, pFTemp2, pFTemp3, pFTemp4, pFTemp5);
+		cFS.push(cFTemp1, cFTemp2, cFTemp3, cFTemp4, cFTemp5);
+
+		for (var y = 0; y < pFS.length; y++)
+		{
+			if (pFS[y] > cFS[y])
+			{
+				tieResult = "Player wins!";
+			}
+			else if (pFS[y] < cFS[y])
+			{
+				tieResult = "Casino wins!";
+			}
+			else
+			{
+				tieResult = "Tie.";
+			}
+		}
+	}
+
+
+	//Straight tiebreaker
+	if (pHandString == "Straight" && cHandString == "Straight")
+	{
+		var pS = [];
+		var cS = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pS[x] = temppHand[x].Value;
+			cS[x] = tempcHand[x].Value;
+		}
+		pS.sort(function(a, b){return a-b});
+		cS.sort(function(a, b){return a-b});
+
+		var pSTemp1 = 0;
+		var pSTemp2 = 0;
+		var pSTemp3 = 0;
+		var pSTemp4 = 0;
+		var pSTemp5 = 0;
+		var cSTemp1 = 0;
+		var cSTemp2 = 0;
+		var cSTemp3 = 0;
+		var cSTemp4 = 0;
+		var cSTemp5 = 0;
+
+		for (var w = pS.length; w > 4; w--)
+ 		{
+ 			if ((pS[w-5] > 0) && (pS[w-4] > 0) && (pS[w-3] > 0) && (pS[w-2] > 0) && (pS[w-1] > 0))
+ 			{
+ 				pSTemp1 = pS[w-5];
+ 				pSTemp2 = pS[w-4];
+ 				pSTemp3 = pS[w-3];
+ 				pSTemp4 = pS[w-2];
+ 				pSTemp5 = pS[w-1];
+ 			}
+ 		}
+ 		for (var y = cS.length; y > 4; y--)
+ 		{
+ 			if ((cS[y-5] > 0) && (cS[y-4] > 0) && (cS[y-3] > 0) && (cS[y-2] > 0) && (cS[y-1] > 0))
+ 			{
+ 				cSTemp1 = cS[y-5];
+ 				cSTemp2 = cS[y-4];
+ 				cSTemp3 = cS[y-3];
+ 				cSTemp4 = cS[y-2];
+ 				cSTemp5 = cS[y-1];
+ 			}
+ 		}
+ 		pS.splice(0, 7);
+ 		cS.splice(0, 7);
+ 		pS.push(pSTemp1, pSTemp2, pSTemp3, pSTemp4, pSTemp5);
+ 		cS.push(cSTemp1, cSTemp2, cSTemp3, cSTemp4, cSTemp5);
+
+ 		//Compare the highest card in Straight. User w higher value wins. Split if they have same exact value
+		if (pS[4] > cS[4])
+		{
+			tieResult = "Player wins!";
+		}
+		else if (pS[4] < cS[4])
+		{
+			tieResult = "Casino wins!";
+		}
+		else
+		{
+			tieResult = "Tie.";
+		}
+	}
+
+	//Three of A Kind tiebreaker
+	if (pHandString == "Three of A Kind" && cHandString == "Three of a Kind")
+	{
+		var pTOK = [];
+		var cTOK = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pTOK[x] = temppHand[x].Value;
+			cTOK[x] = tempcHand[x].Value;
+		}
+		pTOK.sort(function(a, b){return a-b});
+		cTOK.sort(function(a, b){return a-b});
+		
+		var pTOKTemp = 0;
+		var cTOKTemp = 0;
+
+		for (var v = 0; v < pTOK.length; v++)
+		{
+			for (var w = 1; w < pTOK.length; w++)
+			{
+				if (pTOK[v] == pTOK[w])
+				{
+					pTOKTemp = pTOK[v];
+					pTOK.splice(v, 1);
+					pTOK.splice(w-1, 1);
+					break;
+				}
+			}
+		}
+		for (var c = 0; c < pTOK.length; c++)
+		{
+			if (pTOK[c] == pTOKTemp)
+			{
+				pTOK.splice(c, 1);
+				break;
+			}
+		}
+
+		for (var a = 0; a < cTOK.length; a++)
+		{
+			for (var b = 1; b < cTOK.length; b++)
+			{
+				if (cTOK[a] == cTOK[b])
+				{
+					cTOKTemp = cTOK[b];
+					cTOK.splice(a, 1);
+					cTOK.splice(b-1, 1);
+					break;
+				}
+			}
+		}
+		for (var d = 0; d < cTOK.length; d++)
+		{
+			if (cTOK[d] == cTOKTemp)
+			{
+				cTOK.splice(v, 1);
+				break;
+			}
+		}
+
+		pTOK.splice(0, 2);
+		cTOK.splice(0, 2);
+		pTOK.push(pTOKTemp);
+		cTOK.push(cTOKTemp);
+
+
+		//Compare the Two Pair value and Kickers. User w higher value wins. Split if they have same exact value
+		for (var y = pTOK.length - 1; y >= 0; y--)
+		{
+			if (pTOK[y] > cTOK[y])
+			{
+				tieResult = "Player wins!";
+				break;
+			}
+			else if (pTOK[y] < cTOK[y])
+			{
+				tieResult = "Casino wins!";
+				break;
+			}
+			else
+			{
+				tieResult = "Tie.";
+			}
+		}
+	}
+
+	//Two Pairs tiebreaker
+	if (pHandString == "Two Pairs" && cHandString == "Two Pairs")
+	{
+		var pTP = [];
+		var cTP = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pTP[x] = temppHand[x].Value;
+			cTP[x] = tempcHand[x].Value;
+		}
+		pTP.sort(function(a, b){return a-b});
+		cTP.sort(function(a, b){return a-b});
+		
+		var pTPTemp1 = 0;
+		var pTPTemp2 = 0;
+		var cTPTemp1 = 0;
+		var cTPTemp2 = 0;
+
+		for (var v = 0; v < pTP.length; v++)
+		{
+			for (var w = 1; w < pTP.length; w++)
+			{
+				if ((pTP[v] == pTP[w]) )
+				{
+					pTPTemp1 = pTP[v];
+					pTP.splice(v, 1);
+					pTP.splice(w-1, 1);
+					break;
+				}
+			}
+		for (var c = 0; c < pTP.length; c++)
+		{
+			for (var d = 1; d < pTP.length; d++)
+			{
+				if (pTP[c] == pTP[d])
+				{
+					pTPTemp2 = pTP[cOP];
+					pTP.splice(c, 1);
+					pTP.splice(d-1, 1);
+					break;
+				}
+			}
+		}
+		for (var a = 0; a < cTP.length; a++)
+		{
+			for (var b = 1; b < cTP.length; b++)
+			{
+				if (cTP[a] == cTP[b])
+				{
+					cTPTemp1 = cTP[b];
+					cTP.splice(a, 1);
+					cTP.splice(b-1, 1);
+					break;
+				}
+			}
+		}
+		for (var e = 0; e < cTP.length; e++)
+		{
+			for (var f = 1; f < cTP.length; f++)
+			{
+				if (cTP[e] == cTP[f])
+				{
+					cTPTemp2 = cTP[e];
+					cTP.splice(e, 1);
+					cTP.splice(f-1, 1);
+					break;
+				}
+			}
+		}
+
+		pTP.splice(0, 2);
+		cTP.splice(0, 2);
+
+		if (pTPTemp1 > pTPTemp2)
+		{
+			pTP.push(pTPTemp2);
+			pTP.push(pTPTemp1);
+		}
+		else
+		{
+			pTP.push(pTPTemp1);
+			pTP.push(pTPTemp2);
+		}
+
+		if (cTPTemp1 > cTPTemp2)
+		{
+			cTP.push(cTPTemp2);
+			cTP.push(cTPTemp1);
+		}
+		else
+		{
+			cTP.push(cTPTemp1);
+			cTP.push(cTPTemp2);
+		}
+
+
+		//Compare the Two Pair value and Kickers. User w higher value wins. Split if they have same exact value
+		for (var y = pTP.length - 1; y >= 0; y--)
+		{
+			if (pTP[y] > cTP[y])
+			{
+				tieResult = "Player wins!";
+				break;
+			}
+			else if (pTP[y] < cTP[y])
+			{
+				tieResult = "Casino wins!";
+				break;
+			}
+			else
+			{
+				tieResult = "Tie.";
+			}
+		}
+	}
+
+	//One Pair tiebreaker
+	if (pHandString == "One Pair" && cHandString == "One Pair")
+	{
+		var pOP = [];
+		var cOP = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pOP[x] = temppHand[x].Value;
+			cOP[x] = tempcHand[x].Value;
+		}
+		pOP.sort(function(a, b){return a-b});
+		cOP.sort(function(a, b){return a-b});
+		var pOPTemp = 0;
+		var cOPTemp = 0;
+
+		for (var v = 0; v < pOP.length; v++)
+		{
+			for (var w = 1; w < pOP.length; w++)
+			{
+				if (pOP[v] == pOP[w])
+				{
+					pOPTemp = pOP[v];
+					pOP.splice(v, 1);
+					pOP.splice(w-1, 1);
+					break;
+				}
+			}
+		}
+		for (var a = 0; cOP.length < 7; a++)
+		{
+			for (var b = 1; cOP.length < 7; b++)
+			{
+				if (cOP[a] == cOP[b])
+				{
+					cOPTemp = cOP[b];
+					cOP.splice(a, 1);
+					cOP.splice(b-1, 1);
+					break;
+				}
+			}
+		}
+
+		pOP.splice(0, 2);
+		cOP.splice(0, 2);
+		pOP.push(pOPTemp);
+		cOP.push(cOPTemp);
+
+
+		//Compare the Pair value and Kickers. User w higher value wins. Split if they have same exact value
+		for (var y = pOP.length - 1; y >= 0; y--)
+		{
+			if (pOP[y] > cOP[y])
+			{
+				tieResult = "Player wins!";
+				break;
+			}
+			else if (pOP[y] < cOP[y])
+			{
+				tieResult = "Casino wins!";
+				break;
+			}
+			else
+			{
+				tieResult = "Tie.";
+			}
+		}
+	}
+
+	//High Card tiebreaker
+	if (pHandString == "High Card" && cHandString == "High Card")
+	{
+		var pHigh = [];
+		var cHigh = [];
+
+		//Converts A, K, Q, J to numerical values and stores all 7 cards into array. 2 lowest are then removed
+		for (var i = 0; i < 7; i++)
+		{
+			if(temppHand[i].Value == "A")
+			{
+				temppHand[i].Value == 14;
+			}
+			else if(temppHand[i].Value == "K")
+			{
+				temppHand[i].Value == 13;
+			}
+			else if(temppHand[i].Value == "Q")
+			{
+				temppHand[i].Value == 12;
+			}
+			else if(temppHand[i].Value == "J")
+			{
+				temppHand[i].Value == 11;
+			}
+		}
+		for (var j = 0; j < 7; j++)
+		{
+			if(tempcHand[j].Value == "A")
+			{
+				tempcHand[j].Value == 14;
+			}
+			else if(tempcHand[j].Value == "K")
+			{
+				tempcHand[j].Value == 13;
+			}
+			else if(tempcHand[j].Value == "Q")
+			{
+				tempcHand[j].Value == 12;
+			}
+			else if(tempcHand[j].Value == "J")
+			{
+				tempchand[j].Value == 11;
+			}
+		}
+		for (var x = 0; x < 7; x++)
+		{
+			pHigh[x] = temppHand[x].Value;
+			cHigh[x] = tempcHand[x].Value;
+		}
+		pHigh.sort(function(a, b){return b-a});
+		cHigh.sort(function(a, b){return b-a});
+		pHigh.splice(5,2);
+		cHigh.splice(5,2);
+
+		//Compare the High Card and Kickers. User w higher value wins. Split if they have same exact value
+		for (var y = 0; y < pHigh.length; y++)
+		{
+			if (pHigh[y] > cHigh[y])
+			{
+				tieResult = "Player wins!";
+				break;
+			}
+			else if (pHigh[y] < cHigh[y])
+			{
+				tieResult = "Casino wins!";
+				break;
+			}
+			else
+			{
+				tieResult = "Tie.";
+			}
+		}
+	}
+
+	return tieResult;
+}}
