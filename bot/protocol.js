@@ -110,7 +110,8 @@ async function keygen(){
   let d2 = totientNOverR.subtract(d1);
   shares = [d1,d2];
   keys = [y,r,n];
-  pKey = totientNOverR; 
+  pKey = totientNOverR;
+  //module.exports.pKey = pKey 
 }
 
 function encrypt(m,pubKeys){ // m can be "0","1",...,"52" in string form
@@ -229,9 +230,20 @@ function getShare(){
 
 }
 
+
 // sends casino's share to contract so it can be hashed
 async function commitCasino(contractInstance,casinoAddress){
   await contractInstance.methods.commitCasinoShare(shares[0].toString()).send({
+    // from: address,
+    // gas: 1000000
+    from:casinoAddress
+
+});
+}
+
+// calls casinoReveal function on the smart contract
+async function revealCasino(contractInstance,casinoAddress){
+  await contractInstance.methods.revealCasino(shares[0].toString()).send({
     // from: address,
     // gas: 1000000
     from:casinoAddress
@@ -241,7 +253,10 @@ async function commitCasino(contractInstance,casinoAddress){
 
 }
 
-module.exports = {
+
+
+
+module.exports = { 
   keygen,
   getShare,
   getPubKey,
@@ -253,8 +268,23 @@ module.exports = {
   Deck,
   getDeck,
   clearKeys,
-  commitCasino
+  commitCasino,
+  revealCasino
 }
+
+// module.exports.keygen = keygen;
+// module.exports.getShare = getShare;
+// module.exports.getPubKey = getPubKey;
+// module.exports.partialDecryptFinal = partialDecryptFinal;
+// module.exports.partialDecryptPlayer = partialDecryptPlayer;
+// module.exports.partialDecryptCasino = partialDecryptCasino;
+// module.exports.decryptWithShares = decryptWithShares;
+// module.exports.encrypt = encrypt;
+// module.exports.Deck = Deck;
+// module.exports.getDeck = getDeck;
+// module.exports.clearKeys = clearKeys;
+// module.exports.commitCasino = commitCasino;
+// module.exports.pKey = pKey;
 provider.engine.stop();
 
 

@@ -14,7 +14,7 @@ contract Poker {
           }
     
     STAGES stages;
-    address payable public player1; //The first player to deploy the contract will be assigned player1
+    address payable public player1; //The first player(casino) to deploy the contract will be assigned player1
     address payable public player2; 
     uint256 public blindFeeBig = 0.002 ether;
     uint256 public blindFeeSmall = 0.001 ether;
@@ -245,15 +245,57 @@ contract Poker {
         
     
     }
-    //will complete this function once Orion finishes all of the implementation of the rules
-    function splitPot(uint256 result) public{
-        // bunch of requires here for reveal
+    
+    // for revealing shares 
+    function revealPlayer(string memory playerShare) public view{
+        require(keccak256(abi.encodePacked(playerShare)) == sharesCommitment[0],"Player's hash is not the same");
+    }
+    function revealCasino(string memory casinoShare) public view{
+        require(keccak256(abi.encodePacked(casinoShare)) == sharesCommitment[1],"Casino's hash is not the same");
+        
+    }
+    
+    // to reveal cards, for player and casino hands, pass the partially decrypted cards
+    function cardsReveal(string[5] memory pile,string[2] memory playerCards,string[2] memory casinoCards) public view{
+        //community pile
+        require(keccak256(abi.encodePacked(pile[0])) == communityPileCommitment[0],"First card of community pile didnt match");
+        require(keccak256(abi.encodePacked(pile[1])) == communityPileCommitment[1],"Second card of community pile didnt match");
+        require(keccak256(abi.encodePacked(pile[2])) == communityPileCommitment[2],"Third card of community pile didnt match");
+        require(keccak256(abi.encodePacked(pile[3])) == communityPileCommitment[3],"Fourth card of community pile didnt match");
+        require(keccak256(abi.encodePacked(pile[4])) == communityPileCommitment[4],"Fifth card of community pile didnt match");
+        
+        //player's hand
+        require(keccak256(abi.encodePacked(playerCards[0])) == playerCommitment[0],"First card of player's hand didnt match");
+        require(keccak256(abi.encodePacked(playerCards[1])) == playerCommitment[1],"Second card of player's hand didnt match");
+        
+        // casino's hand
+        require(keccak256(abi.encodePacked(casinoCards[0])) == casinoCommitment[0],"First card of casino's hand didnt match");
+        require(keccak256(abi.encodePacked(casinoCards[1])) == casinoCommitment[1],"Second card of casino's hand didnt match");
+        
+        
+    }
+    
+    // if there is a winner,call this function to transfer money accordingly,(make sure to call revealCasino before this function)
+    function determineWinner(string memory winner,string memory playerShare, string[5] memory pile,string[2] memory playerCards,string[2] memory casinoCards) public{
+        require(stages == STAGES.PAYOUT,"Denied - Not in Payout stage");
+        revealPlayer(playerShare);
+        cardsReveal(pile,playerCards,casinoCards);
+        
+        bytes32 result = keccak256(abi.encodePacked(winner));
+        if(result == keccak256(abi.encodePacked("Player wins!"))){
+            player2.transfer(betPlayer1+betPlayer2);
+            
+        }
+        else if(result == keccak256(abi.encodePacked("Casino wins!"))){
+            player1.transfer(betPlayer1+betPlayer2);
+        }
+    }
+    
+    //If a dead tie was determined, call this function
+    function splitPot() public{
         require(stages == STAGES.PAYOUT, "Denied - Not in Payout stage");
-        if(result == 2){
             player1.transfer(betPlayer1);
             player2.transfer(betPlayer2);
-        }
-        
     }
     
     
