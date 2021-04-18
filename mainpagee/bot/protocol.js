@@ -249,9 +249,8 @@ async function revealCasino(contractInstance,casinoAddress){
     from:casinoAddress
 
 });
-
-
 }
+
 
 
 

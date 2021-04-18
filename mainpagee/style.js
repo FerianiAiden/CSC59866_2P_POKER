@@ -1,4 +1,3 @@
-let tokens;
 function toggleErrorPopup() {
   document.getElementById("popup-error").classList.toggle("active");
 
@@ -31,8 +30,9 @@ async function loadWeb3() {
 
     //can use web3 with metamask
     // after this go to game page
-    sessionStorage.setItem("tokens", "0");
-    location.replace('playpage.html');
+    console.log("Here");
+    //await interaction.deployContract();
+    location.replace('./pokerpage/play.html');
   }
   else if (window.web3) {
     //older versions of metamask
