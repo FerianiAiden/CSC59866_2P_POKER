@@ -290,9 +290,6 @@ function River(){
   
 }
 
-function forth_betting_round(){
-  
-}
 
 //reveal casino cards
 function showdown(){
@@ -310,15 +307,18 @@ function showdown(){
     document.getElementById("casinocard1").style.display='unset';
     document.getElementById("casinocard2").style.display='unset';
     remove_cards_from_deck(deck, card);
+  
 
   }
+  phase = "Showdown";
+  document.getElementById("phase").innerText = phase;
 
 }
 
 //check button function for player
 
 function check(){
-  if(picked_2cards == true && casino_checked == true && phase ==  "Forth betting round"){ 
+  if(picked_2cards == true && casino_checked == true && phase ==  "River"){ 
     showdown();
     document.getElementById("casinomsg").innerText = "player/casino wins";
   }
@@ -395,7 +395,7 @@ function call(){
     document.getElementById("status").innerText = "Not enough milliethers to call";
 
   }
-  else if( picked_2cards == true && phase ==  "Forth betting round" ){ 
+  else if( picked_2cards == true && phase ==  "River" ){ 
     showdown();
     document.getElementById("casinomsg").innerText = "player/casino wins";
   }
@@ -484,12 +484,7 @@ function change_phase(){
     document.getElementById("phase").innerText = phase;
   }
 
-  else if(phase == "River"){
-    forth_betting_round();
-    
-    phase = "Forth betting round";
-    document.getElementById("phase").innerText = phase;
-  }
+
 
 }
 
