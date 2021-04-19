@@ -29,47 +29,47 @@ function EvaluateHand(handtocheck)
 	valueCounter = updateSuitCounter(handtocheck, valueCounter);
 
 	//check for Straight Flush
-	if (result == null)
+	if (result == "")
 	{
 		result = checkStraightFlush(valueCounter, suitCounter);
 	}
 	//check for four of a kind
-	if (result == null)
+	 if(result == "")
 	{
 		result = checkFourOfAKind(valueCounter);
 	}
 	//check for Full House
-	if (result == null)
+	if(result == "")
 	{
 		result = checkFullHouse(valueCounter);
 	}
 	//check for flush
-	if (result == null)
+	if(result == "")
 	{
 		result = checkFlush(suitCounter);
 	}
 	//check for straight
-	if (result == null)
+	if(result == "")
 	{
 		result = checkStraight(valueCounter);
 	}
 	//check for three of a kind
-	if (result == null)
+	if(result == "")
 	{
 		result = checkThreeOfAKind(valueCounter);
 	}
 	//check for two pair
-	if (result == null)
+	if(result == "")
 	{
 		result = checkTwoPair(valueCounter);
 	}
 	//check for one pair
-	if (result == null)
+	if(result == "")
 	{
 		result = checkOnePair(valueCounter);
 	}
 	//check for high card
-	if (result == null)
+	if(result == "")
 	{
 		result = checkHighCard(valueCounter);
 	}
@@ -132,7 +132,7 @@ function checkFourOfAKind(a)
 
  	for (var i = a.length; i > 0; i--)
  	{
- 		if (a[i] = 4)
+ 		if (a[i] == 4)
  		{
  			resFOK = "Four of A Kind";
  			break;
@@ -178,7 +178,7 @@ function checkStraight (a)
 {
  	var resStr = "";
 
- 	for (var i = valueCounter.length; i > 4; i--)
+ 	for (var i = a.length; i > 4; i--)
  	{
  		if ((a[i-5] > 0) && (a[i-4] > 0) && (a[i-3] > 0) && (a[i-2] > 0) && (a[i-1] > 0))
  		{
@@ -356,38 +356,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -510,38 +510,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -630,38 +630,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -790,38 +790,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -945,38 +945,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -1052,38 +1052,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -1178,38 +1178,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -1335,38 +1335,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -1443,38 +1443,38 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		{
 			if(temppHand[i].Value == "A")
 			{
-				temppHand[i].Value == 14;
+				temppHand[i].Value = 14;
 			}
 			else if(temppHand[i].Value == "K")
 			{
-				temppHand[i].Value == 13;
+				temppHand[i].Value = 13;
 			}
 			else if(temppHand[i].Value == "Q")
 			{
-				temppHand[i].Value == 12;
+				temppHand[i].Value = 12;
 			}
 			else if(temppHand[i].Value == "J")
 			{
-				temppHand[i].Value == 11;
+				temppHand[i].Value = 11;
 			}
 		}
 		for (var j = 0; j < 7; j++)
 		{
 			if(tempcHand[j].Value == "A")
 			{
-				tempcHand[j].Value == 14;
+				tempcHand[j].Value = 14;
 			}
 			else if(tempcHand[j].Value == "K")
 			{
-				tempcHand[j].Value == 13;
+				tempcHand[j].Value = 13;
 			}
 			else if(tempcHand[j].Value == "Q")
 			{
-				tempcHand[j].Value == 12;
+				tempcHand[j].Value = 12;
 			}
 			else if(tempcHand[j].Value == "J")
 			{
-				tempchand[j].Value == 11;
+				tempchand[j].Value = 11;
 			}
 		}
 		for (var x = 0; x < 7; x++)
@@ -1508,6 +1508,11 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 	}
 	return tieResult;
 }
+
+var hand = [deck[3],deck[4],deck[5],deck[16],deck[17],deck[18],deck[19]];
+console.log(hand);
+var result = EvaluateHand(hand);
+console.log("result is: ", result);	
 
 module.exports = {
   EvaluateHand,
