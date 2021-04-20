@@ -19,6 +19,105 @@ Deck();
 //console.log(deck[1]);
 
 
+function EvaluateWinner(pHand, cHand, pHandString, cHandString)
+{
+	var winner = "";
+	var pHandValue = 0;
+	var cHandValue = 0;
+	
+	//Assign value to string, will become redundant if we switch to numerical representation instead of string
+	//Assign value for Player Hand
+	if (pHandString = "Straight Flush")
+	{
+		pHandValue = 9;
+	}
+	else if (pHandString = "Four of A Kind")
+	{
+		pHandValue = 8;
+	}
+	else if (pHandString = "Full House")
+	{
+		pHandValue = 7;
+	}
+	else if (pHandString = "Flush")
+	{
+		pHandValue = 6;
+	}
+	else if (pHandString = "Straight")
+	{
+		pHandValue = 5;
+	}
+	else if (pHandString = "Three of A Kind")
+	{
+		pHandValue = 4;
+	}
+	else if (pHandString = "Two Pair")
+	{
+		pHandValue = 3;
+	}
+	else if (pHandString = "One Pair")
+	{
+		pHandValue = 2;
+	}
+	else if (pHandString = "High Card")
+	{
+		pHandValue = 1;
+	}
+
+	//Assign value for Casino hand
+	if (cHandString = "Straight Flush")
+	{
+		cHandValue = 9;
+	}
+	else if (cHandString = "Four of A Kind")
+	{
+		cHandValue = 8;
+	}
+	else if (cHandString = "Full House")
+	{
+		cHandValue = 7;
+	}
+	else if (cHandString = "Flush")
+	{
+		cHandValue = 6;
+	}
+	else if (cHandString = "Straight")
+	{
+		cHandValue = 5;
+	}
+	else if (cHandString = "Three of A Kind")
+	{
+		cHandValue = 4;
+	}
+	else if (cHandString = "Two Pair")
+	{
+		cHandValue = 3;
+	}
+	else if (cHandString = "One Pair")
+	{
+		cHandValue = 2;
+	}
+	else if (cHandString = "High Card")
+	{
+		cHandValue = 1;
+	}
+	
+	//Compare hands and determine winner, go to tiebreaker if same
+	if (pHandValue > cHandValue)
+	{
+		winner = "Player wins!" ;
+	}
+	else if (pHandValue < cHandValue)
+	{
+		winner = "Casino wins!" ;
+	}
+	else if (pHandValue == cHandValue)
+	{
+		winner = checkTie(pHand, cHand, pHandString, cHandString);
+	}
+	return winner;
+}
+
 function EvaluateHand(handtocheck)
 {
 	var result = ""; //empty string that will be filled containing best hand e.g, "One Pair", holder in place for now, could change to an int representation
@@ -1527,5 +1626,6 @@ module.exports = {
   checkStraightFlush,
   updateSuitCounter,
   updateValueCounters,
-  checkTie
+  checkTie,
+  EvaluateWinner
 }
