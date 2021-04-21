@@ -375,7 +375,7 @@ function updateSuitCounter (handtocheck, sc)
 	return sc;
 }
 
-function updateValueCounters (handtocheck, vc)
+function updateValueCounter (handtocheck, vc)
 {
 	for (var i = 0; i < handtocheck.length; i++)
 	{
@@ -1625,7 +1625,7 @@ module.exports = {
   checkFullHouse,
   checkStraightFlush,
   updateSuitCounter,
-  updateValueCounters,
+  updateValueCounter,
   checkTie,
   EvaluateWinner
 }
