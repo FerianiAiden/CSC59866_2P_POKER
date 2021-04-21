@@ -125,7 +125,7 @@ function EvaluateHand(handtocheck)
 	var valueCounter = [0,0,0,0,0,0,0,0,0,0,0,0,0]; //used to tally occurences of card value in each hand
 
 	suitCounter = updateSuitCounter(handtocheck, suitCounter);
-	valueCounter = updateSuitCounter(handtocheck, valueCounter);
+	valueCounter = updateValueCounter(handtocheck, valueCounter);
 
 	//check for Straight Flush
 	if (result == "")
