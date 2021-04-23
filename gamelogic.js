@@ -229,7 +229,7 @@ function checkFourOfAKind(a)
 {
  	var resFOK = "";
 
- 	for (var i = a.length; i > 0; i--)
+ 	for (var i = 0; i < a.length; i++)
  	{
  		if (a[i] == 4)
  		{
@@ -246,11 +246,11 @@ function checkTwoPair(a)
  	var pairOne = 0;
  	var pairTwo = 0;
 
- 	for (var i = a.length; i >0; i--)
+ 	for (var i = a.length; i > 0; i--)
  	{
- 		if ((pairOne < 1) || pairTwo < 1)
+ 		if ((pairOne < 1) || (pairTwo < 1))
  		{
- 			if((a[i-1] > 1) && (pairOne < 1))
+ 			if((a[i-1] > 2) && (pairOne < 1))
  			{
  				pairOne = i-1;
  			}
@@ -265,7 +265,7 @@ function checkTwoPair(a)
  		}
  	}
 
- 	if ((pairOne > 0) && (pairTwo > 0))
+ 	if ((pairOne >= 0) && (pairTwo >= 0))
  	{
  		resTP = "Two Pairs";
  	} 
@@ -338,9 +338,9 @@ function checkStraightFlush(a, b)
 
 	if (b[0] > 4 || b[1] > 4 ||b[2] > 4 ||b[3] > 4)
  	{
- 		for (var i = b.length; i > 4; i--)
+ 		for (var i = a.length; i > 4; i--)
  		{
- 			if ((b[i-5] > 0) && (b[i-4] > 0) && (b[i-3] > 0) && (b[i-2] > 0) && (b[i-1] > 0))
+ 			if ((a[i-5] > 0) && (a[i-4] > 0) && (a[i-3] > 0) && (a[i-2] > 0) && (a[i-1] > 0))
  			{
  				resSF = "Straight Flush";
  				break;
