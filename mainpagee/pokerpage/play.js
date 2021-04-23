@@ -1,3 +1,4 @@
+//import gameLogic from './gameLogic/gamelogic.js';
 const button = document.querySelector('#bet');
 const button2 = document.querySelector('#fold')
 const button3 = document.querySelector('#top_up');
@@ -44,6 +45,8 @@ var deck = ["1S","2S","3S","4S","5S","6S","7S","8S", "9S", "10S","11S","12S","13
 
 // function for the start button
 function bet() {
+  // let deck2 = getDeck();
+  // console.log("deck is: ", deck2);
   if (clicked_bet == true){
     document.getElementById("betmsg").innerText = "Game started already. You can either play the game or forfeit.";
   }
@@ -132,7 +135,7 @@ function pickCard4() {
 function pickaRandomCards(id){
   var card = deck[Math.floor(Math.random() * deck.length)];
   document.getElementById(id).style.display='none';
-  document.getElementById(id).src = "./poker-img/"+card+".jpg";
+  document.getElementById(id).src = "./static/poker-img/"+card+".jpg";
   document.getElementById("status").innerText = "You picked " + card ;
 
   if(chose == 0){
@@ -141,7 +144,7 @@ function pickaRandomCards(id){
     document.getElementById("yourcard1").width = 150;
 
     document.getElementById("yourcard1").style.display='unset';
-    document.getElementById("yourcard1").src = "./poker-img/"+card+".jpg" ;
+    document.getElementById("yourcard1").src = "./static/poker-img/"+card+".jpg" ;
     document.getElementById("yourcard1").value == "1";
     document.getElementById("yourcards").innerText = "Your Cards:" ;
     chose += 1
@@ -150,7 +153,7 @@ function pickaRandomCards(id){
     document.getElementById("yourcard2").height = 225;
     document.getElementById("yourcard2").width = 150;
     document.getElementById("yourcard2").style.display='unset';
-    document.getElementById("yourcard2").src = "./poker-img/"+card+".jpg" ;
+    document.getElementById("yourcard2").src = "./static/poker-img/"+card+".jpg" ;
     document.getElementById("status1").innerText = "Casino's cards: ";
     document.getElementById("betmsg").innerText = "Choose call/ raise/ fold."
     document.getElementById("casinomsg").innerText = "";
@@ -261,7 +264,7 @@ function showCommunityCards_Flop(){
     var card = deck[Math.floor(Math.random() * deck.length)];
     document.getElementById("communitycards"+i).height = 225;
     document.getElementById("communitycards"+i).width = 150;
-    document.getElementById("communitycards"+i).src = "./poker-img/"+card+".jpg" ;
+    document.getElementById("communitycards"+i).src = "./static/poker-img/"+card+".jpg" ;
     document.getElementById("communitycards"+i).style.display='unset';
     document.getElementById("communitycards").innerText = "Community pile:" ;
     remove_cards_from_deck(deck,card);
@@ -272,7 +275,7 @@ function showCommunityCards_Flop(){
     document.getElementById("communitycards"+i).height = 225;
     document.getElementById("communitycards"+i).width = 150;
     document.getElementById("communitycards"+i).style.display='unset';
-    document.getElementById("communitycards"+i).src = "./poker-img/back.jpg" ;    
+    document.getElementById("communitycards"+i).src = "./static/poker-img/back.jpg" ;    
   }
 }
 
@@ -280,14 +283,14 @@ function showCommunityCards_Flop(){
 
 function Turn(){
     var card = deck[Math.floor(Math.random() * deck.length)];
-    document.getElementById("communitycards4").src = "./poker-img/"+card+".jpg" ;
+    document.getElementById("communitycards4").src = "./static/poker-img/"+card+".jpg" ;
     remove_cards_from_deck(deck, card);
 }
 
 //Turn function (show fifth card)
 function River(){
   var card = deck[Math.floor(Math.random() * deck.length)];
-  document.getElementById("communitycards5").src = "./poker-img/"+card+".jpg" ;
+  document.getElementById("communitycards5").src = "./static/poker-img/"+card+".jpg" ;
   remove_cards_from_deck(deck, card);
   
 }
@@ -295,6 +298,7 @@ function River(){
 
 //reveal casino cards
 function showdown(){
+
   var card = deck[Math.floor(Math.random() * deck.length)];
   for (i = 1; i <=4; i++){
   document.getElementById("card"+i).style.display='none';
@@ -305,13 +309,14 @@ function showdown(){
     var card = deck[Math.floor(Math.random() * deck.length)];
     document.getElementById("casinocard"+i).height = 225;
     document.getElementById("casinocard"+i).width = 150;
-    document.getElementById("casinocard"+i).src = "./poker-img/"+card+".jpg" ;
+    document.getElementById("casinocard"+i).src = "./static/poker-img/"+card+".jpg" ;
     document.getElementById("casinocard1").style.display='unset';
     document.getElementById("casinocard2").style.display='unset';
     remove_cards_from_deck(deck, card);
   
 
   }
+
   phase = "Showdown";
   document.getElementById("phase").innerText = phase;
 
@@ -563,14 +568,14 @@ function restart_game(){
   document.getElementById("communitycards5").style.display='none';
   document.getElementById("yourcard1").style.display='none';
   document.getElementById("yourcard2").style.display='none';
-  document.getElementById("card1").src="./poker-img/back.jpg";
+  document.getElementById("card1").src="./static/poker-img/back.jpg";
   document.getElementById("card1").style.display='unset';
   document.getElementById("card2").style.display='unset';
   document.getElementById("card3").style.display='unset';
   document.getElementById("card4").style.display='unset';
-  document.getElementById("card2").src="./poker-img/back.jpg";
-  document.getElementById("card3").src="./poker-img/back.jpg";
-  document.getElementById("card4").src="./poker-img/back.jpg";
+  document.getElementById("card2").src="./static/poker-img/back.jpg";
+  document.getElementById("card3").src="./static/poker-img/back.jpg";
+  document.getElementById("card4").src="./static/poker-img/back.jpg";
   document.getElementById("bet_total").innerText = "Total bet: " + 0;
   document.getElementById("betmsg").innerText = "Game restarted !";
   document.getElementById("communitycards").innerText = "";

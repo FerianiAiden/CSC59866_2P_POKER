@@ -1,3 +1,4 @@
+var playerWeb3;
 function toggleErrorPopup() {
   document.getElementById("popup-error").classList.toggle("active");
 
@@ -25,13 +26,13 @@ async function loadWeb3() {
 
 
   if (window.ethereum) {
-    var web3js = new Web3(window.ethereum);
+    playerWeb3 = new Web3(window.ethereum);
     await ethereum.enable();
 
     //can use web3 with metamask
+    // here it makes a request to deploy contract
     // after this go to game page
-    console.log("Here");
-    //await interaction.deployContract();
+    
     location.replace('./pokerpage/play.html');
   }
   else if (window.web3) {
