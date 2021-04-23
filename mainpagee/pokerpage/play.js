@@ -1,4 +1,3 @@
-//import gameLogic from './gameLogic/gamelogic.js';
 const button = document.querySelector('#bet');
 const button2 = document.querySelector('#fold')
 const button3 = document.querySelector('#top_up');
@@ -32,7 +31,9 @@ var player_folded = false;
 var player_called = false;
 var player_raised = false;
 var player_checked = false;
-
+var casino_card1 ="";
+var casino_card2 ="";
+var player_cards = [];
 var phase = "Pre-flop";
 document.getElementById("phase").innerText = phase;
 
@@ -45,8 +46,6 @@ var deck = ["1S","2S","3S","4S","5S","6S","7S","8S", "9S", "10S","11S","12S","13
 
 // function for the start button
 function bet() {
-  // let deck2 = getDeck();
-  // console.log("deck is: ", deck2);
   if (clicked_bet == true){
     document.getElementById("betmsg").innerText = "Game started already. You can either play the game or forfeit.";
   }
@@ -57,6 +56,8 @@ function bet() {
     document.getElementById("betmsg").innerText = "Placed 1 milliethers for small blind";
     document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
     CasinoPlaceBigBlind();
+    
+
     approve = true;
     clicked_bet = true;
     timeleft = 60;
@@ -67,6 +68,13 @@ function bet() {
   }
 
 }
+function Casnio_pick_cards(){
+  casino_card1 = deck[Math.floor(Math.random() * deck.length)];
+  remove_cards_from_deck(deck, casino_card1);
+  casino_card2 = deck[Math.floor(Math.random() * deck.length)];
+  remove_cards_from_deck(deck, casino_card1);
+}
+
 
 // function to remove the card from the deck after used
 function remove_cards_from_deck(array, card){
@@ -130,13 +138,18 @@ function pickCard4() {
     pickaRandomCards("card4");
   }
 }
+console.log(player_cards);
 
 // randomize cards
 function pickaRandomCards(id){
   var card = deck[Math.floor(Math.random() * deck.length)];
   document.getElementById(id).style.display='none';
   document.getElementById(id).src = "./static/poker-img/"+card+".jpg";
+  
   document.getElementById("status").innerText = "You picked " + card ;
+  player_cards.push(card);
+
+  
 
   if(chose == 0){
     timeleft=61;
@@ -170,6 +183,7 @@ function pickaRandomCards(id){
    
   }
   remove_cards_from_deck(deck,card);
+  Casnio_pick_cards();
   max_card -= 1;
 
 }
@@ -184,6 +198,7 @@ function CasinoPlaceBigBlind(){
 //casino action choice check/fold/raise
 function CasinoAction(){
   var action = Math.floor(Math.random() * 3);
+
   if (action == 0){
     document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
     casino_checked = true;
@@ -298,24 +313,19 @@ function River(){
 
 //reveal casino cards
 function showdown(){
-
-  var card = deck[Math.floor(Math.random() * deck.length)];
   for (i = 1; i <=4; i++){
   document.getElementById("card"+i).style.display='none';
   document.getElementById("card"+i).style.display='none';
   }
-
-  for (i = 1; i <=2; i++){
-    var card = deck[Math.floor(Math.random() * deck.length)];
-    document.getElementById("casinocard"+i).height = 225;
-    document.getElementById("casinocard"+i).width = 150;
-    document.getElementById("casinocard"+i).src = "./static/poker-img/"+card+".jpg" ;
-    document.getElementById("casinocard1").style.display='unset';
-    document.getElementById("casinocard2").style.display='unset';
-    remove_cards_from_deck(deck, card);
+  document.getElementById("casinocard1").height = 225;
+  document.getElementById("casinocard1").width = 150;
+  document.getElementById("casinocard2").height = 225;
+  document.getElementById("casinocard2").width = 150;
+  document.getElementById("casinocard1").src = "./static/poker-img/"+casino_card1+".jpg" ;
+  document.getElementById("casinocard2").src = "./static/poker-img/"+casino_card2+".jpg" ;
+  document.getElementById("casinocard1").style.display='unset';
+  document.getElementById("casinocard2").style.display='unset';
   
-
-  }
 
   phase = "Showdown";
   document.getElementById("phase").innerText = phase;
