@@ -1607,12 +1607,12 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 	}
 	return tieResult;
 }
-
+/*
 var hand = [deck[3],deck[4],deck[5],deck[16],deck[17],deck[18],deck[19]];
 console.log(hand);
 var result = EvaluateHand(hand);
 console.log("result is: ", result);	
-
+*/
 module.exports = {
   EvaluateHand,
   checkOnePair,
