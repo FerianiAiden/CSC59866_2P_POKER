@@ -262,21 +262,27 @@ function CasinoPlaceBigBlind(){
   }
 
   if (action == 1){
-    document.getElementById("casinomsg").innerText = "Dealer Checked! You can call Check/ fold/ raise";
-    casino_checked = true;
+    document.getElementById("casinomsg").innerText = phase +":  Dealer Checked! You can call Check/ fold/ raise";
     if(player_checked == true && phase == "showdown" ){ 
       document.getElementById("casinomsg").innerText = "player/casino wins";
     }
-    else if ( phase =="Pre-flop"){
+     else if ( phase =="Pre-flop"){
+        change_phase();
+      }
+     else if (  player_checked == true){
+      casino_checked = true;
+      player_checked = false;
       change_phase();
+
     }
     document.getElementById("check").style.visibility='visible';
     document.getElementById("fold").style.visibility='visible';
     document.getElementById("raise").style.visibility='visible';
     document.getElementById("call").style.visibility='hidden';
+
   }
   else if (action == 0){
-     document.getElementById("casinomsg").innerText = "Dealer Folded! You gained " + bet_total +" milliethers!";
+     document.getElementById("casinomsg").innerText =  phase +": Dealer Folded! You gained " + bet_total +" milliethers!";
      milliethersCount += bet_total;
      milliethers.innerText = milliethersCount;
      casino_folded = true;
@@ -284,7 +290,7 @@ function CasinoPlaceBigBlind(){
   }
 
   else if (action == 2){
-    document.getElementById("casinomsg").innerText = "Dealer raised 5 milliethers! You can call/ raise/ fold.";
+    document.getElementById("casinomsg").innerText =  phase +":  Dealer raised 5 milliethers! You can call/ raise/ fold.";
     call_bet = 5;
     bet_total += call_bet;
     document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
@@ -345,7 +351,7 @@ function CasinoAction2(){
   }
   if (action == 1){
 
-    document.getElementById("casinomsg").innerText = "Dealer called! Total bet + "+call_bet+ " You can call Check/ fold/ raise";
+    document.getElementById("casinomsg").innerText =  phase +": Dealer called! Total bet + "+call_bet+ " You can call Check/ fold/ raise";
     bet_total += call_bet;
     document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
     change_phase();
@@ -356,7 +362,7 @@ function CasinoAction2(){
     document.getElementById("call").style.visibility='hidden';
   }
   else if (action == 0){
-     document.getElementById("casinomsg").innerText = "Dealer Folded! You gained " + bet_total +" milliethers!";
+     document.getElementById("casinomsg").innerText =  phase +":  Dealer Folded! You gained " + bet_total +" milliethers!";
      milliethersCount += bet_total;
      milliethers.innerText = milliethersCount;
      casino_folded = true;
@@ -364,7 +370,7 @@ function CasinoAction2(){
    }
 
   else if (action == 2){
-    document.getElementById("casinomsg").innerText = "Dealer raised 5 milliethers! You can call/ raise/ fold.";
+    document.getElementById("casinomsg").innerText =  phase +":  Dealer raised 5 milliethers! You can call/ raise/ fold.";
     call_bet = 5;
     bet_total += call_bet;
     document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
@@ -470,40 +476,49 @@ function showdown(){
 //check button function for player
 
 function check(){
+  player_checked = true;
   if(picked_2cards == true && casino_checked == true && phase ==  "River"){ 
     showdown();
     document.getElementById("casinomsg").innerText = "player/casino wins";
   }
   else if (casino_checked == true && picked_2cards == true ){
     player_checked = true;
-    casino_checked = false;
+    //casino_checked = false;
     //change_phase();
     document.getElementById("betmsg").innerText =  "You checked! " ;
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     hide_all_button();
+    change_phase();  
     setTimeout(function(){
       CasinoAction();
 
     }, 1000);
-    change_phase();  
   }
   else if(casino_checked == false && picked_2cards == true ){
+    player_checked = true;
     document.getElementById("betmsg").innerText =  "You checked! " ;
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     hide_all_button();
     setTimeout(function(){
       CasinoAction();
     }, 1000);  
-    player_checked = true;
+    //casino_checked = false;
   }
   if (timer == true){
     timeleft=61;
   }
-
 }
 
-
-
+function reset_record(){
+  casino_folded = false;
+  casino_called = false;
+  casino_raised = false;
+  casino_checked = false;
+  player_folded = false;
+  player_called = false;
+  player_raised = false;
+  player_checked = false;
+}
 
 // raise button function for player
 
@@ -566,17 +581,17 @@ function call(){
     setTimeout(function(){
       //change_phase();
       // CasinoAction();
-      // change_phase();
+      CasinoAction();
     }, 1000); 
     //change_phase();
-    CasinoAction();
+    
     // setTimeout(function(){
     //   change_phase();
     // }, 1000);
     //change_phase();
-
   }
   else if (picked_2cards == true && casino_raised == true ){
+    //casino_raised == false;
     player_called = true;
     bet_total += call_bet;
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
@@ -592,18 +607,21 @@ function call(){
     // }
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     hide_all_button();
+    change_phase();
     setTimeout(function(){
       CasinoAction();
     }, 1000);
     
-    if(casino_checked == true || casino_raised == true)
-    {
-      change_phase();
-    }
+    // if(casino_checked == true || casino_raised == true)
+    // {
+    //   change_phase();
+    // }
     
   }
   else if (picked_2cards == true && casino_raised == false){
     //player_called_casino_not_raised= true;
+    player_called = true;
+    //casino_raised == false;
     bet_total += call_bet;
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
@@ -633,25 +651,29 @@ function fold() {
 
 function change_phase(){
   if (phase == "Pre-flop"){
-    showCommunityCards_Flop();
     
+    showCommunityCards_Flop();
+  
     phase = "Flop";
     document.getElementById("phase").innerText = phase;
+    
   }
   else if(phase == "Flop"){
+    
     Turn();
     
     phase = "Turn";
     document.getElementById("phase").innerText = phase;
   }
   else if(phase == "Turn"){
+    
     River();
     
     phase = "River";
     document.getElementById("phase").innerText = phase;
   }
   resetCounter();
-
+  reset_record();
 
 }
 
