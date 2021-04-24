@@ -263,16 +263,18 @@ function CasinoPlaceBigBlind(){
 
   if (action == 1){
     document.getElementById("casinomsg").innerText = phase +":  Dealer Checked! You can call Check/ fold/ raise";
-    if(player_checked == true && phase == "showdown" ){ 
-      document.getElementById("casinomsg").innerText = "player/casino wins";
+    if(player_checked == true && phase == "River" ){ 
+      showdown();
     }
      else if ( phase =="Pre-flop"){
         change_phase();
+
       }
      else if (  player_checked == true){
       casino_checked = true;
       player_checked = false;
       change_phase();
+
 
     }
     document.getElementById("check").style.visibility='visible';
@@ -353,13 +355,22 @@ function CasinoAction2(){
 
     document.getElementById("casinomsg").innerText =  phase +": Dealer called! Total bet + "+call_bet+ " You can call Check/ fold/ raise";
     bet_total += call_bet;
+
     document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-    change_phase();
-    casino_called = true;
+    if(player_raised == true && phase == "River" ){ 
+      showdown();
+
+    }
+    else{
+      change_phase();
+      casino_called = true;
+
+    }
     document.getElementById("check").style.visibility='visible';
     document.getElementById("fold").style.visibility='visible';
     document.getElementById("raise").style.visibility='visible';
     document.getElementById("call").style.visibility='hidden';
+
   }
   else if (action == 0){
      document.getElementById("casinomsg").innerText =  phase +":  Dealer Folded! You gained " + bet_total +" milliethers!";
@@ -430,6 +441,7 @@ function River(){
 
 //reveal casino cards
 function showdown(){
+  
   let deckG = getDeck();
   let playerHandG = [deckG[playerIndex[0]],deckG[playerIndex[1]]];
   let casinoHandG = [deckG[casinoIndex[0]],deckG[casinoIndex[1]]];
@@ -470,6 +482,9 @@ function showdown(){
 
   phase = "Showdown";
   document.getElementById("phase").innerText = phase;
+  document.getElementById("betmsg").innerText =  "The game will restart in 5 seconds! " ;
+  document.getElementById("casinomsg").innerText = "you/casino wins!";
+  timeleft = 6;
 
 }
 
@@ -479,7 +494,6 @@ function check(){
   player_checked = true;
   if(picked_2cards == true && casino_checked == true && phase ==  "River"){ 
     showdown();
-    document.getElementById("casinomsg").innerText = "player/casino wins";
   }
   else if (casino_checked == true && picked_2cards == true ){
     player_checked = true;
@@ -536,6 +550,7 @@ function raise(){
   }
 
   else if (picked_2cards == true ){
+     player_raised = true;
      milliethersCount -= raise_amount ;
      milliethers.innerText = milliethersCount;
      bet_total += raise_amount;
@@ -565,7 +580,7 @@ function call(){
   }
   else if( picked_2cards == true && phase ==  "River" ){ 
     showdown();
-    document.getElementById("casinomsg").innerText = "player/casino wins";
+
   }
   else if (picked_2cards == true && phase == "Pre-flop"){
     player_called = true;
