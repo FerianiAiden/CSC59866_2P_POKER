@@ -1,4 +1,4 @@
-# CSC59866_2P_POKER
+# Two Player Poker
 How to set up the project:
 
 1.  Install nodejs. Can do so at the link: https://nodejs.org/en/
