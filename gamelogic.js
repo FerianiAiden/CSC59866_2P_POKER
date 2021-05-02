@@ -1,6 +1,6 @@
 var suit = ["spades", "diamonds", "clubs", "hearts"];
 var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-var deck = [];
+var deckG = [];
 
 function Deck()
 {
@@ -9,12 +9,13 @@ function Deck()
 		for (var j = 0; j < value.length; j++)
 		{
 			var card = {Value: value[j], Suit: suit[i]};
-			deck.push(card);
+			deckG.push(card);
 		}
 	}
 }
 
 Deck();
+function getDeck(){return deckG;}
 
 //console.log(deck[1]);
 
@@ -273,7 +274,7 @@ function checkTwoPair(a)
 
  	if ((pairOne >= 0) && (pairTwo >= 0))
  	{
- 		resTP = "Two Pairs";
+ 		resTP = "Two Pair";
  	} 
 
  	return resTP;
@@ -1841,7 +1842,7 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 	}
 
 	//Two Pairs tiebreaker
-	if (pHandString == "Two Pairs" && cHandString == "Two Pairs")
+	if (pHandString == "Two Pair" && cHandString == "Two Pair")
 	{
 		var pTP = [];
 		for (var a = 0; a < pHand.length; a++)
@@ -2457,19 +2458,19 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 //var GameWinner = EvaluateWinner(pH, cH, PlayerString, CasinoString);
 //console.log("Winner is: ", GameWinner);	
 
-module.exports = {
-  EvaluateHand,
-  checkOnePair,
-  checkHighCard,
-  checkThreeOfAKind,
-  checkFourOfAKind,
-  checkTwoPair,
-  checkStraight,
-  checkFlush,
-  checkFullHouse,
-  checkStraightFlush,
-  updateSuitCounter,
-  updateValueCounter,
-  checkTie,
-  EvaluateWinner
-}
+// module.exports = {
+//   EvaluateHand,
+//   checkOnePair,
+//   checkHighCard,
+//   checkThreeOfAKind,
+//   checkFourOfAKind,
+//   checkTwoPair,
+//   checkStraight,
+//   checkFlush,
+//   checkFullHouse,
+//   checkStraightFlush,
+//   updateSuitCounter,
+//   updateValueCounter,
+//   checkTie,
+//   EvaluateWinner
+// }

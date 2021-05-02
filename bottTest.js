@@ -3,7 +3,7 @@ var gamelogic = require("./gamelogic");
 var suit = ["spades", "diamonds", "clubs", "hearts"];
 var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 var deck = new Array();
-var botHand = [];
+
 
 /*/
 To understand the output:
@@ -44,7 +44,7 @@ let CardCombos = new Map([
 function botPlaysItSafe(){
 //0.
 botStatus = Math.random()
-
+// difference of current and previous hand values * .15 = add to percentages
 	if(botStatus >= 0.80){
 	console.log("3");
 } else if( botStatus >= 0.40){
@@ -163,10 +163,16 @@ function decisionforRiver(){
 
 
 
-
+var handtocheck = [];
+var length = 7;
+randomFill(handtocheck,length);
+console.log(handtocheck);
+console.log(gamelogic.EvaluateHand(handtocheck,length));
 
 
 //decisionForPreFlop();
 //decisionForFlop();
 
-decisionForTurn();
+//decisionForTurn();
+
+
