@@ -16,36 +16,32 @@
           <p>Phase: <span id="phase"></span></p>
           <p><span id="betmsg"></span></p>
           <p><span id="casinomsg"></span></p>
-          
+          <div class="loader" id="loader"></div>
           <p><h2 class="heading"><span id="bet_total">Total bet: 0</span></h2></p>
-          <input type="text" id="raise_amount" > 
+          <input type="text" id="raise_amount" >
           <p><a class="button3"id="raise">RAISE</a></p>
           <p><a class="button3"  id="call">CALL</a>
             <a class="button3" id="check">CHECK</a>
             <a class="button3" id="fold">FOLD</a>
             <p><span id="status"></span></p>
 
-            <p>Add Milliether (test) : <input type="text" id="TEXTBOX_TOPUP" >  
-              <a class="button3" id="top_up">Topup</a> </p>
-            <p>Remove Milliether (test)  : <input type="text" id="TEXTBOX_TRANS" >  
-              <a class="button3" id="transfer">Transfer</a></p>
-          
+
         </div>
-        
-        
-        
+
+
+
         <div class= "game">
           <h2> <div id="mycounter">Timer: 60</div> </h2>
         <h2><span id="status1">Pick two cards</span></h2>
 
            <p>
-        <img alt="" src="/poker-img/back.jpg" 
+        <img alt="" src="/poker-img/back.jpg"
            width= 150 height=225 id="card1" onclick="pickCard1()"  />
-        <img alt="" src="/poker-img/back.jpg" 
+        <img alt="" src="/poker-img/back.jpg"
         width= 150 height=225 id="card2" onclick="pickCard2()"  />
-        <img alt="" src="/poker-img/back.jpg" 
+        <img alt="" src="/poker-img/back.jpg"
         width= 150 height=225 id="card3"  />
-        <img alt="" src="/poker-img/back.jpg" 
+        <img alt="" src="/poker-img/back.jpg"
         width= 150 height=225 id="card4"   />
         <img  id="casinocard1"   />
            <img id="casinocard2"   />
@@ -60,7 +56,7 @@
           <img alt=""  id="communitycards4"   />
           <img alt=""  id="communitycards5"   />
           </p>
-        
+
         <h2><span id="yourcards"></span></h2>
         <p>
         <img alt="" src=""  id="yourcard1"   />
@@ -69,12 +65,12 @@
 
       </div>
     </div>
-     
+
     <script src = "/js/gamelogic.js"></script>
     <script src = "/js/bott.js"></script>
     <script src = "/js/jquery.min.js"></script>
     <script src = "/js/forge.min.js"></script>
-    <script src="/js/web3.min.js"></script> 
+    <script src="/js/web3.min.js"></script>
     <script src="/js/play.js">
     </script>
   </body>

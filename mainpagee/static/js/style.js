@@ -41,12 +41,13 @@ async function loadWeb3() {
 
 
     let xhttp = new XMLHttpRequest();
-    xhttp.open("GET","/deploy",false);
+    xhttp.open("GET","/deploy",true);
     xhttp.onloadend = function(){
       console.log("contract address is: ", xhttp.responseText);
+      location.replace('./play.html');
     }
     xhttp.send();
-    location.replace('./play.html');
+    
   }
   else if (window.web3) {
     //older versions of metamask
