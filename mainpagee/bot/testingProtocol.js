@@ -27,6 +27,7 @@ console.log("Ciphertext of player1's message(c2) is: ",c2.toString());
 let c1c2 = c1.multiply(c2);
 console.log("The result of c1*c2 is: ",c1c2.toString());
 var share = protocol.getShare();
+var table = protocol.getLookUpTable();
 console.log("\nDecrypting c1*c2 given both shares of private key d (This decryption corresponds to giving out the card face up):...");
 var decBothShares = protocol.decryptWithShares(c1c2,share,pubKey);
 console.log("The original message is: ",m,"Result of decryption is: ", decBothShares);
@@ -37,10 +38,10 @@ console.log("Result of this decryption is: ",cP.toString());
 var cPC = protocol.partialDecryptCasino(c1c2,pubKey);
 console.log("Result of partial decrypting previous ciphertext with other share of d is: ", cPC.toString());
 console.log("Now decrypting...");
-var dec = protocol.partialDecryptFinal(cP,cPC,pubKey);
+var dec = protocol.partialDecryptFinal(cP,cPC,pubKey,table);
 console.log("The original message is: ",m,"Result of decrypting the partial decrypted card with other share is: ", dec);
  console.log("Testing that decrypting partial decrypted card with the SAME share doesnt work:..");
-var decBad = protocol.partialDecryptFinal(cP,cP,pubKey);
+var decBad = protocol.partialDecryptFinal(cP,cP,pubKey,table);
 console.log("Result of this is: ", decBad);
 
 
