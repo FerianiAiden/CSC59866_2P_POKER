@@ -1,16 +1,14 @@
 //import gamelogic from "./gamelogic.js";
-var suit = ["spades", "diamonds", "clubs", "hearts"];
-var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-var deck = new Array();
-var botHand = [];
+// var suit = ["spades", "diamonds", "clubs", "hearts"];
+// var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+// var deck = new Array();
+
 
 /*/
-
 To understand the output:
 0 means Fold 
 1 means Check / Call
 2 means Raise
-
 /*/
  
 // function Deck()
@@ -27,7 +25,7 @@ To understand the output:
 // 	}
 // }
  // using Math.floor(random(1, 5))-1 to select random cards from deck[]
-let CardCombos = new Map([
+var CardCombos = new Map([
 	["High Card", 1],
 	["One Pair", 2],
 	["Two Pair", 3],
@@ -37,7 +35,7 @@ let CardCombos = new Map([
 	["Full House", 7],
 	["Four of A Kind", 8],
 	["Straight Flush", 9],
-	["Royal Flush", 9]
+	["Royal Flush", 10]
 	
 ]);
 
@@ -45,8 +43,11 @@ let CardCombos = new Map([
 
 var handtocheck = [];
 var counter = 0;
+var pastHand = [];
 
-function resetCounter(){counter = 0;}
+function resetCounter(){
+	counter = 0;
+pastHand.length = 0;}
 
 var length = 7; //the evaluate function takes in arrays of size 7
 
@@ -56,10 +57,7 @@ function randomFill(handtocheck, length){
 	}
 	}
 
-//console.log(handtocheck);
 
-
-//console.log(CardCombos);
 
  function random(mn, mx) {  //retrieved from GeeksforGeeks
     return Math.random() * (mx - mn) + mn; 
@@ -72,19 +70,17 @@ function randomFill(handtocheck, length){
 // //console.log(handtocheck);
 //  //let combo = gamelogic.EvaluateHand(handtocheck); //Storing string result of EvalH
 
-// }
+
 
 
 function decisionForFlop(combo)
 {
-	
-//randomFill(handtocheck, length);
- //let combo = gamelogic.EvaluateHand(handtocheck); //Storing string result of EvalH
- //console.log(handtocheck);
+ pastHand.push(combo);
+ 
  
  if(CardCombos.has(combo)){
 
-	if(CardCombos.get(combo) >= 2 ){
+	if(CardCombos.get(combo) >= 2){
 		if(counter > 0 ){return 1;}
 		else{
 			counter+=1;
@@ -102,14 +98,13 @@ function decisionForFlop(combo)
 
 function decisionForTurn(combo){
 
-	
-	
-	//let combo = gamelogic.EvaluateHand(handtocheck); //Storing string result of EvalH
+	pastHand.push(combo);
+	let diff = CardCombos.get(combo) - CardCombos.get(pastHand[0]);
 	//console.log(handtocheck);
 
 	if(CardCombos.has(combo)){
 
-		if(CardCombos.get(combo) >= 4)
+		if(CardCombos.get(combo) >= 4 || diff >= 2)
 		{
 			if(counter > 0 ){return 1;}
 			else{
@@ -128,12 +123,17 @@ function decisionForTurn(combo){
 function decisionForRiver(combo){
 
 	
-	//let combo = gamelogic.EvaluateHand(handtocheck); //Storing string result of EvalH
+	
+
+	
+    let diff = CardCombos.get(combo) - CardCombos.get(pastHand[1]);
+	
+
 	//console.log(handtocheck);
 	
 	if(CardCombos.has(combo)){
 
-		if(CardCombos.get(combo) >= 4)
+		if(CardCombos.get(combo) >= 4 || diff >= 2)
 		{
 			if(counter > 0 ){return 1;}
 			else{
@@ -148,8 +148,6 @@ function decisionForRiver(combo){
 			} else return 1;
 	}
 }
-
-
 
 
 
