@@ -842,6 +842,7 @@ function showdown(){
   }
   
   document.getElementById("casinomsg").innerText =  "Revealing shares and determining winner" ;
+  timeleft = 200;
   let xhttp = new XMLHttpRequest();
   xhttp.open("POST","/reveal",true);
   xhttp.setRequestHeader("Content-type","application/json");
