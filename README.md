@@ -13,6 +13,10 @@ How to set up the project:
 **Things to note**
 - The smart contract and protocol are in the bot folder. Interaction.js has functions which send cards to the smart contract based on the phase of the game
 - If you want to run the test script for the protocol, cd into the bot folder and type: node testingProtocol.js
+- Inside the bot folder there is also another test script named testingInteraction.js. This file runs the full game on the back end side and tests if it can decrypt the partially decrypted cards that were sent to the smart contract
+- static/js/gamelogic.js is the file that determines the highest possible combination that can be made given the player's cards and the community pile. This file is also responsible for determining the winner
+- static/js/bott.js is the file that determines the decision that the casino should make(check,call,fold or raise) during each of the game
+- static/js/play.js is the file that interacts with the server and the file that implements all of the UI's functionality
 - The address of the casino will always be 0x6DE29c6a03E2694C3217820ed2e595E24f1145B9
 - When you start the first game, a new contract is deployed for the entire session. Subsequent games will use the same smart contract address
 - To get a better idea of what is happening under the hood, view the terminal as the game progresses.
