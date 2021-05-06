@@ -438,24 +438,31 @@ function CasinoPlaceBigBlind(){
   }
 
   else if (action == 2){
-    document.getElementById("casinomsg").innerText =  phase +":  Dealer raised 5 milliethers! You can call/ raise/ fold.";
-    let callTemp = call_bet;
-    call_bet = 5;
+    let raise;
+    if(call_bet >= 5){
+      raise = call_bet + 1
+    }
+    else{
+      raise = 5;
+    }
+    document.getElementById("casinomsg").innerText =  phase +":  Dealer raised "+ raise+ " milliethers! You can call/ raise/ fold.";
+    //let callTemp = call_bet;
+    // call_bet = 5;
     let data ={
-      "amt": playerObj.utils.toWei(call_bet.toString(),"milliether")
+      "amt": playerObj.utils.toWei(raise.toString(),"milliether")
     }
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST","/casinoRaise",false);
     xhttp.setRequestHeader("Content-Type","application/json");
     xhttp.onloadend = function(){
-      bet_total += call_bet;
+      bet_total += raise;
       document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
       document.getElementById("call").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
       document.getElementById("check").style.visibility='hidden';
       casino_raised = true;
-      call_bet = 5 - callTemp;
+      call_bet = raise - call_bet;
       hide_loader();
     }
     xhttp.send(JSON.stringify(data));
@@ -559,25 +566,32 @@ function CasinoAction2(){
   }
 
   else if (action == 2){
-    document.getElementById("casinomsg").innerText =  phase +":  Dealer raised 5 milliethers! You can call/ raise/ fold.";
-    let callTemp = call_bet;
-    call_bet = 5;
+    let raise;
+    if(call_bet >= 5){
+      raise = call_bet + 1
+    }
+    else{
+      raise = 5;
+    }
+    document.getElementById("casinomsg").innerText =  phase +":  Dealer raised "+ raise+ " milliethers! You can call/ raise/ fold.";
+    //let callTemp = call_bet;
+    // call_bet = 5;
     let data ={
-      "amt": playerObj.utils.toWei(call_bet.toString(),"milliether")
+      "amt": playerObj.utils.toWei(raise.toString(),"milliether")
     }
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST","/casinoRaise",false);
     xhttp.setRequestHeader("Content-Type","application/json");
     xhttp.onloadend = function(){
-      hide_loader();
-      bet_total += call_bet;
+      bet_total += raise;
       document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
       document.getElementById("call").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
       document.getElementById("check").style.visibility='hidden';
       casino_raised = true;
-      call_bet = 5 - callTemp;
+      call_bet = raise - call_bet;
+      hide_loader();
     }
     xhttp.send(JSON.stringify(data));
     
@@ -880,7 +894,9 @@ async function call(){
       gas:400000, 
       value: callWei
     });
-    //hide_loader(); 
+    //hide_loader();
+    bet_total += call_bet;
+    document.getElementById("bet_total").innerText = "Total bet:" + bet_total; 
     showdown();
 
   }
@@ -1123,6 +1139,7 @@ function restart_game(){
     partialCards.length = 0;
     //activeGame = false;
     resetCounter(); // reset counter in bott.js
+    clearHistory(); // clear the history of card results in bott.js
     
     document.getElementById("status1").innerText= "Pick two cards";
     document.getElementById("casinocard1").style.display='none';

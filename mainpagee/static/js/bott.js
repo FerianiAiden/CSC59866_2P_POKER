@@ -47,7 +47,11 @@ var pastHand = [];
 
 function resetCounter(){
 	counter = 0;
-pastHand.length = 0;}
+}
+
+function clearHistory(){
+	pastHand.length = 0;
+}
 
 var length = 7; //the evaluate function takes in arrays of size 7
 
