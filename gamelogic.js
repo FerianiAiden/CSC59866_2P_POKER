@@ -327,11 +327,11 @@ function checkFullHouse(a)
 		{
 			if (a[i-1] > 2)
 			{
-				ThreeKind = i - 1;
+				ThreeKind = i;
 			}
 			else if (a[i-1] > 1)
 			{
-				TwoKind = i - 1;
+				TwoKind = i;
 			}
 		}
 		else
@@ -2414,8 +2414,8 @@ function checkTie(pHand, cHand, pHandString, cHandString)
 		//console.log(pHigh);
 		//console.log(cHigh);
 
-		//pHigh.splice(5,2);
-		//cHigh.splice(5,2);
+		pHigh.splice(5,2);
+		cHigh.splice(5,2);
 
 		//console.log("pHigh and cHigh Spliced");
 		//console.log(pHigh);
