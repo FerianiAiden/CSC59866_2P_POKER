@@ -70,7 +70,6 @@ contract Poker {
     function joinGame(string memory x) public payable {
         //require(!gameOver, "Game was canceled."); // maybe take this out
         require(msg.value == blindFeeSmall, "invalid bet amount. Must be .001 ether");
-        require(stages == STAGES.DEALING,"Not in the dealing phase");
         player2 = msg.sender;
         betPlayer2 = msg.value;
         commitPlayerShare(x);
@@ -173,23 +172,7 @@ contract Poker {
         stages = STAGES.RIVER;
     }
     
-    //functions to go to certain state below
-    function goToFlop() public{
-        require(msg.sender == player1);
-        stages = STAGES.FLOP;
-    }
-    function goToTurn() public{
-        require(msg.sender == player1);
-        stages = STAGES.TURN;
-    }
-    function goToRiver() public{
-        require(msg.sender == player1);
-        stages = STAGES.RIVER;
-    }
-    function goToPayout() public {
-        require(msg.sender == player1);
-        stages = STAGES.PAYOUT;
-    }
+    
     
     
     
@@ -204,11 +187,6 @@ contract Poker {
        else if(msg.sender == player2){
            betPlayer2+=amount;
        }
-    }
-    
-    // this function might not need to be called in the front end as its not really doing anything
-    function Check() public payable{
-         require(msg.value == 0,"cant bet if you are checking");
     }
     
     function Raise(uint256 amount) payable public { //needs to be tweaked to control raise factor
@@ -258,7 +236,6 @@ contract Poker {
              player2.transfer(address(this).balance);
          }
         else if (msg.sender == player2){player1.transfer(address(this).balance);}
-        stages = STAGES.DEALING;
         restartGame();
         
     

@@ -126,7 +126,7 @@ async function enter(){
 }
 
 
-//note, some of the ajax calls are synchronous. If we have time, make them async and have loaders while request is happening
+
 // function for the start button
 async function bet() {
   if (clicked_bet == true){
@@ -241,82 +241,7 @@ async function bet() {
       
     }
     xhttp.send();
-    // generation of cards for the game
-    // getting randomness of player ready to be sent to server
-  //   let playerRandomness = [];
-  //   for(var i = 0; i < 9; i++){
-  //     let r = Math.floor(Math.random() * 52);
-  //     let enc = encrypt(r.toString(),publicKey);
-  //     playerRandomness.push(enc.toString());
-  //   }
-  //   console.log("player randomness is: ", playerRandomness);
-  //   let sendRandom = {
-  //     "playerR": playerRandomness,
-  //     "playerShare":share
-  //   }
-  //   console.log(JSON.stringify(sendRandom));
-  //   document.getElementById("casinomsg").innerText = "Generating cards cooperatively..";
-  //   let xhttp2 = new XMLHttpRequest();
-  //   xhttp2.open("POST","/cardGen",true);
-  //   xhttp2.setRequestHeader("Content-Type","application/json");
-  //   xhttp2.onloadend = function(){
-  //     let data = JSON.parse(xhttp.responseText);
-  //     choices = data.choices;
-  //     partialCards.push(choices[0],choices[1]);
-  //     console.log("PARTIAL CARDS IS: ",partialCards);
-  //     L = data.L;
-  //     console.log("L IS: ", L);
-  //     dealComplete = true;
-  //     CasinoPlaceBigBlind();
-  //     approve = true;
-  //     clicked_bet = true;
-  //     //decrypt players cards:
-      
-  //     //card 1
-  //     let card1 = new BigInteger(choices[0]);
-  //     let shareBig = new BigInteger(share);
-  //     let l1Big = new BigInteger(L[1]);
-  //     let card1Partial = partialDecryptPlayer(l1Big,shareBig,publicKey);
-  //     let card1Dec = partialDecryptFinal(card1,card1Partial,publicKey,lookUpTable);
-      
-  //     //card 2
-  //     let card2 = new BigInteger(choices[1]);
-  //     let l2Big = new BigInteger(L[2]);
-  //     let card2Partial = partialDecryptPlayer(l2Big,shareBig,publicKey);
-  //     let card2Dec = partialDecryptFinal(card2,card2Partial,publicKey,lookUpTable);
-
-  //     choices[0] = card1Dec;
-  //     choices[1] = card2Dec;
-  //     timeleft = 60;
-  //     onTimer();
-  //     console.log("dealComplete is: ", dealComplete);
-  //     console.log("choices is: ", choices);
-  //   }
-  //   xhttp2.send(JSON.stringify(sendRandom));
-
-  //   //creating contract instance
-  //   contractInstance = await new playerObj.eth.Contract(JSON.parse(abi),contractAddress);
-  //   console.log("contract instance is: ", contractInstance);
-  //   let playerAddresses = await playerObj.eth.getAccounts();
-  //   //gets first account thats connected
-  //   playerAddress = playerAddresses[0];
-  //   console.log("player's address is",playerAddress);
     
-  // // small blind
-  // console.log("sending transaction for small blind and committing player's share")
-  // await contractInstance.methods.joinGame(share).send({
-  //   from: playerAddress,
-  //   gas:400000, // play around with this value to minimize amt of gas 
-  //   value: playerObj.utils.toWei("1","milliether")
-  // });
-  // console.log("small blind was set");
-
-  //   bet_total += 1;
-  //   let weiBalance = await playerObj.eth.getBalance(playerAddress); //gives balance in wei
-  //   milliethersCount = await playerObj.utils.fromWei(weiBalance, 'milliether');
-  //   milliethers.innerText = milliethersCount;
-  //   document.getElementById("betmsg").innerText = "Placed 1 milliethers for small blind";
-  //   document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
     
   }
   else{
@@ -331,35 +256,6 @@ function Casnio_pick_cards(choice){
   casinoIndex.push(r1Int);
   
 }
-
-
-
-
-
-// add $ test
-
-// function top_up() {
-//    var topupValue = Number(document.getElementById('TEXTBOX_TOPUP').value);
-//    if (topupValue > 0){
-//    milliethersCount += topupValue;
-//    milliethers.innerText = milliethersCount;
-   
-
-//    document.getElementById("betmsg").innerText = "Added " + topupValue +" milliethers";
-//   }
-// }
-// remove $ test
-/*function transfer() {
-   var transValue = Number(document.getElementById('TEXTBOX_TRANS').value);
-  if (milliethersCount >= transValue ){
-    milliethersCount = milliethersCount - transValue;
-    milliethers.innerText = milliethersCount;
-     document.getElementById("betmsg").innerText = "Transferred " + transValue +" milliethers to your wallet successfully.";
-   }
-   else{
-    document.getElementById("betmsg").innerText = "Not enough tokens";
-   }
-}*/
 
 // function to choose first 4 cards
 function pickCard1() {
@@ -461,13 +357,6 @@ function CasinoPlaceBigBlind(){
   //console.log(casinoHand);
   console.log("phase is: ", phase);
   if(phase == "Pre-flop"){
-    // console.log("pre-flop block");
-    // let result = EvaluateHand(casinoHand);
-    // console.log("Result in pre flop is: ", result);
-    // action = decisionForPreFlop(result);
-    // console.log("their hand is: ", casinoHand);
-    // console.log("result is: ", result);
-    // console.log("action is",action);
     action = 1;
   }
   else if(phase == "Flop"){
@@ -585,11 +474,6 @@ function CasinoAction2(){
   //console.log(casinoHand);
   console.log("phase is: ", phase);
   if(phase == "Pre-flop"){
-    // let result = EvaluateHand(casinoHand);
-    // action = decisionForPreFlop(result);
-    // console.log("their hand is: ", casinoHand);
-    // console.log("result is: ", result);
-    // console.log("action is",action);
     action = 1;
   }
   else if(phase == "Flop"){
@@ -1089,11 +973,14 @@ async function call(){
 function fold() {
   if(picked_2cards == true){
     folded = true;
+    document.getElementById("betmsg").innerText = "Processing transaction";
     let xhttp = new XMLHttpRequest();
     xhttp.open("GET","/playerFold",true);
     show_loader();
     xhttp.onloadend = function(){
-      restart_game();
+      timeleft = 15;
+      document.getElementById("betmsg").innerText = "You folded. Restarting game in 15 seconds";
+      //restart_game();
       hide_loader();
     }
     xhttp.send();
@@ -1143,11 +1030,13 @@ function onTimer(){
   if(timeleft <= 0){
     clearInterval(downloadTimer);
     if (folded == true){
-      alert("You folded! Game restart!");
+      // alert("You folded! Game restart!");
+      // document.getElementById("casinomsg").innerText = "You folded. Restarting the game";
     }
     else if (phase != "Showdown"){
       // give casino back his money if player lets time run out
-      alert("You let the time run out. Restarting the game");
+      // alert("You let the time run out. Restarting the game");
+      document.getElementById("casinomsg").innerText = "You let the time run out. Restarting the game";
       let xhttp = new XMLHttpRequest();
       xhttp.open("GET","/timeout",false);
       xhttp.send();
@@ -1254,7 +1143,7 @@ function restart_game(){
     document.getElementById("card3").src="/poker-img/back.jpg";
     document.getElementById("card4").src="/poker-img/back.jpg";
     document.getElementById("bet_total").innerText = "Total bet: " + 0;
-    document.getElementById("betmsg").innerText = "Game restarted !";
+    document.getElementById("betmsg").innerText = "Game restarted";
     document.getElementById("communitycards").innerText = "";
     document.getElementById("yourcards").innerText = "" ;
     document.getElementById("check").style.visibility='visible';
