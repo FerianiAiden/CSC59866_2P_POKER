@@ -19,8 +19,7 @@ var keys;
 //will hold the additive shares of private key d
 var shares = Array();
 
-//private key
-var pKey;
+
 var lookUpTable =[]; // stores y^md in string
 function Deck()
 {
@@ -123,7 +122,6 @@ async function keygen(){
   
   shares = [d1,d2];
   keys = [y,r,n];
-  pKey = totientNOverR;
   //module.exports.pKey = pKey 
 }
 
@@ -226,7 +224,6 @@ return keys;
 function clearKeys(){
   keys.length = 0;
   shares.length = 0;
-  pKey = null;
   lookUpTable.length = 0;
 
 }
