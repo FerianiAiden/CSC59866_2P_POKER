@@ -342,7 +342,7 @@ function pickaRandomCards(id,choice){
 function CasinoPlaceBigBlind(){
   bet_total += 2;
   document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-  document.getElementById("casinomsg").innerText = "Casino placed a big blind (2 milliethers). Now pick the cards";
+  document.getElementById("casinomsg").innerText = "Casino placed a big blind (2 milliethers). Pick the first two cards";
   
 }
 
