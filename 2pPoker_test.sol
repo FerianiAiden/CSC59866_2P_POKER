@@ -1,15 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity 0.7.4;
 import "remix_tests.sol"; // this import is automatically injected by Remix.
 import "remix_accounts.sol";
-import "../contracts/Poker.sol";
+import "../github/FerianiAiden/CSC59866_2P_POKER/mainpagee/bot/2pPoker.sol";
 pragma experimental ABIEncoderV2;
 
 // File name has to end with '_test.sol', this file can contain more than one testSuite contracts
 contract PokerTest is Poker{
 
+
     Poker instance;
+
     // Define variables referring to different accounts
     address acc0; // player 1
     address acc1; // player 2
@@ -21,7 +23,7 @@ contract PokerTest is Poker{
 
 
     // Initiate accounts variable
-    function beforeAll() public returns (bool)  {
+    function beforeAll() public {
         acc0 = TestsAccounts.getAccount(0);
         acc1 = TestsAccounts.getAccount(1);
     }
@@ -73,8 +75,8 @@ contract PokerTest is Poker{
     //funds transferred to casino
     function testLeaveGame() public {
         leaveGame();
-        Assert.equal(msg.sender, acc1, 'acc1 should be the sender of this function check');
-        Assert.equal(instance.getBalance(), 5, "Balance should be 7 now");
+        Assert.equal(msg.sender, acc0, 'acc0 should be the sender of this function check');
+        Assert.equal(instance.getBalance(), 0, "Balance should be 0 now");
     }
 
     //tests Fold and restartGame functions
