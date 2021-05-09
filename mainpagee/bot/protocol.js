@@ -151,22 +151,7 @@ function encrypt(m,pubKeys){ // m can be "0","1",...,"52" in string form
   return enc;
 }
 
-// returns original message as string, c takes in the ciphertext from the encryption(as bigInteger)
-function decrypt(c,pubKeys){
-  console.log("STARTING DECRYPT....")
-  let m;
-  let dec = c.modPow(pKey,pubKeys[2]); // decrypting has the property: c^d mod n = y^(md) mod n, where d = phi(n) / r
-  for(var i = 0; i < 53; i++){
-    let iBig = new BigInteger(i.toString());
-    let md = iBig.multiply(pKey);
-    let val = pubKeys[0].modPow(md,pubkeys[2]);
-    if(dec.toString() == val.toString()){
-      m = i.toString();
-      break;
-    }
-  }
-  return m;
-}
+
 
 // decrypts given ciphertext and shares of private key d(both in biginteger)
 function decryptWithShares(c,share1,pubKeys){
