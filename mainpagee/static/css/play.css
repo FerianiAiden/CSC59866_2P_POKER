@@ -9,16 +9,21 @@ html, body {
 
 
 .container {
-  width: 100%;
-  height: 100%;
+  background-image: url('../poker-img/background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: right; 
+  background-size: cover;
+  display: flex; 
+
 }
 
 .game  {
- background-image: url('../poker-img/background.jpg');
- background-repeat: no-repeat;
+  background-image: url('../poker-img/background.jpg'); 
+  background-repeat: no-repeat;
  background-attachment: fixed;
  background-position: right; 
- background-size: cover;
+ background-size: cover; 
   
    display: flex; 
   
@@ -33,15 +38,31 @@ html, body {
   float: right;
   width: 60%;
 }
+/* .front {
+  background-image: url('../poker-img/background.jpg'); 
+  transform: rotateY(180deg);
+
+}
+.back {
+  backface-visibility: hidden;
+}
+.card{
+  position:relative;
+  transform: all 0.8s ease;
+  transform-style: preserve-3d;
+}
+.flipCard {
+  transform : rotateY(180deg);
+} */
 
 
 
 .intro  {
-  background-image: url('../poker-img/background.jpg');
- background-repeat: no-repeat;
+   background-image: url('../poker-img/background.jpg'); 
+  background-repeat: no-repeat;
  background-attachment: fixed;
  background-position: right; 
- background-size: cover;
+ background-size: cover; 
 
   
   display: flex;
@@ -57,6 +78,9 @@ html, body {
 
 }
 
+.pot{
+  color: red;
+}
 .heading{
   color: rgb(245, 245, 81); 
 }

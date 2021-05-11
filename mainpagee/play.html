@@ -10,19 +10,25 @@
     <div class='container'>
         <div class= 'intro'>
           <h1>Texas Hold 'Em (2P)</h1>
-          <p><h2 class="heading">Balance in Milliether: <span id="milliethersCount"></span></h2></p>
-          <p>Start the game by placing a small blind (1 milliethers)</p>
+          <p><h2 class="heading">Balance: <span id="milliethersCount"></span> (milliethers)</h2></p>
+          <p><h2 class="heading">Your total bet: <span id="yourbet_total"> 0</span></h2></p>
+          <p><h2 class="pot"><span id="bet_total">Pot: 0  </span></h2></p>
+          <p> <h2 > <span id="phase"></span></h2></p>
+          <p><span id="startmsg">Start the game by placing a small blind (1 milliether)</span></p>
           <p><a a class="button3" id="bet">START</a></p>
-          <p>Phase: <span id="phase"></span></p>
           <p><span id="betmsg"></span></p>
           <p><span id="casinomsg"></span></p>
           <div class="loader" id="loader"></div>
-          <p><h2 class="heading"><span id="bet_total">Total bet: 0</span></h2></p>
+          <h3 id="playeraction">Player Actions:</h3>
           <input type="text" id="raise_amount" >
           <p><a class="button3"id="raise">RAISE</a></p>
           <p><a class="button3"  id="call">CALL</a>
             <a class="button3" id="check">CHECK</a>
             <a class="button3" id="fold">FOLD</a>
+          </p>
+            <p><span id="players result"></span></p>
+            <p><span id="casinos result"></span></p>
+            </p>
             <p><span id="status"></span></p>
 
 
@@ -32,22 +38,21 @@
 
         <div class= "game">
           <h2> <div id="mycounter">Timer: 60</div> </h2>
-        <h2><span id="status1">Pick the first two cards</span></h2>
+          <h2><span id="status1">Casino's cards:</span></h2>
 
            <p>
-        <img alt="" src="/poker-img/back.jpg"
-           width= 150 height=225 id="card1" onclick="pickCard1()"  />
-        <img alt="" src="/poker-img/back.jpg"
-        width= 150 height=225 id="card2" onclick="pickCard2()"  />
-        <img alt="" src="/poker-img/back.jpg"
-        width= 150 height=225 id="card3"  />
-        <img alt="" src="/poker-img/back.jpg"
-        width= 150 height=225 id="card4"   />
+
+            <img alt="" src="/poker-img/back.jpg"
+            width= 150 height=225 id="card3"  />
+            <img alt="" src="/poker-img/back.jpg"
+            width= 150 height=225 id="card4"   />
+
         <img  id="casinocard1"   />
            <img id="casinocard2"   />
         </p>
 
-        <h2><span id="communitycards"></span></h2>
+
+      <h2><span id="communitycards"></span></h2>
 
         <p>
           <img alt="" id="communitycards1"   />
@@ -57,9 +62,23 @@
           <img alt=""  id="communitycards5"   />
           </p>
 
-        <h2><span id="yourcards"></span></h2>
+
+        <h2><span id="yourcards">Click below to reveal your cards</span></h2>
         <p>
-        <img alt="" src=""  id="yourcard1"   />
+          <!-- <div class="card" id="card">
+            <div class="front">
+              <img alt="" src=""  id="yourcard1"   />
+            </div>
+            <div class="back">
+              <img alt="" src="/poker-img/back.jpg" width= 150 height=225  id="back1"   />
+            </div>
+          </div> -->
+          <img alt="" src=""  id="yourcard1"   /> 
+        <img alt="" src="/poker-img/back.jpg"
+          width= 150 height=225 id="card1" onclick="pickCard1()"  />
+       <img alt="" src="/poker-img/back.jpg"
+       width= 150 height=225 id="card2" onclick="pickCard2()"  />
+        
         <img alt="" src=""  id="yourcard2"   /></p>
 
 

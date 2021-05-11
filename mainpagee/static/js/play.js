@@ -38,7 +38,7 @@ var phase = "Pre-flop";
 var playerIndex = [];
 var casinoIndex = [];
 var communityIndex = [];
-
+var yourbet_total = 0;
 var share; // player's share of private key
 var publicKey; // public keys
 var playerAddress;
@@ -58,7 +58,7 @@ var contractInstance;
 var abi;
 var BigInteger = forge.jsbn.BigInteger;
 
-document.getElementById("phase").innerText = phase;
+
 
 
 var deck = ["1S","2S","3S","4S","5S","6S","7S","8S", "9S", "10S","11S","12S","13S",
@@ -66,6 +66,12 @@ var deck = ["1S","2S","3S","4S","5S","6S","7S","8S", "9S", "10S","11S","12S","13
 "1C","2C","3C","4C","5C","6C","7C","8C", "9C", "10C","11C","12C","13C",
 "1H","2H","3H","4H","5H","6H","7H","8H", "9H", "10H","11H","12H","13H"
 ];
+
+[].forEach.call(document.querySelectorAll('.game'), function (el) {
+  el.style.visibility = 'hidden';
+});
+
+hide_all_button();
 
 function encrypt(m,pubKeys){ // m can be "0","1",...,"52" in string form
   console.log("STARTING ENCRYPT...");
@@ -139,7 +145,10 @@ async function bet() {
   }
   else if (1 <= milliethersCount ){
     document.getElementById("casinomsg").innerText = "Running keygen..";
+    document.getElementById("startmsg").style.display = "none";
+    document.getElementById("bet").style.visibility = "hidden";
     show_loader();
+
     //ajax request
     let xhttp = new XMLHttpRequest();
     xhttp.open("GET","/init",true);
@@ -228,21 +237,23 @@ async function bet() {
     value: playerObj.utils.toWei("1","milliether")
   });
   console.log("small blind was set");
-
+    yourbet_total += 1;
     bet_total += 1;
     let weiBalance = await playerObj.eth.getBalance(playerAddress); //gives balance in wei
     milliethersCount = await playerObj.utils.fromWei(weiBalance, 'milliether');
     milliethers.innerText = milliethersCount;
     document.getElementById("betmsg").innerText = "Placed 1 milliethers for small blind";
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+
     // timeleft = 60;
     // onTimer();
     // hide_loader();
-      
+
+
     }
     xhttp.send();
-    
-    
+
   }
   else{
     document.getElementById("betmsg").innerText = "You don't have not enough milliethers to bet.";
@@ -292,7 +303,7 @@ function pickaRandomCards(id,choice){
   document.getElementById(id).style.display='none';
   document.getElementById(id).src = "/poker-img/"+card+".jpg";
   
-  document.getElementById("status").innerText = "You picked " + card ;
+  //document.getElementById("status").innerText = "You picked " + card ;
   player_cards.push(card);
   playerIndex.push(r1Int);
   
@@ -307,6 +318,7 @@ function pickaRandomCards(id,choice){
     document.getElementById("yourcard1").width = 150;
 
     document.getElementById("yourcard1").style.display='unset';
+    //document.getElementById("yourcard1").src = "/poker-img/"+card+".jpg" ;
     document.getElementById("yourcard1").src = "/poker-img/"+card+".jpg" ;
     document.getElementById("yourcard1").value == "1";
     document.getElementById("yourcards").innerText = "Your Cards:" ;
@@ -318,10 +330,17 @@ function pickaRandomCards(id,choice){
     document.getElementById("yourcard2").style.display='unset';
     document.getElementById("yourcard2").src = "/poker-img/"+card+".jpg" ;
     document.getElementById("status1").innerText = "Casino's cards: ";
-    document.getElementById("betmsg").innerText = "Choose call/ raise/ fold."
+    document.getElementById("betmsg").innerText = "Choose call/ raise/ fold.";
+
     document.getElementById("casinomsg").innerText = "";
     picked_2cards = true;
-    
+    phase = "Pre-flop";
+    document.getElementById("fold").style.visibility='visible';
+    document.getElementById("raise").style.visibility='visible';
+    document.getElementById("playeraction").style.display='block';
+    document.getElementById("raise_amount").style.display ='block';
+    document.getElementById("call").style.visibility='visible';
+    document.getElementById("phase").innerText = "Phase: " + "Pre-flop";
     document.getElementById("check").style.visibility='hidden';
     
     if (timer == true){
@@ -341,8 +360,11 @@ function pickaRandomCards(id,choice){
 //casion place blind (2milliethers)
 function CasinoPlaceBigBlind(){
   bet_total += 2;
-  document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-  document.getElementById("casinomsg").innerText = "Casino placed a big blind (2 milliethers). Pick the first two cards";
+  document.getElementById("bet_total").innerText = "Pot: " + bet_total;
+  document.getElementById("casinomsg").innerText = "Casino placed a big blind (2 milliethers). Game started!";
+  [].forEach.call(document.querySelectorAll('.game'), function (el) {
+    el.style.visibility = 'visible';
+  });
   
 }
 
@@ -398,6 +420,8 @@ function CasinoPlaceBigBlind(){
     document.getElementById("casinomsg").innerText = phase +":  Dealer Checked! You can call Check/ fold/ raise";
     if(player_checked == true && phase == "River" ){ 
       //show_loader();
+      show_loader();
+      hide_all_button();
       showdown();
     }
      else if ( phase =="Pre-flop"){
@@ -410,19 +434,28 @@ function CasinoPlaceBigBlind(){
 
 
     }
-    document.getElementById("check").style.visibility='visible';
-    document.getElementById("fold").style.visibility='visible';
-    document.getElementById("raise").style.visibility='visible';
-    document.getElementById("call").style.visibility='hidden';
-    if(phase!= "River"){
-      hide_loader();
+    if (phase!= "Showdown"){
+      document.getElementById("check").style.visibility='visible';
+      document.getElementById("fold").style.visibility='visible';
+      document.getElementById("raise").style.visibility='visible';
+      document.getElementById("playeraction").style.display='block';
+      document.getElementById("raise_amount").style.display ='block';
+      document.getElementById("call").style.visibility='hidden';
     }
+    if (phase == "Showdown"){
+      show_loader();
+      hide_all_button();
+    }
+    // if(phase!= "River"){
+    //   hide_loader();
+    // }
     
 
   }
   else if (action == 0){
     let xhttp = new XMLHttpRequest();
     show_loader();
+    hide_all_button();
     xhttp.open("GET","/casinoFold",true);
     xhttp.onloadend = function(){
       document.getElementById("casinomsg").innerText =  phase +": Dealer Folded! You gained " + bet_total +" milliethers!";
@@ -456,13 +489,16 @@ function CasinoPlaceBigBlind(){
     xhttp.setRequestHeader("Content-Type","application/json");
     xhttp.onloadend = function(){
       bet_total += raise;
-      document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+      document.getElementById("bet_total").innerText = "Pot: " + bet_total;
       document.getElementById("call").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
+      document.getElementById("playeraction").style.display='block';
+      document.getElementById("raise_amount").style.display ='block';
       document.getElementById("check").style.visibility='hidden';
       casino_raised = true;
-      call_bet = raise - call_bet;
+      //call_bet = raise - call_bet;
+      call_bet = raise ;
       hide_loader();
     }
     xhttp.send(JSON.stringify(data));
@@ -525,13 +561,15 @@ function CasinoAction2(){
       if(phase!= "River"){
         hide_loader();
       }
-      document.getElementById("casinomsg").innerText =  phase +": Dealer called! Total bet + "+call_bet+ " You can call Check/ fold/ raise";
+      document.getElementById("casinomsg").innerText =  phase +": Dealer called! Pot + "+ call_bet + " You can call Check/ fold/ raise";
       bet_total += call_bet;
-      call_bet = 0;
+      //call_bet = 0;
 
-      document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+      document.getElementById("bet_total").innerText = "Pot: " + bet_total;
       if(player_raised == true && phase == "River" ){ 
       //show_loader();
+      show_loader();
+      hide_all_button();
       showdown();
 
       }
@@ -540,10 +578,19 @@ function CasinoAction2(){
         casino_called = true;
 
       }
-      document.getElementById("check").style.visibility='visible';
-      document.getElementById("fold").style.visibility='visible';
-      document.getElementById("raise").style.visibility='visible';
-      document.getElementById("call").style.visibility='hidden';
+      if (phase!= "Showdown"){
+        document.getElementById("check").style.visibility='visible';
+        document.getElementById("fold").style.visibility='visible';
+        document.getElementById("raise").style.visibility='visible';
+        document.getElementById("playeraction").style.display='block';
+        document.getElementById("raise_amount").style.display ='block';
+        document.getElementById("call").style.visibility='hidden';
+      }
+      if (phase == "Showdown"){
+        show_loader();
+        hide_all_button();
+      }
+
     }
     xhttp.send(JSON.stringify(data));
     
@@ -584,13 +631,16 @@ function CasinoAction2(){
     xhttp.setRequestHeader("Content-Type","application/json");
     xhttp.onloadend = function(){
       bet_total += raise;
-      document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+      document.getElementById("bet_total").innerText = "Pot: " + bet_total;
       document.getElementById("call").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
+      document.getElementById("playeraction").style.display='block';
+      document.getElementById("raise_amount").style.display ='block';
       document.getElementById("check").style.visibility='hidden';
       casino_raised = true;
-      call_bet = raise - call_bet;
+      //call_bet = raise - call_bet;
+      call_bet = raise;
       hide_loader();
     }
     xhttp.send(JSON.stringify(data));
@@ -695,6 +745,9 @@ function River(){
 
 //reveal casino cards
 function showdown(){
+  phase = "Showdown";
+  document.getElementById("players result").innerText = "Phase: "+ phase;
+
   console.log("start of showdown...");
   for (i = 1; i <=4; i++){
     document.getElementById("card"+i).style.display='none';
@@ -727,10 +780,17 @@ function showdown(){
   casinoHandG = casinoHandG.concat(communityPileG);
   let resultPlayer = EvaluateHand(playerHandG);
   let resultCasino = EvaluateHand(casinoHandG);
+  resultPlayer = EvaluateHand(playerHandG);
+  resultCasino = EvaluateHand(casinoHandG);
+
   console.log("Players result is: ", resultPlayer);
   console.log("Casinos result is: ", resultCasino);
+
+  document.getElementById("players result").innerText = "The player's result is: "+ resultPlayer;
+  document.getElementById("casinos result").innerText = "The casino's result is: "+ resultCasino;
+
   let finalResult = EvaluateWinner(playerHandG,casinoHandG,resultPlayer,resultCasino);
-  
+
 
   let data = {
     "playerCards" : partialCards,
@@ -740,6 +800,7 @@ function showdown(){
   }
   
   document.getElementById("casinomsg").innerText =  "Revealing shares and determining winner" ;
+
   timeleft = 200;
   let xhttp = new XMLHttpRequest();
   xhttp.open("POST","/reveal",true);
@@ -762,7 +823,7 @@ function showdown(){
   
 
     phase = "Showdown";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
     document.getElementById("betmsg").innerText =  "The game will restart in 15 seconds! " ;
     document.getElementById("casinomsg").innerText = finalResult;
     timeleft = 15;
@@ -770,10 +831,12 @@ function showdown(){
     milliethersCount = await playerObj.utils.fromWei(weiBalance, 'milliether');
     milliethers.innerText = milliethersCount;
 
+
   }
+
   xhttp.send(JSON.stringify(data));
-  
-  
+  hide_all_button();
+
 
 }
 
@@ -782,6 +845,8 @@ function showdown(){
 function check(){
   player_checked = true;
   if(picked_2cards == true && casino_checked == true && phase ==  "River"){ 
+    show_loader();
+    hide_all_button();
     showdown();
   }
   else if (casino_checked == true && picked_2cards == true ){
@@ -845,7 +910,8 @@ async function raise(){
   else if (picked_2cards == true ){
     // call contract to raise
     show_loader();
-    document.getElementById("betmsg").innerText = "Processing transaction";
+    hide_all_button();
+    document.getElementById("betmsg").innerText = "Processing transaction...";
     timeleft = 61;
     let raiseWei = playerObj.utils.toWei(raise_amount.toString(),"milliether");
     await contractInstance.methods.Raise(raiseWei).send({
@@ -858,8 +924,10 @@ async function raise(){
      milliethersCount -= raise_amount ;
      milliethers.innerText = milliethersCount;
      bet_total += raise_amount;
-     call_bet = raise_amount - call_bet;
-     document.getElementById("bet_total").innerText =  "Total bet: " + bet_total;
+     call_bet = raise_amount;
+     yourbet_total += raise_amount;
+     document.getElementById("yourbet_total").innerText = yourbet_total;
+     document.getElementById("bet_total").innerText =  "Pot:  " + bet_total;
      document.getElementById("betmsg").innerText =  "You raised " + raise_amount +" milliethers!" ;
      document.getElementById("casinomsg").innerText = "Waiting casino decision...";
      //show_loader();
@@ -886,7 +954,8 @@ async function call(){
   }
   else if( picked_2cards == true && phase ==  "River" ){
     show_loader();
-    document.getElementById("betmsg").innerText = "Processing transaction";
+    hide_all_button();
+    document.getElementById("betmsg").innerText = "Processing transaction...";
     timeleft = 61;
     let callWei = playerObj.utils.toWei(call_bet.toString(),"milliether");
     await contractInstance.methods.Call(callWei).send({
@@ -896,14 +965,19 @@ async function call(){
     });
     //hide_loader();
     bet_total += call_bet;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total; 
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total; 
+    show_loader();
+    hide_all_button();
     showdown();
 
   }
   else if (picked_2cards == true && phase == "Pre-flop"){
     show_loader();
     console.log("Player called");
-    document.getElementById("betmsg").innerText = "Processing transaction";
+    hide_all_button();
+    document.getElementById("betmsg").innerText = "Processing transaction...";
     timeleft = 61;
     let callWei = playerObj.utils.toWei(call_bet.toString(),"milliether");
     await contractInstance.methods.Call(callWei).send({
@@ -916,7 +990,9 @@ async function call(){
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
     milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
     
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     //show_loader();
@@ -928,9 +1004,10 @@ async function call(){
   }
   else if (picked_2cards == true && casino_raised == true ){
     show_loader();
+    hide_all_button();
     timeleft = 61;
     let callWei = playerObj.utils.toWei(call_bet.toString(),"milliether");
-    document.getElementById("betmsg").innerText = "Processing transaction";
+    document.getElementById("betmsg").innerText = "Processing transaction...";
     await contractInstance.methods.Call(callWei).send({
       from: playerAddress,
       gas:400000,  
@@ -941,7 +1018,9 @@ async function call(){
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
     milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
     document.getElementById("casinomsg").innerText = "";
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     //show_loader();
@@ -970,7 +1049,9 @@ async function call(){
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
     milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     //show_loader();
     hide_all_button();
@@ -983,13 +1064,14 @@ async function call(){
   if (timer == true){
     timeleft=61;
   }
-  call_bet = 0;
+  //call_bet = 0;
 }
 // fold button function for player
 function fold() {
   if(picked_2cards == true){
     folded = true;
-    document.getElementById("betmsg").innerText = "Processing transaction";
+    document.getElementById("betmsg").innerText = "Processing transaction...";
+    hide_all_button();
     let xhttp = new XMLHttpRequest();
     xhttp.open("GET","/playerFold",true);
     show_loader();
@@ -1009,24 +1091,24 @@ async function change_phase(){
   if (phase == "Pre-flop"){
     
     showCommunityCards_Flop();
-  
+    hide_loader();
     phase = "Flop";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
     
   }
   else if(phase == "Flop"){
     
     Turn();
-    
+    hide_loader();
     phase = "Turn";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
   }
   else if(phase == "Turn"){
     
     River();
-    
+    hide_loader();
     phase = "River";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
   }
   resetCounter();
   reset_record();
@@ -1073,6 +1155,9 @@ function hide_all_button(){
   document.getElementById("call").style.visibility='hidden';
   document.getElementById("fold").style.visibility='hidden';
   document.getElementById("raise").style.visibility='hidden';
+  document.getElementById("playeraction").style.display='none';
+  document.getElementById("raise_amount").style.display ='none';
+  //document.getElementById("raise_amount").style.display ='none';
 }
 
 function show_loader(){
@@ -1082,6 +1167,10 @@ function show_loader(){
 function hide_loader(){
   document.getElementById("loader").style.visibility='hidden';
 }
+
+// function flipCard(){
+//   card.classList.toggle("flipCard");
+// }
 
 
 //function to restart the game reset everything
@@ -1120,14 +1209,13 @@ function restart_game(){
     player_called = false;
     player_raised = false;
     player_checked = false;
-    phase = "Pre-flop";
     playerIndex.length = 0;
     casinoIndex.length = 0;
     communityIndex.length = 0;
     player_cards.length = 0;
     casino_cards.length = 0;
-    
-    
+    phase = "Pre-flop"; 
+    yourbet_total = 0;
     share = "";
     publicKey.length = 0;
     //playerAddress = "";
@@ -1140,8 +1228,8 @@ function restart_game(){
     //activeGame = false;
     resetCounter(); // reset counter in bott.js
     clearHistory(); // clear the history of card results in bott.js
-    
-    document.getElementById("status1").innerText= "Pick two cards";
+    document.getElementById("phase").innerText = "";
+    //document.getElementById("status1").innerText= "Pick two cards";
     document.getElementById("casinocard1").style.display='none';
     document.getElementById("casinocard2").style.display='none';
     document.getElementById("communitycards1").style.display='none';
@@ -1159,7 +1247,8 @@ function restart_game(){
     document.getElementById("card2").src="/poker-img/back.jpg";
     document.getElementById("card3").src="/poker-img/back.jpg";
     document.getElementById("card4").src="/poker-img/back.jpg";
-    document.getElementById("bet_total").innerText = "Total bet: " + 0;
+    document.getElementById("bet_total").innerText = "Pot:  " + 0;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
     document.getElementById("betmsg").innerText = "Game restarted";
     document.getElementById("communitycards").innerText = "";
     document.getElementById("yourcards").innerText = "" ;
@@ -1167,13 +1256,26 @@ function restart_game(){
     document.getElementById("call").style.visibility='visible';
     document.getElementById("fold").style.visibility='visible';
     document.getElementById("raise").style.visibility='visible';
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("playeraction").style.display='block';
+    document.getElementById("raise_amount").style.display ='block';
+    document.getElementById("players result").innerText = "";
+    document.getElementById("casinos result").innerText = "";
+    document.getElementById("startmsg").style.display = "block";
+    document.getElementById("bet").style.visibility = "visible";
+    document.getElementById("casinomsg").innerText = "" ;
+    document.getElementById("status").innerText = "" ;
+    document.getElementById("yourcards").innerText = "Click below to reveal your cards" ;
     console.log("game restarted");
+    hide_all_button();
+    [].forEach.call(document.querySelectorAll('.game'), function (el) {
+      el.style.visibility = 'hidden';
+    });
   }
   xhttp.send();
   
 
 }
+
 
 //make button clickable
 
