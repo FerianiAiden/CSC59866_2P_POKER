@@ -23,7 +23,7 @@ console.log("Ciphertext of player1's message(c1) is: ",c1.toString());
 console.log("Encrypting player2 message...");
 let c2 = protocol.encrypt(message2,pubKey);
 // uses additive homomorphism property E(m1)*E(m2) = E(m1 + m2)
-console.log("Ciphertext of player2's message(c2) is: ",c2.toString());
+console.log("Ciphertext of player1's message(c2) is: ",c2.toString());
 let c1c2 = c1.multiply(c2);
 console.log("The result of c1*c2 is: ",c1c2.toString());
 var share = protocol.getShare();

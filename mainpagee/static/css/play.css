@@ -9,16 +9,21 @@ html, body {
 
 
 .container {
-  width: 100%;
-  height: 100%;
+  background-image: url('../poker-img/background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: right; 
+  background-size: cover;
+  display: flex; 
+
 }
 
 .game  {
- background-image: url('../poker-img/background.jpg');
- background-repeat: no-repeat;
+  background-image: url('../poker-img/background.jpg'); 
+  background-repeat: no-repeat;
  background-attachment: fixed;
  background-position: right; 
- background-size: cover;
+ background-size: cover; 
   
    display: flex; 
   
@@ -35,13 +40,43 @@ html, body {
 }
 
 
+/* #coin div {
+  width: 150;
+  height: 225;
+  backface-visibility: hidden;
+  background-size: contain;
+  position: absolute;
+}
+#coin {
+  transform-style: preserve-3d;
+}
+.yourcard1{
+  transform: rotateY(-180deg);
+}
+.yourcard1back{
+  background-image: url(.../poker-image/back.jpg);
+}
+.animate-tails {
+  animation: flipCard 3s;
+  animation-fill-mode: forwards;
+}
+@keyframes flipCard {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  } 
+  }
+  */
+
 
 .intro  {
-  background-image: url('../poker-img/background.jpg');
- background-repeat: no-repeat;
+   background-image: url('../poker-img/background.jpg'); 
+  background-repeat: no-repeat;
  background-attachment: fixed;
  background-position: right; 
- background-size: cover;
+ background-size: cover; 
 
   
   display: flex;
@@ -57,6 +92,9 @@ html, body {
 
 }
 
+.pot{
+  color: red;
+}
 .heading{
   color: rgb(245, 245, 81); 
 }
@@ -72,6 +110,74 @@ button {
     padding: 0.5rem;
     background-color:red;
 }
+.front{
+  --toggle:0;
+  --playState:"paused";
+}
+.text{
+  color:White;
+  position: absolute;
+  font-size: 60px;
+  left: 1050px;
+  top: 100px;
+  text-align: center;
+  z-index: 1;
+}
+ .rotate{
+
+  position: absolute;
+  left: 1000px;
+  top: 400px;
+  display: block;
+  height: 120px;
+  width: 80px;
+  z-index: 1;
+   animation: rotation infinite 6s linear; 
+   animation-play-state: paused;
+}
+.rotate2{
+  position: absolute;
+  left: 1200px;
+  top: 400px;
+  display: block;
+  height: 120px;
+  width: 80px;
+  z-index: 1;
+   animation: rotation infinite 5s linear; 
+   animation-play-state: paused;
+}
+.rotate3{
+  position: absolute;
+  left: 1400px;
+  top: 400px;
+  display: block;
+  height: 120px;
+  width: 80px;
+  z-index: 1;
+  animation: rotation infinite 4s linear; 
+  animation-play-state: paused;
+}
+.rotate4{
+  position: absolute;
+  left: 1600px;
+  top: 400px;
+  display: block;
+  height: 120px;
+  width: 80px;
+  z-index: 1;
+  animation: rotation infinite 3s linear; 
+  animation-play-state: paused;
+}
+
+@keyframes rotation{
+ from{
+   transform:rotate(0deg);
+ }
+ 
+ to{
+   transform:rotate(360deg);
+ }
+} 
 
 
  
