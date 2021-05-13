@@ -1,5 +1,6 @@
 h2 {
   margin: 0rem;
+  
 }
 
 html, body {
@@ -12,6 +13,7 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
 
 .game  {
  background-image: url('../poker-img/background.jpg');
@@ -57,8 +59,15 @@ html, body {
 
 }
 
+.pot{
+  color: red;
+  margin: 0rem;
+  line-height:0.5px;
+}
 .heading{
   color: rgb(245, 245, 81); 
+  margin: 0rem;line-height:0.5px;
+
 }
 
 #mycounter {

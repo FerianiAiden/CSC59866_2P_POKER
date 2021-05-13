@@ -38,7 +38,7 @@ var phase = "Pre-flop";
 var playerIndex = [];
 var casinoIndex = [];
 var communityIndex = [];
-
+var yourbet_total = 0;
 var share; // player's share of private key
 var publicKey; // public keys
 var playerAddress;
@@ -58,7 +58,7 @@ var contractInstance;
 var abi;
 var BigInteger = forge.jsbn.BigInteger;
 
-document.getElementById("phase").innerText = phase;
+document.getElementById("phase").innerText = "Phase: " + phase;
 
 
 var deck = ["1S","2S","3S","4S","5S","6S","7S","8S", "9S", "10S","11S","12S","13S",
@@ -139,6 +139,8 @@ async function bet() {
   }
   else if (1 <= milliethersCount ){
     document.getElementById("casinomsg").innerText = "Running keygen..";
+    document.getElementById("startmsg").style.display = "none";
+    document.getElementById("bet").style.visibility = "hidden";
     show_loader();
     //ajax request
     let xhttp = new XMLHttpRequest();
@@ -228,13 +230,14 @@ async function bet() {
     value: playerObj.utils.toWei("1","milliether")
   });
   console.log("small blind was set");
-
+    yourbet_total += 1;
     bet_total += 1;
     let weiBalance = await playerObj.eth.getBalance(playerAddress); //gives balance in wei
     milliethersCount = await playerObj.utils.fromWei(weiBalance, 'milliether');
     milliethers.innerText = milliethersCount;
     document.getElementById("betmsg").innerText = "Placed 1 milliethers for small blind";
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
     // timeleft = 60;
     // onTimer();
     // hide_loader();
@@ -292,7 +295,6 @@ function pickaRandomCards(id,choice){
   document.getElementById(id).style.display='none';
   document.getElementById(id).src = "/poker-img/"+card+".jpg";
   
-  document.getElementById("status").innerText = "You picked " + card ;
   player_cards.push(card);
   playerIndex.push(r1Int);
   
@@ -321,8 +323,9 @@ function pickaRandomCards(id,choice){
     document.getElementById("betmsg").innerText = "Choose call/ raise/ fold."
     document.getElementById("casinomsg").innerText = "";
     picked_2cards = true;
-    
+    phase = "Pre-flop";
     document.getElementById("check").style.visibility='hidden';
+    document.getElementById("phase").innerText = "Phase: " + "Pre-flop";
     
     if (timer == true){
       timeleft=61;
@@ -341,7 +344,7 @@ function pickaRandomCards(id,choice){
 //casion place blind (2milliethers)
 function CasinoPlaceBigBlind(){
   bet_total += 2;
-  document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+  document.getElementById("bet_total").innerText = "Pot:" + bet_total;
   document.getElementById("casinomsg").innerText = "Casino placed a big blind (2 milliethers). Pick the first two cards";
   
 }
@@ -410,6 +413,8 @@ function CasinoPlaceBigBlind(){
 
 
     }
+    document.getElementById("playeraction").style.display='block';
+    document.getElementById("raise_amount").style.display ='block';
     document.getElementById("check").style.visibility='visible';
     document.getElementById("fold").style.visibility='visible';
     document.getElementById("raise").style.visibility='visible';
@@ -456,7 +461,9 @@ function CasinoPlaceBigBlind(){
     xhttp.setRequestHeader("Content-Type","application/json");
     xhttp.onloadend = function(){
       bet_total += raise;
-      document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+      document.getElementById("bet_total").innerText = "Pot:" + bet_total;
+      document.getElementById("playeraction").style.display='block';
+      document.getElementById("raise_amount").style.display ='block';
       document.getElementById("call").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
@@ -527,9 +534,8 @@ function CasinoAction2(){
       }
       document.getElementById("casinomsg").innerText =  phase +": Dealer called! Total bet + "+call_bet+ " You can call Check/ fold/ raise";
       bet_total += call_bet;
-      call_bet = 0;
 
-      document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+      document.getElementById("bet_total").innerText = "Pot: " + bet_total;
       if(player_raised == true && phase == "River" ){ 
       //show_loader();
       showdown();
@@ -540,6 +546,8 @@ function CasinoAction2(){
         casino_called = true;
 
       }
+      document.getElementById("playeraction").style.display='block';
+      document.getElementById("raise_amount").style.display ='block';
       document.getElementById("check").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
@@ -584,11 +592,13 @@ function CasinoAction2(){
     xhttp.setRequestHeader("Content-Type","application/json");
     xhttp.onloadend = function(){
       bet_total += raise;
-      document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+      document.getElementById("bet_total").innerText = "Pot: " + bet_total;
       document.getElementById("call").style.visibility='visible';
       document.getElementById("fold").style.visibility='visible';
       document.getElementById("raise").style.visibility='visible';
       document.getElementById("check").style.visibility='hidden';
+      document.getElementById("playeraction").style.display='block';
+      document.getElementById("raise_amount").style.display ='block';
       casino_raised = true;
       call_bet = raise - call_bet;
       hide_loader();
@@ -729,6 +739,8 @@ function showdown(){
   let resultCasino = EvaluateHand(casinoHandG);
   console.log("Players result is: ", resultPlayer);
   console.log("Casinos result is: ", resultCasino);
+  document.getElementById("players result").innerText = "The player's result is: "+ resultPlayer;
+  document.getElementById("casinos result").innerText = "The casino's result is: "+ resultCasino;
   let finalResult = EvaluateWinner(playerHandG,casinoHandG,resultPlayer,resultCasino);
   
 
@@ -762,7 +774,7 @@ function showdown(){
   
 
     phase = "Showdown";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
     document.getElementById("betmsg").innerText =  "The game will restart in 15 seconds! " ;
     document.getElementById("casinomsg").innerText = finalResult;
     timeleft = 15;
@@ -858,8 +870,10 @@ async function raise(){
      milliethersCount -= raise_amount ;
      milliethers.innerText = milliethersCount;
      bet_total += raise_amount;
-     call_bet = raise_amount - call_bet;
-     document.getElementById("bet_total").innerText =  "Total bet: " + bet_total;
+     call_bet = raise_amount;
+     yourbet_total += raise_amount;
+     document.getElementById("yourbet_total").innerText = yourbet_total;
+     document.getElementById("bet_total").innerText =  "Pot:  " + bet_total;
      document.getElementById("betmsg").innerText =  "You raised " + raise_amount +" milliethers!" ;
      document.getElementById("casinomsg").innerText = "Waiting casino decision...";
      //show_loader();
@@ -896,7 +910,10 @@ async function call(){
     });
     //hide_loader();
     bet_total += call_bet;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total; 
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total; 
+    show_loader();
     showdown();
 
   }
@@ -916,9 +933,9 @@ async function call(){
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
     milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
-    
-    document.getElementById("casinomsg").innerText = "Waiting casino decision...";
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
     //show_loader();
     hide_all_button();
     setTimeout(function(){
@@ -941,7 +958,9 @@ async function call(){
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
     milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
     document.getElementById("casinomsg").innerText = "";
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     //show_loader();
@@ -970,7 +989,9 @@ async function call(){
     document.getElementById("betmsg").innerText = "You called using " + call_bet+ " milliethers";
     milliethersCount -= call_bet ;
     milliethers.innerText = milliethersCount;
-    document.getElementById("bet_total").innerText = "Total bet:" + bet_total;
+    yourbet_total += call_bet;
+    document.getElementById("yourbet_total").innerText = yourbet_total;
+    document.getElementById("bet_total").innerText = "Pot: " + bet_total;
     document.getElementById("casinomsg").innerText = "Waiting casino decision...";
     //show_loader();
     hide_all_button();
@@ -983,7 +1004,6 @@ async function call(){
   if (timer == true){
     timeleft=61;
   }
-  call_bet = 0;
 }
 // fold button function for player
 function fold() {
@@ -1011,7 +1031,7 @@ async function change_phase(){
     showCommunityCards_Flop();
   
     phase = "Flop";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
     
   }
   else if(phase == "Flop"){
@@ -1019,14 +1039,14 @@ async function change_phase(){
     Turn();
     
     phase = "Turn";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
   }
   else if(phase == "Turn"){
     
     River();
     
     phase = "River";
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("phase").innerText = "Phase: " + phase;
   }
   resetCounter();
   reset_record();
@@ -1073,6 +1093,8 @@ function hide_all_button(){
   document.getElementById("call").style.visibility='hidden';
   document.getElementById("fold").style.visibility='hidden';
   document.getElementById("raise").style.visibility='hidden';
+  document.getElementById("playeraction").style.display='none';
+  document.getElementById("raise_amount").style.display ='none';
 }
 
 function show_loader(){
@@ -1100,6 +1122,7 @@ function restart_game(){
   "1H","2H","3H","4H","5H","6H","7H","8H", "9H", "10H","11H","12H","13H"
   ];
   //deck = deck1;
+    yourbet_total = 0;
     timeleft = 1;
     max_card = 2;
     chose = 0;
@@ -1141,7 +1164,7 @@ function restart_game(){
     resetCounter(); // reset counter in bott.js
     clearHistory(); // clear the history of card results in bott.js
     
-    document.getElementById("status1").innerText= "Pick two cards";
+    document.getElementById("status1").innerText= "Casino's cards";
     document.getElementById("casinocard1").style.display='none';
     document.getElementById("casinocard2").style.display='none';
     document.getElementById("communitycards1").style.display='none';
@@ -1159,16 +1182,23 @@ function restart_game(){
     document.getElementById("card2").src="/poker-img/back.jpg";
     document.getElementById("card3").src="/poker-img/back.jpg";
     document.getElementById("card4").src="/poker-img/back.jpg";
-    document.getElementById("bet_total").innerText = "Total bet: " + 0;
+    document.getElementById("bet_total").innerText = "Pot:  " + 0;
     document.getElementById("betmsg").innerText = "Game restarted";
+    document.getElementById("yourbet_total").innerText = yourbet_total;
     document.getElementById("communitycards").innerText = "";
-    document.getElementById("yourcards").innerText = "" ;
+    document.getElementById("yourcards").innerText = "Click below to reveal your cards" ;
     document.getElementById("check").style.visibility='visible';
     document.getElementById("call").style.visibility='visible';
     document.getElementById("fold").style.visibility='visible';
     document.getElementById("raise").style.visibility='visible';
-    document.getElementById("phase").innerText = phase;
+    document.getElementById("playeraction").style.display='block';
+    document.getElementById("raise_amount").style.display ='block';
+    document.getElementById("phase").innerText = "Phase: " + phase;
     console.log("game restarted");
+    document.getElementById("players result").innerText = "";
+    document.getElementById("casinos result").innerText = "";
+    document.getElementById("startmsg").style.display = "block";
+    document.getElementById("bet").style.visibility = "visible";
   }
   xhttp.send();
   
