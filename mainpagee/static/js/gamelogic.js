@@ -250,20 +250,20 @@ function checkFourOfAKind(a)
 function checkTwoPair(a)
 {
  	var resTP = "";
- 	var pairOne = -1;
- 	var pairTwo = -1;
+ 	var pairOne = 0;
+ 	var pairTwo = 0;
 
  	for (var i = a.length; i > 0; i--)
  	{
- 		if ((pairOne < 0) || (pairTwo < 0))
+ 		if ((pairOne < 1) || (pairTwo < 1))
  		{
- 			if((a[i-1] > 1) && (pairOne < 0))
+ 			if((a[i-1] > 1) && (pairOne < 1))
  			{
- 				pairOne = i-1;
+ 				pairOne = i;
  			}
  			else if (a[i-1] > 1)
  			{
- 				pairTwo = i -1;
+ 				pairTwo = i;
  			}
  		}
  		else
@@ -272,7 +272,7 @@ function checkTwoPair(a)
  		}
  	}
 
- 	if ((pairOne >= 0) && (pairTwo >= 0))
+ 	if ((pairOne > 0) && (pairTwo > 0))
  	{
  		resTP = "Two Pair";
  	} 
