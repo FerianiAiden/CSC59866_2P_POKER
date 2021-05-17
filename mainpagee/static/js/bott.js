@@ -1,29 +1,7 @@
-//import gamelogic from "./gamelogic.js";
-// var suit = ["spades", "diamonds", "clubs", "hearts"];
-// var value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-// var deck = new Array();
 
 
-/*/
-To understand the output:
-0 means Fold 
-1 means Check / Call
-2 means Raise
-/*/
- 
-// function Deck()
 
-// {
-// 	for (var i = 0; i < suit.length; i++)
-// 	{
-// 		for (var j = 0; j < value.length; j++)
-// 		{
-//             let message = value[j].concat(suit[i]);
-// 			var card = {Value: value[j], Suit: suit[i]};
-// 			deck.push(card);
-// 		}
-// 	}
-// }
+
  // using Math.floor(random(1, 5))-1 to select random cards from deck[]
 var CardCombos = new Map([
 	["High Card", 1],
@@ -39,7 +17,7 @@ var CardCombos = new Map([
 	
 ]);
 
-// Deck();
+
 
 var handtocheck = [];
 var counter = 0;
@@ -68,11 +46,6 @@ function randomFill(handtocheck, length){
 } 
 
 
-// function decisionForPreFlop(){
-// 	return 1;
-
-// //console.log(handtocheck);
-//  //let combo = gamelogic.EvaluateHand(handtocheck); //Storing string result of EvalH
 
 
 
@@ -133,8 +106,6 @@ function decisionForRiver(combo){
     let diff = CardCombos.get(combo) - CardCombos.get(pastHand[1]);
 	
 
-	//console.log(handtocheck);
-	
 	if(CardCombos.has(combo)){
 
 		if(CardCombos.get(combo) >= 4 || diff >= 2)
